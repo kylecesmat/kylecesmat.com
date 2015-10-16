@@ -1,0 +1,72 @@
+/***
+ *
+ * Site Styles
+ *
+ ***/
+
+html,
+body {
+    width       : 100%;
+    height      : 100%;
+    font-family : $sans;
+}
+
+.a {
+    text-decoration : none;
+}
+
+.main {
+    display          : flex;
+    align-items      : center;
+    justify-content  : center;
+    background-image : linear-gradient(-167deg, #3681BB 0%, #1E8EA1 100%);
+}
+
+.middle-content {
+    text-align : center;
+    @include slide-in-animation;
+
+    * {
+        color : $white;
+    }
+}
+
+.bio__image {
+    width            : rem-calc(240);
+    height           : rem-calc(240);
+    margin           : 0 auto rem-calc(15) auto;
+    border-radius    : 250px;
+    background       : #777777;
+    background-image : url('https://s3-us-west-2.amazonaws.com/kylecesmatcom.static/assets/kylecesmat-sq.jpg');
+    background-size  : cover;
+}
+
+.bio__heading {
+    margin-bottom : rem-calc(10);
+}
+
+.bio__heading--sub {
+    font-weight : 200;
+}
+
+.bio__links {
+    margin-top : rem-calc(20);
+    font-size  : rem-calc(12);
+
+    li {
+        display : inline-block;
+    }
+
+    .a {
+        opacity    : .5;
+        padding    : rem-calc(5 2);
+        transition : opacity 200ms ease;
+
+        &:hover {
+            opacity : 1;
+        }
+
+    }
+
+}
+

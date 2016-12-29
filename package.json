@@ -10,7 +10,7 @@
     "serve-static": "ecstatic --port 8080 build",
     "lint": "eslint src",
     "test": "npm run lint",
-    "webpack-dev": "webpack-dev-server --config configuration/webpack/webpack.dev.js --port 3001 --colors --history-api-fallback",
+    "webpack-dev": "webpack-dev-server --config configuration/webpack/webpack.dev.js --port 3000 --colors --history-api-fallback",
     "webpack-build": "webpack --config configuration/webpack/webpack.static.js -p --progress --bail"
   },
   "author": "",
@@ -43,6 +43,7 @@
     "history": "^3.2.1",
     "html-webpack-plugin": "^2.24.1",
     "image-webpack-loader": "^3.1.0",
+    "markdown-it": "^8.2.2",
     "postcss": "^5.2.8",
     "postcss-cssnext": "^2.9.0",
     "postcss-import": "^9.0.0",

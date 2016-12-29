@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
 
 import Header from './header';
+import Footer from './footer';
 import '../styles/app.css';
 
 const App = ({ children }) => (
-  <div>
+  <div className="app-container">
     <Header />
     {children}
+    <Footer />
   </div>
 );
 

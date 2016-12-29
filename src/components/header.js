@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import styles from './header.css';
+import styles from './header-footer.css';
 
 const Header = () => (
   <header className={styles.header}>

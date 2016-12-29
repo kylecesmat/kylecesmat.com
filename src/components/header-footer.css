@@ -3,7 +3,7 @@
 .header {
   position: relative;
   padding: 30px 0 0;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
   background-color: var(--primary);
   -webkit-font-smoothing: antialiased;
 
@@ -32,6 +32,7 @@
   font-weight: 500;
   color: var(--white);
 
+  &:focus,
   &:hover {
     color: var(--white)
   };
@@ -57,6 +58,7 @@
   font-weight: 400;
   color: color(var(--white) a(80%));
 
+  &:focus,
   &:hover {
     color: var(--white);
   }
@@ -64,4 +66,12 @@
 
 .menuItemLinkActive {
   color: var(--white);
+}
+
+.footer {
+  background-color: var(--offWhite);
+  color: var(--cement);
+  padding: 10px 0;
+  font-size: 12px;
+  text-align: center;
 }

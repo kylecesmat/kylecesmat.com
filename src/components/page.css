@@ -1,7 +1,12 @@
 @import '../styles/variables';
 
 .wrapper {
+  flex: 1 1 auto;
+}
 
+.heading {
+  margin-top: 0;
+  font-size: 3em;
 }
 
 .container {

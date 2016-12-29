@@ -1,0 +1,10 @@
+@import '../styles/variables';
+
+.postWrapper {
+  padding-bottom: var(--gutter);
+  margin-bottom: var(--gutter);
+}
+
+.date {
+  color: var(--gray);
+}

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import MarkdownIt from 'markdown-it';
 
+import styles from './markdown.css';
+
 export default class Markdown extends Component {
   componentWillMount() {
     this.setMarkdownRenderer();
@@ -15,9 +17,7 @@ export default class Markdown extends Component {
   render() {
     return (
       <div
-        key={Date.now()}
-        id={Date.now()}
-        className="markdown"
+        className={styles.markdown}
         dangerouslySetInnerHTML={{ __html: this.md.render(this.props.markdown) }}
       />
     );

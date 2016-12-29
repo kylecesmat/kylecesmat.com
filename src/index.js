@@ -5,10 +5,10 @@ import { Router, RouterContext, match, applyRouterMiddleware } from 'react-route
 import { createMemoryHistory, createHistory } from 'history';
 import { useScroll } from 'react-router-scroll';
 
+import 'normalize.css';
+
 import Index from './index.hbs';
 import routes from './routes';
-
-require('normalize.css');
 
 // Client render (optional):
 // `static-site-generator-webpack-plugin` supports shimming browser globals
@@ -34,7 +34,6 @@ export default (locals, callback) => {
   match({ routes, location }, (error, redirectLocation, renderProps) => {
     callback(null, Index({ // eslint-disable-line new-cap
       content: renderToString(<RouterContext {...renderProps} />),
-      bundleJs: locals.assets.main,
     }));
   });
 };

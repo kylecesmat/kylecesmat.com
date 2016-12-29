@@ -11,7 +11,8 @@
     "lint": "eslint src",
     "test": "npm run lint",
     "webpack-dev": "webpack-dev-server --config configuration/webpack/webpack.dev.js --port 3000 --colors --history-api-fallback",
-    "webpack-build": "webpack --config configuration/webpack/webpack.static.js -p --progress --bail"
+    "webpack-build": "webpack --config configuration/webpack/webpack.static.js -p --progress --bail",
+    "start": "npm run dev"
   },
   "author": "",
   "license": "ISC",
@@ -48,6 +49,7 @@
     "postcss": "^5.2.8",
     "postcss-cssnext": "^2.9.0",
     "postcss-import": "^9.0.0",
+    "postcss-loader": "^1.2.1",
     "preact": "^7.1.0",
     "preact-compat": "^3.9.4",
     "raw-loader": "^0.5.1",

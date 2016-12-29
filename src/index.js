@@ -8,6 +8,8 @@ import { useScroll } from 'react-router-scroll';
 import Index from './index.hbs';
 import routes from './routes';
 
+require('normalize.css');
+
 // Client render (optional):
 // `static-site-generator-webpack-plugin` supports shimming browser globals
 // so instead of checking whether the document is undefined (always false),

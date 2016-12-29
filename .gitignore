@@ -1,3 +1,4 @@
-node_modules
 dist
-npm-debug
+build
+node_modules
+*.log

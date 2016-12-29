@@ -1,10 +1,13 @@
 import React, { PropTypes } from 'react';
 import { find } from 'lodash';
+import moment from 'moment';
 import Markdown from '../components/markdown';
+
+import Page from '../components/page';
 
 const ALL_POSTS = POSTS; // eslint-disable-line no-undef
 
-const Page = ({ location }) => {
+const Post = ({ location }) => {
   let route = location.pathname;
   if (route.length > 1) {
     route = route.replace(/\//g, ''); // pathname sometimes includes a slash
@@ -12,12 +15,14 @@ const Page = ({ location }) => {
   const currentDoc = find(ALL_POSTS, { route });
 
   return (
-    <main>
+    <Page>
+      <h1>{currentDoc.title}</h1>
+      <date>{moment(currentDoc.date).format('MMMM Do YYYY')}</date>
       <Markdown markdown={currentDoc.markdown} />
-    </main>
+    </Page>
   );
 };
 
-Page.propTypes = { location: PropTypes.object.isRequired };
+Post.propTypes = { location: PropTypes.object.isRequired };
 
-export default Page;
+export default Post;

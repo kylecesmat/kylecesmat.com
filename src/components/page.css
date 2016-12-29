@@ -1,0 +1,9 @@
+@import '../styles/variables';
+
+.wrapper {
+
+}
+
+.container {
+  composes: container from '../styles/app.css';
+}

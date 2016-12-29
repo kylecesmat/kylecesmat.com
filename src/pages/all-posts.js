@@ -2,10 +2,10 @@ import React from 'react';
 
 import Page from '../components/page';
 
-const Home = () => (
+const AllPosts = () => (
   <Page>
-    Home
+    All Posts
   </Page>
 );
 
-export default Home;
+export default AllPosts;

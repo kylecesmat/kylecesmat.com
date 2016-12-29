@@ -93,7 +93,12 @@ module.exports = {
     }),
     new ExtractTextPlugin('static/css/[name].css'),
     new StaticSiteGeneratorPlugin('bundle', JSON.parse(staticRoutes), {
-      otherLocals: 'Hello',
+      // Shim browser globals.
+      window: {
+        // Optional client-side render checks whether document is undefined
+        // instead check whether it's being shimmed
+        __STATIC_GENERATOR: true,
+      },
     }),
   ],
 };

@@ -2,10 +2,10 @@ import React from 'react';
 
 import Page from '../components/page';
 
-const Home = () => (
+const Contact = () => (
   <Page>
-    Home
+    Contact
   </Page>
 );
 
-export default Home;
+export default Contact;

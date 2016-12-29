@@ -15,6 +15,8 @@ export default class Markdown extends Component {
   render() {
     return (
       <div
+        key={Date.now()}
+        id={Date.now()}
         className="markdown"
         dangerouslySetInnerHTML={{ __html: this.md.render(this.props.markdown) }}
       />

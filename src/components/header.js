@@ -15,7 +15,7 @@ const Header = () => (
               className={styles.menuItemLink}
               to="/"
             >
-                Home
+                Posts
             </Link>
           </li>
           <li className={styles.menuItem}>
@@ -34,15 +34,6 @@ const Header = () => (
               to="/contact"
             >
                 Contact
-            </Link>
-          </li>
-          <li className={styles.menuItem}>
-            <Link
-              activeClassName={styles.menuItemLinkActive}
-              className={styles.menuItemLink}
-              to="/posts"
-            >
-                Posts
             </Link>
           </li>
         </ul>

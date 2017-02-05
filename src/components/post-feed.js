@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-// import moment from 'moment';
 import Markdown from './markdown';
 import styles from './post-feed.css';
 

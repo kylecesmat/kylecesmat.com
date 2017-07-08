@@ -1,15 +1,15 @@
 {
   "name": "kylecesmat.com",
   "version": "0.0.0",
-  "description": "",
+  "description": "Likely an overkill webapp for a personal site",
   "main": "index.js",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Kyle Cesmat <kyle@kylecesmat.com>",
+  "license": "UNLICENSED",
   "dependencies": {
     "classnames": "^2.2.5",
     "glamor": "^2.20.25",

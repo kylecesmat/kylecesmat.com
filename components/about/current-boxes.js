@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { style } from "glamor";
-import classnames from "classnames";
 import currentInterests from "../../content/current-interests";
 import colors from "../../style/colors";
 import { loadIn } from "../../style/animation";
@@ -95,7 +94,9 @@ export default class CurrentInterestsBoxes extends Component {
     const styles = this.getStyles();
     return (
       <section className={styles.container} ref={el => (this.container = el)}>
-        <div className={styles.subtext}>Things I'm excited about right now</div>
+        <div className={styles.subtext}>
+          {"Things I'm excited about right now"}
+        </div>
         <div className={styles.trackContainer}>
           <div className={styles.track}>
             <div className={styles.leftSpacer} />

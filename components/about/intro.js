@@ -40,7 +40,7 @@ const styles = {
 
 export default () =>
   <section className={styles.container}>
-    <img className={styles.img} src="/static/me.jpg" />
+    <img className={styles.img} src="/static/me.jpg" alt="kyle cesmat" />
     <div className={styles.panel}>
       <h1 className={styles.h1}>Kyle Cesmat</h1>
       <p className={styles.p}>

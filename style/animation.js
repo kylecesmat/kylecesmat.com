@@ -6,4 +6,4 @@ const loadIn = css.keyframes("loadIn", {
   "100%": { transform: "translateY(0)", opacity: 1 }
 });
 
-export { loadIn };
+export default { loadIn };

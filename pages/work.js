@@ -1,7 +1,3 @@
-import Page from '../components/page';
+import Page from "../components/page";
 
-export default () => (
-  <Page>
-    Work
-  </Page>
-)
+export default () => <Page>Work</Page>;

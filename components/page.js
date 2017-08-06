@@ -1,16 +1,21 @@
-import { style } from 'glamor';
-import colors from '../style/colors';
-import layout from '../style/layout';
+import { style } from "glamor";
+import PropTypes from "prop-types";
+import layout from "../style/layout";
 
-export default ({children}) => (
-  <div className={page}>
-    {children}
-  </div>
-);
-
-const page = style({
+const wrapper = style({
   padding: 15,
   maxWidth: layout.containerWidth,
-  width: '100%',
-  margin: '0 auto',
+  width: "100%",
+  margin: "0 auto"
 });
+
+const Page = ({ children }) =>
+  <div className={wrapper}>
+    {children}
+  </div>;
+
+Page.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
+export default Page;

@@ -1,13 +1,15 @@
 {
   "parser": "babel-eslint",
-  "plugins": [ "prettier" ],
-  "extends": [ "airbnb", "prettier" ],
+  "plugins": ["prettier"],
+  "extends": ["airbnb", "prettier", "prettier/react"],
   "globals": {
     "document": true,
     "window": true,
     "process": true
   },
   "rules": {
+    "no-return-assign": "off",
+    "no-underscore-dangle": "off",
     "react/jsx-filename-extension": "off",
     "react/react-in-jsx-scope": "off",
     "prettier/prettier": "error"

@@ -9,13 +9,26 @@ const wrapper = style({
   margin: "0 auto"
 });
 
-const Page = ({ children }) =>
+const titleStyles = style({
+  fontSize: 24
+});
+
+const Page = ({ children, title }) =>
   <div className={wrapper}>
+    {title &&
+      <h1 className={titleStyles}>
+        {title}
+      </h1>}
     {children}
   </div>;
 
+Page.defaultProps = {
+  title: null
+};
+
 Page.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string
 };
 
 export default Page;

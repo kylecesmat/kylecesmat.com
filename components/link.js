@@ -1,32 +1,36 @@
 import { Component } from "react";
-import Router from "next/router";
 import { style, merge } from "glamor";
-import classnames from "classnames";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import colors from "../style/colors";
 
 export default class Anchor extends Component {
   static defaultProps = {
-    custom: false
+    custom: false,
+    className: null,
+    rel: null,
+    activeClassName: null,
+    pathname: null
   };
 
-  static getInitialProps({ pathname, req }) {
-    console.log(pathname, req);
-    return { pathname: (req && req.url) || pathname };
-  }
+  static propTypes = {
+    href: PropTypes.string.isRequired,
+    rel: PropTypes.string,
+    className: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    activeClassName: PropTypes.string,
+    custom: PropTypes.bool,
+    pathname: PropTypes.string
+  };
+
+  static contextTypes = {
+    pathname: PropTypes.string
+  };
 
   getLinkStyle() {
-    const { href, className, activeClassName, custom } = this.props;
-    let pathname = undefined;
-
-    if (
-      typeof window !== "undefined" &&
-      window.document &&
-      window.document.createElement
-    ) {
-      pathname = Router.pathname;
-    }
+    // @TODO passing pathname as a prop sucks.
+    // https://github.com/zeit/next.js/pull/2352
+    const { href, className, activeClassName, custom, pathname } = this.props;
 
     const active = pathname === href;
 

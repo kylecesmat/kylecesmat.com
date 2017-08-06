@@ -1,4 +1,5 @@
 import { style } from "glamor";
+import PropTypes from "prop-types";
 import Link from "./link";
 import colors from "../style/colors";
 
@@ -35,12 +36,13 @@ const styles = {
   })
 };
 
-export default () =>
+export const Navigation = ({ pathname }) =>
   <nav className={styles.nav}>
     <ul className={styles.ul}>
       <li className={styles.li}>
         <Link
           custom
+          pathname={pathname}
           activeClassName={styles.activeLink}
           href="/"
           className={styles.link}
@@ -51,16 +53,7 @@ export default () =>
       <li className={styles.li}>
         <Link
           custom
-          activeClassName={styles.activeLink}
-          className={styles.link}
-          href="/work"
-        >
-          Work
-        </Link>
-      </li>
-      <li className={styles.li}>
-        <Link
-          custom
+          pathname={pathname}
           activeClassName={styles.activeLink}
           className={styles.link}
           href="/writing"
@@ -71,6 +64,7 @@ export default () =>
       <li className={styles.li}>
         <Link
           custom
+          pathname={pathname}
           activeClassName={styles.activeLink}
           className={styles.link}
           href="/contact"
@@ -80,3 +74,9 @@ export default () =>
       </li>
     </ul>
   </nav>;
+
+Navigation.proptypes = {
+  pathname: PropTypes.string.isRequired
+};
+
+export default Navigation;

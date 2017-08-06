@@ -11,10 +11,14 @@ if (typeof window !== "undefined") {
 }
 
 export default class MyDocument extends Document {
-  static async getInitialProps({ renderPage }) {
+  static async getInitialProps({ pathname, req, renderPage }) {
     const page = renderPage();
     const styles = renderStatic(() => page.html);
-    return { ...page, ...styles };
+    return {
+      ...page,
+      ...styles,
+      pathname: (req && req.url) || pathname
+    };
   }
 
   constructor(props) {
@@ -58,7 +62,7 @@ export default class MyDocument extends Document {
             }
           })}
         >
-          <Navigation />
+          <Navigation pathname={this.props.pathname} />
           <Main />
           <Footer />
           <NextScript />

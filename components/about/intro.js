@@ -1,6 +1,7 @@
 import { style } from "glamor";
 import colors from "../../style/colors";
 import { loadIn } from "../../style/animation";
+import Panel from "../panel";
 
 const imageSize = 100;
 
@@ -12,12 +13,9 @@ const styles = {
     animation: `350ms ease-in 50ms forwards ${loadIn}`
   }),
   panel: style({
-    backgroundColor: colors.white,
     padding: `${imageSize / 2 + 10}px 20px 20px`,
     marginTop: imageSize / 2,
-    textAlign: "center",
-    borderRadius: 4,
-    color: colors.darkGray
+    textAlign: "center"
   }),
   img: style({
     width: imageSize,
@@ -41,7 +39,7 @@ const styles = {
 export default () =>
   <section className={styles.container}>
     <img className={styles.img} src="/static/me.jpg" alt="kyle cesmat" />
-    <div className={styles.panel}>
+    <Panel className={styles.panel}>
       <h1 className={styles.h1}>Kyle Cesmat</h1>
       <p className={styles.p}>
         I am a UI Engineer at Formidable, currently exploring Seattle with my
@@ -51,5 +49,5 @@ export default () =>
         I make software with Node & React, and am an amateur chef, brewer, and
         breadmaker in my free time.{" "}
       </p>
-    </div>
+    </Panel>
   </section>;

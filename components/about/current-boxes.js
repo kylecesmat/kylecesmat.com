@@ -1,18 +1,18 @@
 import { Component } from "react";
 import { style } from "glamor";
-import currentInterests from "../../content/current-interests";
+import { interests } from "../../content/current-interests.json";
 import colors from "../../style/colors";
 import { loadIn } from "../../style/animation";
 
 export default class CurrentInterestsBoxes extends Component {
   state = {
     leftPos: 0,
-    currentInterests: []
+    interests: []
   };
 
   componentDidMount() {
     this.getCarouselLeftPos();
-    this.getCurrentInterests();
+    this.getInterests();
     window.addEventListener("resize", this.getCarouselLeftPos);
   }
 
@@ -25,8 +25,8 @@ export default class CurrentInterestsBoxes extends Component {
     this.setState({ leftPos });
   };
 
-  getCurrentInterests = () => {
-    this.setState({ currentInterests });
+  getInterests = () => {
+    this.setState({ interests });
   };
 
   getStyles() {
@@ -100,7 +100,7 @@ export default class CurrentInterestsBoxes extends Component {
         <div className={styles.trackContainer}>
           <div className={styles.track}>
             <div className={styles.leftSpacer} />
-            {this.state.currentInterests.map((datum, i) =>
+            {this.state.interests.map((datum, i) =>
               <div className={styles.boxContainer} key={i}>
                 <div className={styles.box}>
                   <div className={styles.boxGlyph}>

@@ -1,0 +1,49 @@
+{
+  "interests": [
+    {
+      "glyph": "🚀",
+      "headline": "Front-End Performance",
+      "copy": "Apps shouldn't just *feel* fast, they should *be* fast."
+    },
+    {
+      "glyph": "💅",
+      "headline": "CSS-in-JS",
+      "copy": "Exploring the advantages and pitfalls of writing styles right next to code & markup."
+    },
+    {
+      "glyph": "📷",
+      "headline": "Photography",
+      "copy": "Taking more photos, exploring layout & compisition away from a web browser"
+    },
+    {
+      "glyph": "📚",
+      "headline": "Reading",
+      "copy": "Currently reading 'Slapstick' and 'Ready Player One'"
+    },
+    {
+      "glyph": "🔑",
+      "headline": "User Authentication",
+      "copy": "Learning best ways to ensure user validitity while maintaining privacy"
+    },
+    {
+      "glyph": "✌",
+      "headline": "Empathy & A11y",
+      "copy": "Building expirences for others & overcoming my biases"
+    },
+    {
+      "glyph": "🌲",
+      "headline": "Getting Outdoors",
+      "copy": "Turning off my screens, purposely placing myself in nature"
+    },
+    {
+      "glyph": "📊",
+      "headline": "GraphQL",
+      "copy": "Finding a project where GraphQL makes sense, learning methods & syntax"
+    },
+    {
+      "glyph": "🍺",
+      "headline": "Beer",
+      "copy": "Mmmm beer"
+    }
+  ]
+}

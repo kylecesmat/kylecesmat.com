@@ -1,0 +1,24 @@
+{
+  "posts": [
+    {
+      "id": "next-js-as-a-writing-platform",
+      "date": "August 5, 2017",
+      "title": "Using Next.js as a Writing Platform"
+    },
+    {
+      "id": "why-react-wins",
+      "date": "July 10, 2017",
+      "title": "Why React Wins"
+    },
+    {
+      "id": "pattern-libraries-invisible-constructs",
+      "date": "March 22, 2017",
+      "title": "The Invisible Constructs in Building a Pattern Library"
+    },
+    {
+      "id": "building-a-sttaic-react-js-site",
+      "date": "October 11, 2016",
+      "title": "Building a Static React.js Site"
+    }
+  ]
+}

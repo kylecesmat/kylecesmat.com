@@ -3,22 +3,14 @@ import PropTypes from "prop-types";
 import layout from "../style/layout";
 
 const wrapper = style({
-  padding: 15,
+  padding: layout.containerPadding,
   maxWidth: layout.containerWidth,
   width: "100%",
   margin: "0 auto"
 });
 
-const titleStyles = style({
-  fontSize: 24
-});
-
-const Page = ({ children, title }) =>
+const Page = ({ children }) =>
   <div className={wrapper}>
-    {title &&
-      <h1 className={titleStyles}>
-        {title}
-      </h1>}
     {children}
   </div>;
 
@@ -27,8 +19,7 @@ Page.defaultProps = {
 };
 
 Page.propTypes = {
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string
+  children: PropTypes.node.isRequired
 };
 
 export default Page;

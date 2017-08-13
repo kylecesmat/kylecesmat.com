@@ -3,5 +3,5 @@ export default {
   darkGrayLight: "#8D959C",
   offwhite: "#EEF0F3",
   white: "#fff",
-  linkColor: "#CAE5FF"
+  linkColor: "#8CD6F6"
 };

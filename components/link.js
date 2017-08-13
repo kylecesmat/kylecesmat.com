@@ -8,9 +8,10 @@ export default class Anchor extends Component {
   static defaultProps = {
     custom: false,
     className: null,
-    rel: null,
+    rel: "noopener",
     activeClassName: null,
-    pathname: null
+    pathname: null,
+    external: false
   };
 
   static propTypes = {
@@ -20,7 +21,8 @@ export default class Anchor extends Component {
     children: PropTypes.node.isRequired,
     activeClassName: PropTypes.string,
     custom: PropTypes.bool,
-    pathname: PropTypes.string
+    pathname: PropTypes.string,
+    external: PropTypes.bool
   };
 
   static contextTypes = {
@@ -43,7 +45,10 @@ export default class Anchor extends Component {
       color: "inherit",
       transition: "background 0.4s ease-out",
       borderBottom: `1px solid ${colors.linkColor}`,
-      boxShadow: `1px solid ${colors.linkColor}`
+      boxShadow: `inset 0 -5px 0px 0px ${colors.linkColor}`,
+      ":hover": {
+        backgroundColor: `${colors.linkColor}`
+      }
     });
 
     return merge(
@@ -55,11 +60,15 @@ export default class Anchor extends Component {
   }
 
   render() {
-    const { href, rel, children } = this.props;
+    const { href, rel, children, external } = this.props;
 
     return (
-      <Link prefetch href={href}>
-        <a rel={rel} className={this.getLinkStyle()}>
+      <Link prefetch={!external} href={href} passHref>
+        <a
+          rel={rel}
+          className={this.getLinkStyle()}
+          target={external ? "_blank" : "_self"}
+        >
           {children}
         </a>
       </Link>

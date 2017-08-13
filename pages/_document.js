@@ -4,6 +4,7 @@ import { style, rehydrate } from "glamor";
 import Navigation from "../components/navigation";
 import Footer from "../components/footer";
 import colors from "../style/colors";
+import typography from "../style/typography";
 
 // Adds server generated styles to glamor cache.
 if (typeof window !== "undefined") {
@@ -42,8 +43,7 @@ export default class MyDocument extends Document {
             padding: 0,
             margin: 0,
             overflowX: "hidden",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+            fontFamily: typography.sans,
             background: colors.offwhite,
             display: "flex",
             flexDirection: "column",

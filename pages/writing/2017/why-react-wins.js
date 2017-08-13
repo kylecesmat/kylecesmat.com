@@ -1,6 +1,6 @@
-import { Post } from "../../components/post/post";
-import { Heading, P, Ul, Li, Code } from "../../components/typography";
-import Link from "../../components/link";
+import { Post } from "../../../components/post/post";
+import { Heading, P, Ul, Li, Code } from "../../../components/typography";
+import Link from "../../../components/link";
 
 export default () =>
   <Post title="Why React Wins" date="July 10, 2017">

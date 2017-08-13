@@ -1,5 +1,5 @@
-import { Post } from "../../components/post/post";
-import { P, Ul, Li, B, Heading, Code } from "../../components/typography";
+import { Post } from "../../../components/post/post";
+import { P, Ul, Li, B, Heading, Code } from "../../../components/typography";
 
 export default () =>
   <Post title="Building a static site with ReactJS" date="December 13, 2016">

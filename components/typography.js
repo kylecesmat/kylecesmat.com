@@ -31,16 +31,16 @@ const styles = {
     fontFamily: typography.sans,
     fontWeight: 600,
     marginTop: 20,
-    marginBottom: 5
+    marginBottom: 10
   }),
   h1: style({
-    fontSize: 38
+    fontSize: 34
   }),
   h2: style({
-    fontSize: 28
+    fontSize: 24
   }),
   h3: style({
-    fontSize: 22
+    fontSize: 20
   }),
   h4: style({
     fontSize: 18

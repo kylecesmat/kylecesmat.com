@@ -1,11 +1,6 @@
 {
   "posts": [
     {
-      "id": "next-js-as-a-writing-platform",
-      "date": "August 5, 2017",
-      "title": "Next.js as a Writing Platform"
-    },
-    {
       "id": "why-react-wins",
       "date": "July 10, 2017",
       "title": "Why React Wins"
@@ -16,7 +11,7 @@
       "title": "Pattern Libraries"
     },
     {
-      "id": "building-a-sttaic-react-js-site",
+      "id": "building-a-static-react-js-site",
       "date": "October 11, 2016",
       "title": "Building a Static React.js Site"
     }

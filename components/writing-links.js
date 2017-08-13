@@ -44,7 +44,7 @@ export default () =>
           <span className={styles.date}>
             {date}
           </span>
-          <Link href={`/${new Date(date).getFullYear()}/${id}`}>
+          <Link href={`/writing/${new Date(date).getFullYear()}/${id}`}>
             {title}
           </Link>
         </Li>

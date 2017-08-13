@@ -27,7 +27,7 @@ const styles = {
     borderRadius: 200
   }),
   h1: style({
-    margin: 0,
+    margin: "0 0 10px",
     fontSize: 42,
     fontWeight: 600
   }),

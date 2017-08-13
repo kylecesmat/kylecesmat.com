@@ -1,6 +1,6 @@
-import { Post } from "../../components/post/post";
-import { Heading, P, Ul, Li } from "../../components/typography";
-import { Image } from "../../components/post/media";
+import { Post } from "../../../components/post/post";
+import { Heading, P, Ul, Li } from "../../../components/typography";
+import { Image } from "../../../components/post/media";
 
 export default () =>
   <Post title="Pattern Libraries" date="March 22, 2017">
@@ -38,13 +38,8 @@ export default () =>
       Let's start with the humble Button, I often find myself iterating on this
       component the most throughout the lifecycle of pattern libraries.
     </P>
-    <P>
-      Imagine this is our current landscape of "Buttons":
-      <Image
-        src="/static/writing/pl-buttons.jpg"
-        alt="Current Button Library"
-      />
-    </P>
+    <P>Imagine this is our current landscape of "Buttons":</P>
+    <Image src="/static/writing/pl-buttons.jpg" alt="Current Button Library" />
     <P>
       <Heading weight="4">
         An AppleTV developer wants the button to glow when focused

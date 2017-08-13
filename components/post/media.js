@@ -3,12 +3,15 @@ import { style } from "glamor";
 const styles = {
   figure: style({
     padding: 8
+  }),
+  image: style({
+    width: "100%"
   })
 };
 
-const Image = ({ src, alt, desc }) =>
+export const Image = ({ src, alt, desc }) =>
   <figure className={styles.figure}>
-    <img src={src} alt={alt} />
+    <img className={styles.image} src={src} alt={alt} />
     {desc &&
       <p>
         {desc}

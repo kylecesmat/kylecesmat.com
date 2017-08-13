@@ -8,7 +8,10 @@ const styles = {
     padding: 20,
     marginTop: 10,
     borderRadius: 4,
-    color: colors.darkGray
+    color: colors.darkGray,
+    "& > *": {
+      marginTop: "0 !important"
+    }
   })
 };
 

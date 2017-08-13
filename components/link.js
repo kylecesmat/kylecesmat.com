@@ -60,12 +60,13 @@ export default class Anchor extends Component {
   }
 
   render() {
-    const { href, rel, children, external } = this.props;
+    const { href, rel, alt, children, external } = this.props;
 
     return (
       <Link prefetch={!external} href={href} passHref>
         <a
           rel={rel}
+          alt={alt || children.toString()}
           className={this.getLinkStyle()}
           target={external ? "_blank" : "_self"}
         >

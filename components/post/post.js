@@ -11,10 +11,7 @@ const styles = {
   panel: style({
     maxWidth: layout.containerWidth,
     width: "100%",
-    margin: `${layout.containerPadding}px auto`,
-    "& > *": {
-      marginTop: 0
-    }
+    margin: `${layout.containerPadding}px auto`
   }),
   date: style({
     fontWeght: 200,

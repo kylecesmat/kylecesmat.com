@@ -13,10 +13,9 @@
   "author": "Kyle Cesmat <kyle@kylecesmat.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "classnames": "^2.2.5",
     "glamor": "^2.20.39",
     "module-alias": "^2.0.0",
-    "next": "next",
+    "next": "^3.0.3",
     "preact": "^8.1.0",
     "preact-compat": "^3.16.0",
     "prop-types": "^15.5.10",

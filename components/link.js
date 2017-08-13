@@ -17,9 +17,9 @@ export default class Anchor extends Component {
   static propTypes = {
     href: PropTypes.string.isRequired,
     rel: PropTypes.string,
-    className: PropTypes.string,
+    className: PropTypes.object,
     children: PropTypes.node.isRequired,
-    activeClassName: PropTypes.string,
+    activeClassName: PropTypes.object,
     custom: PropTypes.bool,
     pathname: PropTypes.string,
     external: PropTypes.bool

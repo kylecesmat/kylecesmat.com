@@ -2,31 +2,41 @@ import PropTypes from "prop-types";
 import { style } from "glamor";
 import { Heading } from "../typography";
 import layout from "../../style/layout";
+import { Panel } from "../panel";
 
 const styles = {
   post: style({
-    padding: `0 ${layout.containerPadding} 32`,
+    padding: `15px ${layout.containerPadding}px`
+  }),
+  panel: style({
     maxWidth: layout.containerWidth,
     width: "100%",
-    margin: "0 auto"
+    margin: `${layout.containerPadding}px auto`,
+    "& > *": {
+      marginTop: 0
+    }
   }),
   date: style({
     fontWeght: 200,
-    fontSize: 12
+    fontSize: 12,
+    margin: "15px 0",
+    display: "block"
   })
 };
 
 export const Post = ({ title, date, children }) =>
   <article className={styles.post}>
-    <Heading weight="1">
-      {title}
-    </Heading>
-    <date className={styles.date}>
-      {date}
-    </date>
-    <section>
-      {children}
-    </section>
+    <Panel className={styles.panel}>
+      <Heading weight="1">
+        {title}
+      </Heading>
+      <date className={styles.date}>
+        Published {date}
+      </date>
+      <section>
+        {children}
+      </section>
+    </Panel>
   </article>;
 
 Post.propTypes = {

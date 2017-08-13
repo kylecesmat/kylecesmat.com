@@ -3,10 +3,7 @@ import { Heading, P, Ul, Li } from "../../components/typography";
 import { Image } from "../../components/post/media";
 
 export default () =>
-  <Post
-    title="The Invisible Constructs in Building a Pattern Library"
-    date="March 22, 2017"
-  >
+  <Post title="Pattern Libraries" date="March 22, 2017">
     <P>
       By now it's likely you've heard of, have interacted with, or maybe have
       even built a Pattern Library for use in a digital interface. Most product

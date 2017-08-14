@@ -54,6 +54,7 @@ export default class CurrentInterestsBoxes extends Component {
         left: 0,
         right: 0,
         overflowX: "scroll",
+        WebkitOverflowScrolling: "touch",
         "::-webkit-scrollbar": {
           display: "none"
         },

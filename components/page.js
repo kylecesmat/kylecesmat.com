@@ -9,7 +9,7 @@ const wrapper = style({
   margin: "0 auto"
 });
 
-const Page = ({ children }) =>
+const Page = ({ children, title }) =>
   <div className={wrapper}>
     {children}
   </div>;
@@ -19,7 +19,8 @@ Page.defaultProps = {
 };
 
 Page.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string
 };
 
 export default Page;

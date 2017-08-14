@@ -3,7 +3,7 @@ import CurrentBoxes from "../components/about/current-boxes";
 import Page from "../components/page";
 
 export default () =>
-  <Page>
+  <Page title="About">
     <Intro />
     <CurrentBoxes />
   </Page>;

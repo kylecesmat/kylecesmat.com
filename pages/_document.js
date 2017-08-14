@@ -36,6 +36,7 @@ export default class MyDocument extends Document {
         <Head>
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
           <link rel="stylesheet" type="text/css" href="/static/app.css" />
+          <title>Kyle Cesmat - UI Engineer</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
         <body
@@ -52,13 +53,13 @@ export default class MyDocument extends Document {
               boxSizing: "border-box"
             },
             " > nav": {
-              flex: 0
+              flex: "0 0 auto"
             },
             "> nav + div": {
               flex: "1 1 100%"
             },
             " > footer": {
-              flex: 0
+              flex: "0 0 auto"
             }
           })}
         >

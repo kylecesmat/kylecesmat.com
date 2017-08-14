@@ -35,7 +35,7 @@ const styles = {
 };
 
 export default () =>
-  <Page>
+  <Page title="Writing">
     <Panel>
       <Heading className={styles.heading} weight="1">
         Writing

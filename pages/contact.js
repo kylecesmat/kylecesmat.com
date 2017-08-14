@@ -16,7 +16,7 @@ const styles = {
 };
 
 export default () =>
-  <Page>
+  <Page title="Contact">
     <Panel>
       <Heading className={styles.heading} weight="1">
         Contact

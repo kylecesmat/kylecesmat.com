@@ -36,17 +36,17 @@ export default class MyDocument extends Document {
         <Head>
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
           <link rel="stylesheet" type="text/css" href="/static/app.css" />
-          <title>Kyle Cesmat - UI Engineer</title>
+          <title>Kyle Cesmat - About</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@kylecesmat" />
           <meta
             name="twitter:title"
-            content="Kyle Cesmat is a UI Engineer at Formidable, living in Seattle, WA"
+            content="The personal site of Kyle Cesmat"
           />
           <meta
             name="twitter:description"
-            content="View Kyle Cesmat's writings & personal site"
+            content="I am a designer & UI developer based in Seattle, WA. View my personal site and read ramblings on life & software development."
           />
           <meta
             name="twitter:image"

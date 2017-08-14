@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "deploy": "now deploy",
     "start": "next start",
     "lint": "eslint components/** pages/**",
     "precommit": "lint-staged"
@@ -36,9 +37,6 @@
     "prettier": "^1.5.3"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["prettier --write", "git add"]
   }
 }

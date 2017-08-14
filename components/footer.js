@@ -17,6 +17,13 @@ const container = style({
   color: colors.darkGrayLight
 });
 
+const link = style({
+  color: colors.darkGrayLight,
+  ":hover": {
+    color: colors.linkColor
+  }
+});
+
 export default () =>
   <footer className={footer}>
     <div className={container}>
@@ -26,8 +33,13 @@ export default () =>
           ❤️
         </span>{" "}
         in Seattle -{" "}
-        <Link href="https://github.com/kylecesmat/kylecesmat.com" external>
-          src
+        <Link
+          custom
+          className={link}
+          href="https://github.com/kylecesmat/kylecesmat.com"
+          external
+        >
+          view source
         </Link>
       </span>
     </div>

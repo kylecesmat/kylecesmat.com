@@ -12,7 +12,7 @@ const wrapper = style({
 });
 
 export default class Page extends Component {
-  propTypes = {
+  static propTypes = {
     children: PropTypes.node.isRequired
   };
 

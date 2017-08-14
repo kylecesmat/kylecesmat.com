@@ -38,6 +38,20 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" type="text/css" href="/static/app.css" />
           <title>Kyle Cesmat - UI Engineer</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:site" content="@kylecesmat" />
+          <meta
+            name="twitter:title"
+            content="Kyle Cesmat is a UI Engineer at Formidable, living in Seattle, WA"
+          />
+          <meta
+            name="twitter:description"
+            content="View Kyle Cesmat's writings & personal site"
+          />
+          <meta
+            name="twitter:image"
+            content="https://kylecesmat.com/static/me.jpg"
+          />
         </Head>
         <body
           {...style({

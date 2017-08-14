@@ -1,4 +1,4 @@
 export default {
   containerPadding: 15,
-  containerWidth: 600
+  containerWidth: 650
 };

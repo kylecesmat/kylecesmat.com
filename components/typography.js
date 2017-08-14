@@ -8,14 +8,14 @@ const styles = {
   p: style({
     fontFamily: typography.sans,
     margin: "0 0 10px",
-    lineHeight: 1.3,
+    lineHeight: 1.45,
     WebkitFontSmoothing: "antialiased",
     fontSize: 18
   }),
   ul: style({
     fontFamily: typography.sans,
-    margin: 0,
-    padding: 0,
+    margin: "0",
+    padding: "0",
     lineHeight: 1.4,
     fontSize: 18,
     listStyle: "none",
@@ -46,7 +46,14 @@ const styles = {
     fontSize: 18
   }),
   code: style({
-    backgroundColor: color.offwhite
+    fontFamily: typography.mono,
+    display: "inline-block",
+    padding: "3px",
+    fontSize: "80%",
+    backgroundColor: color.offwhite,
+    borderRadius: "3px",
+    marginBottom: 0,
+    wordBreak: "normal"
   }),
   codeBlock: style({
     display: "block"

@@ -6,12 +6,10 @@ import { Panel } from "../panel";
 
 const styles = {
   post: style({
-    padding: `15px ${layout.containerPadding}px`
-  }),
-  panel: style({
+    padding: `${layout.containerPadding}px`,
     maxWidth: layout.containerWidth,
     width: "100%",
-    margin: `${layout.containerPadding}px auto`
+    margin: `0 auto`
   }),
   date: style({
     fontWeght: 200,

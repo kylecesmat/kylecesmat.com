@@ -1,6 +1,7 @@
 import { Post } from "../../../components/post/post";
-import { Heading, P, Ul, Li } from "../../../components/typography";
+import { Heading, P, Ul, Li, Code } from "../../../components/typography";
 import { Image } from "../../../components/post/media";
+import Link from "../../../components/link";
 
 export default () =>
   <Post title="Pattern Libraries" date="March 22, 2017">
@@ -28,9 +29,12 @@ export default () =>
       library from one-off UI changes or component over-extension.
     </P>
     <P>
-      Keep in mind, [I prefer using React to build my interfaces]() so we'll
-      talk about iterating on these components using `props`, but we can apply
-      this thinking to any UI library.
+      Keep in mind,{" "}
+      <Link href="/writing/2017/why-react-wins">
+        I prefer using React to build my interfaces
+      </Link>{" "}
+      so we'll talk about iterating on these components using <Code>props</Code>,
+      but we can apply this thinking to any UI library.
     </P>
 
     <Heading weight="2">Today's excercise: Improve the pattern library</Heading>
@@ -40,26 +44,28 @@ export default () =>
     </P>
     <P>Imagine this is our current landscape of "Buttons":</P>
     <Image src="/static/writing/pl-buttons.jpg" alt="Current Button Library" />
+    <Heading weight="4">
+      An AppleTV developer wants the button to glow when focused
+    </Heading>
     <P>
-      <Heading weight="4">
-        An AppleTV developer wants the button to glow when focused
-      </Heading>
       From a developer perspective, gathering the requirements & implementing
-      this might be simple. We'll add a `:focus` rule with the desired look and
-      animation. But how do we make this work with our button ecosystem? These
-      are good questions to ask:
+      this might be simple. We'll add a <Code>:focus</Code> rule with the
+      desired look and animation. But how do we make this work with our button
+      ecosystem? These are good questions to ask:
     </P>
     <Ul>
       <Li>
         - The context of "focusing" on AppleTV is to show the user what they are
-        about to select. Similar context on the web is `:hover` or `:focus`, and
-        on a native platform, it might be `onPress`. Consult with the designers
-        and ask if this behavior should be added for these platforms as well.
+        about to select. Similar context on the web is <Code>:hover</Code> or{" "}
+        <Code>:focus</Code>, and on a native platform, it might be{" "}
+        <Code>onPress</Code>. Consult with the designers and ask if this
+        behavior should be added for these platforms as well.
       </Li>
       <Li>
         - If this is only for the AppleTV, should you add a new prop? Something
-        like `isAppleTvButton` might make sense. But now you have a fork in the
-        code, and a prop that has no meaning to other consumers of your code.
+        like <Code>isAppleTvButton</Code> might make sense. But now you have a
+        fork in the code, and a prop that has no meaning to other consumers of
+        your code.
       </Li>
       <Li>
         - Is this project-specific? Maybe this glow style is only used on one
@@ -68,10 +74,10 @@ export default () =>
       </Li>
       <Li>
         - If this glow effect is cross-project, but not cross-platform, maybe
-        consider creating a new `AppleTVButton` component in your library, where
-        it wraps your base `Button` and exposes an `AppleTVButton` with specific
-        handlers. This would be a good route for libraries that have multiple
-        targets but same base styles.
+        consider creating a new <Code>AppleTVButton</Code> component in your
+        library, where it wraps your base <Code>Button</Code> and exposes an{" "}
+        <Code>AppleTVButton</Code> with specific handlers. This would be a good
+        route for libraries that have multiple targets but same base styles.
       </Li>
     </Ul>
     <Heading weight="4">
@@ -89,21 +95,22 @@ export default () =>
         apps.
       </Li>
       <Li>
-        - If this is a one-off case, tell the developer to use `!important` and
-        override the styles.. Just kidding, that's not the best solution either.
+        - If this is a one-off case, tell the developer to use{" "}
+        <Code>!important</Code> and override the styles.. Just kidding, that's
+        not the best solution either.
       </Li>
       <Li>
-        - Consider exposing a thematic override prop, like `baseColor` that
-        allows developers to create one-off button themes. A prop like this
-        would only work well in an environment where your JS is compiled to CSS,
-        and not one where you have predefined classes like `.button--teal` in a
-        sass file.
+        - Consider exposing a thematic override prop, like{" "}
+        <Code>baseColor</Code> that allows developers to create one-off button
+        themes. A prop like this would only work well in an environment where
+        your JS is compiled to CSS, and not one where you have predefined
+        classes like <Code>.button--teal</Code> in a sass file.
       </Li>
       <Li>
         - Consider creating a utility to provide a theme. A wrapping utility
-        such as `withTheme(Button)(purpleTheme)` where `withTheme` creates a new
-        styling object might work here. Again, really only practical if you
-        style components using JS.
+        such as <Code>withTheme(Button)(purpleTheme)</Code> where{" "}
+        <Code>withTheme</Code> creates a new styling object might work here.
+        Again, really only practical if you style components using JS.
       </Li>
     </Ul>
     <Heading weight="4">
@@ -120,7 +127,8 @@ export default () =>
         to gain context, this will help you implement a powerful component API.
       </Li>
       <Li>
-        - If this is iOS-specific, perhaps you could expose an `iOSButton`
+        - If this is iOS-specific, perhaps you could expose an{" "}
+        <Code>iOSButton</Code>
         again, with ios-specific details.
       </Li>
       <Li>
@@ -132,10 +140,11 @@ export default () =>
       </Li>
       <Li>
         - Maybe some designs will use this, while most still rely on the rounded
-        buttons for a slight-different meaning. In this case, adding a `square`
+        buttons for a slight-different meaning. In this case, adding a{" "}
+        <Code>square</Code>
         prop might make sense. Avoid though the case of conflicting boolean
-        props, and perhaps refactor the component API to use `edges=['square',
-        'round']` or something of the sort.
+        props, and perhaps refactor the component API to use{" "}
+        <Code>edges=['square', 'round']</Code> or something of the sort.
       </Li>
     </Ul>
 
@@ -151,9 +160,9 @@ export default () =>
         mix a gradient & outline prop? So many questions.
       </Li>
       <Li>
-        - Consider creating a `GradientButton` component if it'd never intended
-        to be used alongside `outline` and if it contains a large amount of
-        configurable props.
+        - Consider creating a <Code>GradientButton</Code> component if it'd
+        never intended to be used alongside <Code>outline</Code> and if it
+        contains a large amount of configurable props.
       </Li>
     </Ul>
     <Heading weight="2">In conclusion</Heading>

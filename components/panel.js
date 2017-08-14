@@ -5,7 +5,7 @@ import colors from "../style/colors";
 const styles = {
   panel: style({
     backgroundColor: colors.white,
-    padding: 20,
+    padding: "15px 20px",
     marginTop: 10,
     borderRadius: 4,
     color: colors.darkGray,

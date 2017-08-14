@@ -21,7 +21,8 @@
     "preact-compat": "^3.16.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-ga": "^2.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -37,6 +38,9 @@
     "prettier": "^1.5.3"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "git add"]
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

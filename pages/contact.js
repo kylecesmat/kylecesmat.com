@@ -1,10 +1,8 @@
-import Page from "../components/page";
 import { style } from "glamor";
-import { Ul, Li, P, Heading } from "../components/typography";
-import { posts } from "../content/posts.json";
+import Page from "../components/page";
+import { P, Heading } from "../components/typography";
 import Link from "../components/link";
 import { Panel } from "../components/panel";
-import typography from "../style/typography";
 
 const styles = {
   heading: style({
@@ -29,7 +27,7 @@ export default () =>
         </Link>{" "}
         talking about javascript & food, or connect with me on{" "}
         <Link href="https://www.linkedin.com/in/kylecesmat/" external>
-          linkedin
+          Linkedin
         </Link>. You can also find me sharing designs on{" "}
         <Link href="https://dribbble.com/kylecesmat" external>
           Dribbble
@@ -43,7 +41,11 @@ export default () =>
         </Link>
       </P>
       <P>
-        For additional coorespondance, my 📫 is open at{" "}
+        For additional coorespondance, my{" "}
+        <span role="img" aria-label="inbox">
+          📫
+        </span>{" "}
+        is open at{" "}
         <Link href="mailto:kyle@kylecesmat.com" external>
           kyle@kylecesmat.com
         </Link>

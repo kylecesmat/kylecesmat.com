@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { style } from "glamor";
+import Page from "../page";
 import { Heading } from "../typography";
 import layout from "../../style/layout";
 import { Panel } from "../panel";
@@ -20,8 +21,8 @@ const styles = {
 };
 
 export const Post = ({ title, date, children }) =>
-  <article className={styles.post}>
-    <Panel className={styles.panel}>
+  <Page>
+    <Panel>
       <Heading weight="1">
         {title}
       </Heading>
@@ -32,7 +33,7 @@ export const Post = ({ title, date, children }) =>
         {children}
       </section>
     </Panel>
-  </article>;
+  </Page>;
 
 Post.propTypes = {
   children: PropTypes.node.isRequired,

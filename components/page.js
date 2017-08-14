@@ -1,6 +1,8 @@
+import { Component } from "react";
 import { style } from "glamor";
 import PropTypes from "prop-types";
 import layout from "../style/layout";
+import { initGA, logPageView } from "../lib/analytics";
 
 const wrapper = style({
   padding: layout.containerPadding,
@@ -9,18 +11,24 @@ const wrapper = style({
   margin: "0 auto"
 });
 
-const Page = ({ children, title }) =>
-  <div className={wrapper}>
-    {children}
-  </div>;
+export default class Page extends Component {
+  propTypes = {
+    children: PropTypes.node.isRequired
+  };
 
-Page.defaultProps = {
-  title: null
-};
+  componentDidMount() {
+    if (!window.GA_INITIALIZED) {
+      initGA();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView();
+  }
 
-Page.propTypes = {
-  children: PropTypes.node.isRequired,
-  title: PropTypes.string
-};
-
-export default Page;
+  render() {
+    return (
+      <div className={wrapper}>
+        {this.props.children}
+      </div>
+    );
+  }
+}

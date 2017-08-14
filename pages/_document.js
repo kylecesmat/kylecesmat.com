@@ -5,7 +5,6 @@ import { Navigation } from "../components/navigation";
 import Footer from "../components/footer";
 import colors from "../style/colors";
 import typography from "../style/typography";
-import { initGA, logPageView } from "../lib/analytics";
 
 // Adds server generated styles to glamor cache.
 if (typeof window !== "undefined") {
@@ -29,14 +28,6 @@ export default class MyDocument extends Document {
     if (ids) {
       __NEXT_DATA__.ids = this.props.ids;
     }
-  }
-
-  componentDidMount() {
-    if (!window.GA_INITIALIZED) {
-      initGA();
-      window.GA_INITIALIZED = true;
-    }
-    logPageView();
   }
 
   render() {

@@ -33,6 +33,9 @@ export default () =>
         </Link>. You can also find me sharing designs on{" "}
         <Link href="https://dribbble.com/kylecesmat" external>
           Dribbble
+        </Link>, writing code at{" "}
+        <Link href="https://github.com/kylecesmat" external>
+          Github
         </Link>{" "}
         and open-sourcing my photos on{" "}
         <Link href="https://unsplash.com/@kylecesmat" external>
@@ -40,7 +43,7 @@ export default () =>
         </Link>
       </P>
       <P>
-        For more formal coorespondance, my 📫 is open at{" "}
+        For additional coorespondance, my 📫 is open at{" "}
         <Link href="mailto:kyle@kylecesmat.com" external>
           kyle@kylecesmat.com
         </Link>

@@ -1,6 +1,7 @@
 import { style } from "glamor";
 import colors from "../style/colors";
 import layout from "../style/layout";
+import Link from "./link";
 
 const footer = style({
   backgroundColor: colors.darkGray
@@ -24,7 +25,10 @@ export default () =>
         <span aria-label="heart" role="img">
           ❤️
         </span>{" "}
-        in Seattle
+        in Seattle -{" "}
+        <Link href="https://github.com/kylecesmat/kylecesmat.com" external>
+          src
+        </Link>
       </span>
     </div>
   </footer>;

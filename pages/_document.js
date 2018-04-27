@@ -1,15 +1,10 @@
 import Document, { Head, Main, NextScript } from "next/document";
 import { renderStatic } from "glamor/server";
-import { style, rehydrate } from "glamor";
+import { style } from "glamor";
 import { Navigation } from "../components/navigation";
 import Footer from "../components/footer";
 import colors from "../style/colors";
 import typography from "../style/typography";
-
-// Adds server generated styles to glamor cache.
-if (typeof window !== "undefined") {
-  rehydrate(window.__NEXT_DATA__.ids);
-}
 
 export default class MyDocument extends Document {
   static async getInitialProps({ pathname, req, renderPage }) {
@@ -35,23 +30,16 @@ export default class MyDocument extends Document {
       <html lang="en">
         <Head>
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
-          <link rel="stylesheet" type="text/css" href="/static/app.css" />
           <title>Kyle Cesmat - About</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@kylecesmat" />
-          <meta
-            name="twitter:title"
-            content="The personal site of Kyle Cesmat"
-          />
+          <meta name="twitter:title" content="The personal site of Kyle Cesmat" />
           <meta
             name="twitter:description"
             content="I am a designer & UI developer based in Seattle, WA. View my personal site and read ramblings on life & software development."
           />
-          <meta
-            name="twitter:image"
-            content="https://kylecesmat.com/static/me.jpg"
-          />
+          <meta name="twitter:image" content="https://kylecesmat.com/static/me.jpg" />
         </Head>
         <body
           {...style({

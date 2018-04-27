@@ -1,6 +1,6 @@
 /* eslint-disable */
 module.exports = {
-  webpack: function(config, { dev }) {
+  webpack: (config, { dev }) => {
     // For the development version, we'll use React.
     // Because, it support react hot loading and so on.
     if (dev) {
@@ -13,5 +13,15 @@ module.exports = {
     };
 
     return config;
-  }
+  },
+  exportPathMap: () => ({
+    "/": { page: "/" },
+    "/contact": { page: "/contact" },
+    "/writing": { page: "/writing" },
+    "/writing/2016/building-a-static-react-js-site": {
+      page: "/writing/2016/building-a-static-react-js-site"
+    },
+    "/writing/2017/why-react-wins": { page: "/writing/2017/why-react-wins" },
+    "/writing/2017/pattern-libraries": { page: "/writing/2017/pattern-libraries" }
+  })
 };

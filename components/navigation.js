@@ -6,7 +6,7 @@ import colors from "../style/colors";
 const styles = {
   nav: style({
     display: "flex",
-    alignIems: "center",
+    alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.darkGray,
     color: colors.white
@@ -36,7 +36,7 @@ const styles = {
   })
 };
 
-export const Navigation = ({ pathname }) =>
+export const Navigation = ({ pathname }) => (
   <nav className={styles.nav}>
     <ul className={styles.ul}>
       <li className={styles.li}>
@@ -73,7 +73,8 @@ export const Navigation = ({ pathname }) =>
         </Link>
       </li>
     </ul>
-  </nav>;
+  </nav>
+);
 
 Navigation.proptypes = {
   pathname: PropTypes.string.isRequired

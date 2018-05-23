@@ -18,23 +18,23 @@ export default () => (
     <Panel>
       <Heading>Contact</Heading>
       <p>
-        {`I'm`} currently not accepting freelance work, however I am always interested in Coffee.
-        Find me on{' '}
-        <Link href="https://twitter.com/kylecesmat" external>
+        {`I'm`} currently not accepting freelance work, however I am always
+        interested in Coffee. Find me on{' '}
+        <Link styled href="https://twitter.com/kylecesmat" external>
           Twitter
         </Link>{' '}
         talking about javascript & food, or connect with me on{' '}
-        <Link href="https://www.linkedin.com/in/kylecesmat/" external>
+        <Link styled href="https://www.linkedin.com/in/kylecesmat/" external>
           Linkedin
         </Link>. You can also find me sharing designs on{' '}
-        <Link href="https://dribbble.com/kylecesmat" external>
+        <Link styled href="https://dribbble.com/kylecesmat" external>
           Dribbble
         </Link>, writing code at{' '}
-        <Link href="https://github.com/kylecesmat" external>
+        <Link styled href="https://github.com/kylecesmat" external>
           Github
         </Link>{' '}
         and open-sourcing my photos on{' '}
-        <Link href="https://unsplash.com/@kylecesmat" external>
+        <Link styled href="https://unsplash.com/@kylecesmat" external>
           Unsplash
         </Link>
       </p>
@@ -44,7 +44,7 @@ export default () => (
           📫
         </span>{' '}
         is open at{' '}
-        <Link href="mailto:kyle@kylecesmat.com" external>
+        <Link styled href="mailto:kyle@kylecesmat.com" external>
           kyle@kylecesmat.com
         </Link>
       </p>

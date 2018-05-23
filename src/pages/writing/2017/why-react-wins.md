@@ -14,8 +14,7 @@ It's a great time to be a developer for the web. Using `create-react-app` you ar
 able to quickly develop, and build a publishable bundle & get it online. Building a 'javascript
 bundle' in the past often meant tracking down an opinionated boilerplate, copying & pasting gulp
 scripts, setting up a developer environment with MAMP, etc. So much time had gone into setting
-up a single build environment just to create a place to write code & build it - and with{' '}
-`create-react-app` beginners & experienced people alike can get started with a few
+up a single build environment just to create a place to write code & build it - and with `create-react-app` beginners & experienced people alike can get started with a few
 commands. I do understand it's not overly complex to create an html & css file by hand and get
 that online, but integrating maintainable javascript to a project like that often entails an
 uphill climb of various build tools & such as complexity grows.

@@ -1,12 +1,20 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import Link from 'gatsby-link';
 import styled from 'styled-components';
+import Link from '../components/link';
 import Page from '../components/page';
 import { Panel } from '../components/panel';
 
-const Pagination = styled.ul``;
-const PaginationLink = styled.li``;
+const Pagination = styled.ul`
+  padding: 2em 0;
+  display: flex;
+`;
+
+const PaginationLink = styled.li`
+  flex: 1 1 50%;
+  justify-content: ${(props) => (props.next ? 'flex-end' : null)};
+  display: flex;
+`;
 
 const PubDate = styled.span`
   font-weight: 200;
@@ -32,16 +40,16 @@ class BlogPostTemplate extends React.Component {
           </section>
           <Pagination>
             {previous && (
-              <PaginationLink prev>
-                <Link to={previous.fields.slug} rel="prev">
+              <PaginationLink>
+                <Link styled to={previous.fields.slug} rel="prev">
                   ← {previous.frontmatter.title}
                 </Link>
               </PaginationLink>
             )}
 
             {next && (
-              <PaginationLink>
-                <Link to={next.fields.slug} rel="next">
+              <PaginationLink next>
+                <Link styled to={next.fields.slug} rel="next">
                   {next.frontmatter.title} →
                 </Link>
               </PaginationLink>

@@ -4,6 +4,7 @@
   "author": "Kyle Cesmat <kyle@kylecesmat.com>",
   "dependencies": {
     "gatsby-plugin-react-helmet": "^2.0.11",
+    "prismjs": "^1.14.0",
     "react-helmet": "^5.2.0"
   },
   "license": "private",

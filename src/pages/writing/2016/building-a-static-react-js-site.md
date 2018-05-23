@@ -43,70 +43,68 @@ We need a way to generate pages for each post, containing metadata, images, rich
 This is what a post looks like, located at `/posts/post-name.md`:
 
 ```
-{`
 ---
 title: A Cool Title
 date: '2016-12-29T23:58:59+00:00'
 description:
 ---
-Content can go here...`}
+Content can go here...
 ```
 
 Using a node script, we will first _loop over all posts & put them in a posts object_,
-then
-_
-use `front-matter` to parse metadata
-_, and finally inject these posts into the webpack build\* so we can access them within the
+then use `front-matter` to parse metadata, and finally inject these posts into the webpack build\* so we can access them within the
 app.
 
 This is what building our posts looks like:
 
-```
-{`
+```js
 const readPosts = (docsDir) => {
-const promiseArray = [];
-const docsPages = [];
+  const promiseArray = [];
+  const docsPages = [];
 
-return new Promise((fulfill) => {
-fs.walk(docsDir)
-.on('data', (item) => {
-  if (!item.stats.isFile()) {
-    return;
-  }
+  return new Promise((fulfill) => {
+    fs
+      .walk(docsDir)
+      .on('data', (item) => {
+        if (!item.stats.isFile()) {
+          return;
+        }
 
-  const route = buildRoute(path.basename(item.path, '.md'));
+        const route = buildRoute(path.basename(item.path, '.md'));
 
-  promiseArray.push(getMarkdown(item.path, 'utf8').then((parsedMarkdown) => {
-    docsPages.push({
-      route,
-      title: parsedMarkdown.attributes.title,
-      date: parsedMarkdown.attributes.date,
-      description: parsedMarkdown.attributes.description,
-      markdown: parsedMarkdown.body,
-    });
-  }));
-}).on('end', () => {
-  Promise.all(promiseArray).then(() => {
-    fulfill(docsPages);
+        promiseArray.push(
+          getMarkdown(item.path, 'utf8').then((parsedMarkdown) => {
+            docsPages.push({
+              route,
+              title: parsedMarkdown.attributes.title,
+              date: parsedMarkdown.attributes.date,
+              description: parsedMarkdown.attributes.description,
+              markdown: parsedMarkdown.body
+            });
+          })
+        );
+      })
+      .on('end', () => {
+        Promise.all(promiseArray).then(() => {
+          fulfill(docsPages);
+        });
+      });
   });
-});
-});
-};`}
+};
 ```
 
 Now that we have our post information, we'll pass this to the webpack process via an
 environment variable, like so:
 
-```
-{`
+```js
 env.POSTS = JSON.stringify(posts);
 env.STATIC_ROUTES = JSON.stringify(getRoutes(posts));
 
 // run build script
 const child = spawn('npm', ['run', command], {
-cwd: path.resolve(__dirname),
-env,
-});`}
+  cwd: path.resolve(__dirname),
+  env
+});
 ```
 
 We inject two variables, once being the posts and the other being the posts' routes. The
@@ -116,13 +114,12 @@ routes exist.
 Now that we have posts flowing into our webpack build, we can use webpack's `DefinePlugin` to
 create a global `POSTS` variable that we can use to generate posts within the React App.
 
-```
-{`
+```js
 new webpack.DefinePlugin({
 'process.env.NODE_ENV': '"production"',
 'POSTS': process.env.POSTS,
 }),
-new StaticSiteGeneratorPlugin('bundle', JSON.parse(process.env.STATIC_ROUTES)),`}
+new StaticSiteGeneratorPlugin('bundle', JSON.parse(process.env.STATIC_ROUTES)),`;
 ```
 
 We've now created a small build process to read posts, generate routes, and provide them to

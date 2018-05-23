@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import Page from '../components/page';
-import Link from '../components/link';
-import { Panel } from '../components/panel';
-import { media } from '../styles/media-queries';
-import typography from '../styles/typography';
+import Page from '../../components/page';
+import Link from '../../components/link';
+import { Panel } from '../../components/panel';
+import { media } from '../../styles/media-queries';
+import typography from '../../styles/typography';
 
 const Heading = styled.h1`
   text-align: center;
@@ -13,8 +13,6 @@ const Heading = styled.h1`
     text-align: left;
   `};
 `;
-
-const AllPosts = styled.ul``;
 
 const Post = styled.li`
   display: flex;
@@ -32,10 +30,10 @@ const Post = styled.li`
 
 const PubDate = styled.span`
   font-family: ${typography.mono};
-  font-ize: 12px;
+  font-size: 12px;
 
   ${media.desktop`
-    flex-basis: 140;
+    flex-basis: 140px;
   `};
 `;
 
@@ -47,14 +45,16 @@ export default ({
   <Page title="Writing">
     <Panel>
       <Heading>Writing</Heading>
-      <AllPosts>
+      <ul>
         {edges.map(({ node: { frontmatter, fields } }) => (
           <Post key={frontmatter.title}>
             <PubDate>{frontmatter.date}</PubDate>
-            <Link to={fields.slug}>{frontmatter.title}</Link>
+            <Link styled to={fields.slug}>
+              {frontmatter.title}
+            </Link>
           </Post>
         ))}
-      </AllPosts>
+      </ul>
     </Panel>
   </Page>
 );

@@ -4,32 +4,40 @@ import styled, { css } from 'styled-components';
 import colors from '../styles/colors';
 
 const styles = css`
-  color: ${colors.linkColor};
+  cursor: pointer;
+  color: inherit;
   text-decoration: none;
-  font-weight: 500;
-  transition: color ease-in 50ms;
+  color: inherit;
 
   &:hover {
-    color: ${colors.white};
+    color: inherit;
+  }
+`;
+
+const styledLinkStyles = css`
+  box-shadow: ${colors.linkBackgroundColor} 0px -5px 0px 0px inset;
+  border-bottom: 1px solid ${colors.linkBackgroundColor};
+  transition: background 0.4s ease-out;
+  font-weight: 100;
+
+  &:hover {
+    background-color: ${colors.linkBackgroundColor};
   }
 `;
 
 const Anchor = styled.a`
   ${styles};
+  ${(props) => props.styled && styledLinkStyles};
 `;
 
 const InternalLink = styled(GatsbyLink)`
   ${styles};
+  ${(props) => props.styled && styledLinkStyles};
 `;
 
 const Link = ({ active, external, children, ...props }) => {
   const Component = external ? Anchor : InternalLink;
-
   const externalProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
-
-  // @TODO this is disgusting
-  // eslint-disable-next-line
-  delete props.isMobile;
 
   return (
     <Component {...props} {...externalProps}>

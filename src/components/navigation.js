@@ -27,36 +27,38 @@ const NavLink = styled(Link)`
   padding: 10px;
   font-size: 14px;
   font-weight: 700;
+  box-shadow: none;
+  border: none;
 
   &:hover {
     color: ${colors.white};
+    background: transparent;
   }
 `;
 
-export const Navigation = ({ pathname }) =>
-  console.log(pathname) || (
-    <Nav>
-      <NavList>
-        <NavListItem>
-          <NavLink active={pathname === '/'} to="/">
-            About
-          </NavLink>
-        </NavListItem>
-        <NavListItem>
-          <NavLink active={pathname === '/writing'} to="/writing">
-            Writing
-          </NavLink>
-        </NavListItem>
-        <NavListItem>
-          <NavLink active={pathname === '/contact'} to="/contact">
-            Contact
-          </NavLink>
-        </NavListItem>
-      </NavList>
-    </Nav>
-  );
+export const Navigation = ({ pathname }) => (
+  <Nav>
+    <NavList>
+      <NavListItem>
+        <NavLink active={pathname === '/'} to="/">
+          About
+        </NavLink>
+      </NavListItem>
+      <NavListItem>
+        <NavLink active={pathname === '/writing'} to="/writing">
+          Writing
+        </NavLink>
+      </NavListItem>
+      <NavListItem>
+        <NavLink active={pathname === '/contact'} to="/contact">
+          Contact
+        </NavLink>
+      </NavListItem>
+    </NavList>
+  </Nav>
+);
 
-Navigation.proptypes = {
+Navigation.propTypes = {
   pathname: PropTypes.string.isRequired
 };
 

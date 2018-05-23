@@ -1,11 +1,12 @@
 import 'reset.css';
+import 'prismjs/themes/prism.css';
+
 import React from 'react';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import { Navigation } from '../components/navigation';
 import Footer from '../components/footer';
-
 import '../styles/global.css';
 
 const Wrapper = styled.main`

@@ -1,0 +1,30 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "extends": ["airbnb", "prettier"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "globals": {
+    "graphql": false
+  },
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-filename-extension": "off",
+    "react/prop-types": "off",
+    "react/require-default-props": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/forbid-prop-types": "off",
+    "react/prefer-stateless-function": "off",
+    "react/no-danger": "off"
+  }
+}

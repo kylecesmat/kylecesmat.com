@@ -5,6 +5,7 @@
   },
   "parser": "babel-eslint",
   "extends": ["airbnb", "prettier"],
+  "plugins": ["react", "prettier"],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
@@ -15,7 +16,6 @@
   "globals": {
     "graphql": false
   },
-  "plugins": ["react", "prettier"],
   "rules": {
     "prettier/prettier": "error",
     "import/no-extraneous-dependencies": "off",
@@ -25,6 +25,7 @@
     "jsx-a11y/anchor-is-valid": "off",
     "react/forbid-prop-types": "off",
     "react/prefer-stateless-function": "off",
-    "react/no-danger": "off"
+    "react/no-danger": "off",
+    "prettier/prettier": "error"
   }
 }

@@ -34,10 +34,7 @@ export default () => (
           ❤️
         </span>{' '}
         in Seattle -{' '}
-        <GithubLink
-          external
-          href="https://github.com/kylecesmat/kylecesmat.com"
-        >
+        <GithubLink external href="https://github.com/kylecesmat/kylecesmat.com">
           view source
         </GithubLink>
       </span>

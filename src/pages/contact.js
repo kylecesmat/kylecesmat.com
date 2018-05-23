@@ -18,8 +18,8 @@ export default () => (
     <Panel>
       <Heading>Contact</Heading>
       <p>
-        {`I'm`} currently not accepting freelance work, however I am always
-        interested in Coffee. Find me on{' '}
+        {`I'm`} currently not accepting freelance work, however I am always interested in Coffee.
+        Find me on{' '}
         <Link href="https://twitter.com/kylecesmat" external>
           Twitter
         </Link>{' '}

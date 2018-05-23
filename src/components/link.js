@@ -25,9 +25,7 @@ const InternalLink = styled(GatsbyLink)`
 const Link = ({ active, external, children, ...props }) => {
   const Component = external ? Anchor : InternalLink;
 
-  const externalProps = external
-    ? { target: '_blank', rel: 'noopener noreferrer' }
-    : {};
+  const externalProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
   // @TODO this is disgusting
   // eslint-disable-next-line

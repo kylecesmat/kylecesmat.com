@@ -47,18 +47,18 @@ export default () => (
     <MainPanel>
       <h1>Kyle Cesmat</h1>
       <p>
-        I am a software person who works with teams large & small to solve
-        technical problems on the web. At{' '}
+        I am a software person who works with teams large & small to solve technical problems on the
+        web. At{' '}
         <Link styled href="http://www.formidable.com" external>
           Formidable
         </Link>{' '}
-        I focus primarily on front-end expierences, optimizing application
-        performance, building sustainable components & patterns for teams, and
-        trying not to break too many things along the way!
+        I focus primarily on front-end expierences, optimizing application performance, building
+        sustainable components & patterns for teams, and trying not to break too many things along
+        the way!
       </p>
       <p>
-        Away from the screen I like to travel, try my hand at cooking new foods,
-        and find a great trail to hike with my pup Levi.
+        Away from the screen I like to travel, try my hand at cooking new foods, and find a great
+        trail to hike with my pup Levi.
       </p>
     </MainPanel>
   </Container>

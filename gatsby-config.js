@@ -1,7 +1,9 @@
 module.exports = {
   siteMetadata: {
     title: 'Kyle Cesmat - Software Engineer',
-    author: 'Kyle Cesmat'
+    author: 'Kyle Cesmat',
+    siteUrl: 'www.kylecesmat.com',
+    description: 'Kyle is a software engineer in-between Phoenix and Seattle'
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

@@ -1,69 +1,15 @@
 {
   "name": "kylecesmat.com",
-  "version": "0.0.0",
-  "author": "Kyle Cesmat <kyle@kylecesmat.com>",
-  "dependencies": {
-    "gatsby-plugin-react-helmet": "^2.0.11",
-    "prismjs": "^1.14.0",
-    "react-helmet": "^5.2.0"
-  },
-  "license": "private",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "build": "rimraf public && gatsby build",
-    "start": "npm run develop",
-    "develop": "gatsby develop",
-    "deploy": "surge ./public kylecesmat.com",
-    "format": "prettier --write \"src/**/*.js\"",
-    "format-md": "prettier --write \"src/**/*.md\"",
-    "lint": "eslint src/**/*.js --fix && stylelint src/**/*.js",
-    "test": "npm run lint",
-    "precommit": "lint-staged"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "lint-staged": {
-    "*.js": ["eslint --fix", "prettier --write"]
-  },
-  "devDependencies": {
-    "babel-eslint": "^8.2.3",
-    "babel-plugin-styled-components": "^1.5.0",
-    "eslint": "^4.17.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-react": "^7.8.2",
-    "gatsby": "^1.9.261",
-    "gatsby-link": "^1.6.44",
-    "gatsby-plugin-feed": "^1.3.20",
-    "gatsby-plugin-google-analytics": "^1.0.29",
-    "gatsby-plugin-offline": "^1.0.15",
-    "gatsby-plugin-react-helmet": "^1.0.8",
-    "gatsby-plugin-sharp": "^1.6.42",
-    "gatsby-plugin-styled-components": "^2.0.11",
-    "gatsby-plugin-typography": "^1.7.18",
-    "gatsby-remark-copy-linked-files": "^1.5.31",
-    "gatsby-remark-images": "^1.5.61",
-    "gatsby-remark-prismjs": "^1.2.24",
-    "gatsby-remark-responsive-iframe": "^1.4.18",
-    "gatsby-remark-smartypants": "^1.4.12",
-    "gatsby-source-filesystem": "^1.5.36",
-    "gatsby-transformer-json": "^1.0.18",
-    "gatsby-transformer-remark": "^1.7.41",
-    "gatsby-transformer-sharp": "^1.6.22",
-    "husky": "^0.14.3",
-    "lint-staged": "^7.1.2",
-    "lodash": "^4.17.5",
-    "prettier": "^1.12.1",
-    "prop-types": "^15.6.1",
-    "react-helmet": "^5.2.0",
-    "reset.css": "^2.0.2",
-    "rimraf": "^2.6.2",
-    "slash": "^2.0.0",
-    "styled-components": "^3.2.5",
-    "stylelint": "^9.2.1",
-    "stylelint-config-recommended": "^2.1.0",
-    "stylelint-config-styled-components": "^0.1.1",
-    "stylelint-processor-styled-components": "^1.3.1",
-    "surge": "^0.20.1"
+  "dependencies": {
+    "next": "9.5.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
   }
 }

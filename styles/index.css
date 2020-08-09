@@ -1,0 +1,33 @@
+@tailwind base;
+
+html {
+  @apply h-screen bg-gray-100;
+  font: 125%/1.5 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+#__next,
+body {
+  @apply min-h-screen;
+}
+
+p {
+  @apply mb-5;
+}
+
+section a {
+  background-image: linear-gradient(120deg, rgb(0, 200, 5, 0.5) 0%, rgb(0, 200, 5, 0.5) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.25em;
+  background-position: 0 85%;
+  transition: all 0.15s ease-in;
+}
+
+section a:hover {
+  background-size: 100% 85%;
+}
+
+@tailwind components;
+
+@tailwind utilities;

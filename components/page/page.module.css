@@ -1,0 +1,25 @@
+.bgTopo {
+  content: '';
+  background-image: url('../../public/topo.png');
+  background-size: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.bgTopo::after {
+  content: '';
+  background: linear-gradient(
+    0deg,
+    rgba(247, 250, 252, 1) 0%,
+    rgba(247, 250, 252, 0.95) 50%,
+    rgba(247, 250, 252, 0.9) 100%
+  );
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

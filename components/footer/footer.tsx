@@ -6,28 +6,28 @@ const Footer = () => (
         Thanks for visiting, <a href="mailto:kylecesmat@gmail.com">send me an email</a> if you'd
         like to say hello 👋
       </p>
-      <menu className="flex justify-center p-0 m-0 list-none">
-        <li className="mx-2">
+      <menu className="flex flex-wrap justify-center p-0 m-0 list-none">
+        <li className="mx-2 my-1">
           <a target="_blank noopener noreferrer" href="https://twitter.com/kylecesmat">
             Twitter
           </a>
         </li>
-        <li className="mx-2">
+        <li className="mx-2 my-1">
           <a target="_blank noopener noreferrer" href="https://www.instagram.com/kylecesmat">
             Instagram
           </a>
         </li>
-        <li className="mx-2">
+        <li className="mx-2 my-1">
           <a target="_blank noopener noreferrer" href="https://www.linkedin.com/in/kylecesmat">
             Linkedin
           </a>
         </li>
-        <li className="mx-2">
+        <li className="mx-2 my-1">
           <a target="_blank noopener noreferrer" href="https://github.com/kylecesmat">
             Github
           </a>
         </li>
-        <li className="mx-2">
+        <li className="mx-2 my-1">
           <a target="_blank noopener noreferrer" href="https://unsplash.com/@kylecesmat">
             Unsplash
           </a>

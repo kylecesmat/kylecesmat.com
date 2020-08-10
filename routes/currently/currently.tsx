@@ -54,7 +54,7 @@ const Currently = () => (
       </p>
       <p>
         I've also been getting better at building things with my hands, and recently built a few
-        hexagon shelves like these that I'm pretty proud of.
+        hexagon shelves that I'm pretty proud of.
       </p>
     </section>
   </Page>

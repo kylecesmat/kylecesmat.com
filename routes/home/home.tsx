@@ -79,7 +79,7 @@ const Home = () => (
     </Head>
     <section className="p-5">
       <div className="py-20">
-        <h1 className="text-6xl font-semibold">Kyle Cesmat</h1>
+        <h1 className="text-4xl sm:text-5xl font-semibold">Kyle Cesmat</h1>
         <div className="text-2xl mb-2">Software Engineer</div>
         <div className="text-lg font-normal italic text-gray-700">
           I lead teams and build experiences for the modern web.

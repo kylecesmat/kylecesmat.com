@@ -31,7 +31,7 @@ const RecentProjectTimelineItems = [
     secondaryDescription: 'March 2017 - July 2018',
   },
   {
-    title: 'Geospacial Analysis for Agriculture',
+    title: 'Geospatial Analysis for Agriculture',
     description: 'Redux / Mapbox / Flow',
     secondaryDescription: 'November 2016 - March 2017',
   },

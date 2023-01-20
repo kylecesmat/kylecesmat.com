@@ -97,7 +97,7 @@ const Home = () => (
       <p>
         I balance my time with hiking, biking, reading, and traveling. I like all things food & bev,
         cooking, and baking bread. On the weekends I like road trips and camping in the woods with
-        my girlfriend & my dog.
+        my wife & my dog.
       </p>
       <Link href="/currently">
         <a>See what I'm up to currently →</a>

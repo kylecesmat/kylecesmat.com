@@ -8,20 +8,16 @@ const MenuLink = ({ href, label }) => {
 
   return (
     <li className="flex">
-      <Link href={href}>
-        <a
-          className={clsx(
-            'py-4',
-            'px-5',
-            'font-bold',
-            'text-gray-700',
-            'hover:text-accent-1',
-            isActive && 'text-accent-1',
-            'active:text-accent-1'
-          )}
-        >
-          {label}
-        </a>
+      <Link href={href} className={clsx(
+          'py-4',
+          'px-5',
+          'font-bold',
+          'text-gray-700',
+          'hover:text-accent-1',
+          isActive && 'text-accent-1',
+          'active:text-accent-1'
+        )}>
+        {label}
       </Link>
     </li>
   );

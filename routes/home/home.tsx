@@ -100,7 +100,7 @@ const Home = () => (
         my wife & my dog.
       </p>
       <Link href="/currently">
-        <a>See what I'm up to currently →</a>
+        See what I'm up to currently →
       </Link>
     </section>
     <section className="p-10">

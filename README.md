@@ -1,6 +1,6 @@
 # kylecesmat.com
 
-Personal site. **This branch is stack + hosting only** — copy and IA land in follow-up PRs.
+Personal site. Stack lives on the Cloudflare/Astro PR. **About copy is editable MDX** at `src/pages/about.mdx`.
 
 ## Stack
 

@@ -2,12 +2,22 @@
 import '../styles/global.css';
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
+  frontmatter?: {
+    title?: string;
+    description?: string;
+  };
 }
 
-const { title, description = 'Personal website of Kyle Cesmat.' } = Astro.props;
+const title =
+  Astro.props.title ?? Astro.props.frontmatter?.title ?? 'Kyle Cesmat';
+const description =
+  Astro.props.description ??
+  Astro.props.frontmatter?.description ??
+  'Personal website of Kyle Cesmat.';
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <!doctype html>
@@ -28,6 +38,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <a class="skip-link" href="#main">Skip to content</a>
     <header>
       <a href="/">Kyle Cesmat</a>
+      <nav aria-label="Primary">
+        <a href="/about" aria-current={path === '/about' ? 'page' : undefined}>About</a>
+      </nav>
     </header>
     <main id="main">
       <slot />

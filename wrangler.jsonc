@@ -2,8 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "kylecesmat",
   "compatibility_date": "2026-09-01",
-  // Preview-only until Kyle approves. Do not attach kylecesmat.com
-  // as a Pages custom domain (and do not orange-cloud the GitHub Pages
-  // records) until then. Nameservers are already Cloudflare.
+  // Preview-only. Do not attach kylecesmat.com or orange-cloud GitHub Pages
+  // records until a later, approved cutover. Nameservers are already Cloudflare.
   "pages_build_output_dir": "./dist"
 }

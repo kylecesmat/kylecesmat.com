@@ -191,44 +191,12 @@ main {
   font-size: 1.15rem;
   font-weight: 500;
   letter-spacing: -0.02em;
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.35rem;
 }
 
-.proof-block__summary {
-  margin: 0 0 0.45rem;
-  color: var(--muted);
-}
-
-.proof-block__metrics {
+.proof-block p {
   margin: 0;
-  padding: 0;
-  list-style: none;
   color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.proof-block__metrics li {
-  display: inline;
-}
-
-.proof-block__metrics li + li::before {
-  content: ' · ';
-}
-
-.proof-block__link {
-  margin: 0.45rem 0 0;
-  font-family: var(--sans);
-  font-size: 0.82rem;
-  color: var(--muted);
-}
-
-.proof-block__link a {
-  color: inherit;
-}
-
-.metric--redactable {
-  text-decoration: underline dotted;
-  text-underline-offset: 0.16em;
 }
 
 .placeholder {

@@ -1,5 +1,5 @@
 ---
-import { site, nav, hero, headlinePick } from '@/site';
+import { site, nav, hero } from '@/site';
 import '@/styles/global.css';
 
 interface Props {
@@ -17,8 +17,7 @@ const description =
   Astro.props.description ??
   Astro.props.frontmatter?.description ??
   site.description;
-const homeTitle =
-  headlinePick === 'placeholder' ? site.name : `${site.name} — ${hero.headline}`;
+const homeTitle = `${site.name} — ${hero.headline}`;
 const pageTitle = title
   ? title.includes(site.name)
     ? title

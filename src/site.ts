@@ -1,38 +1,8 @@
-/**
- * Headline pick: `'placeholder' | 'A' | 'B' | 'C'`.
- * Kyle chooses later. Do not set A/B/C until he does.
- * Do not use “Software Engineer” as the headline.
- */
-export type HeadlinePick = 'placeholder' | 'A' | 'B' | 'C';
-
-export const headlinePick: HeadlinePick = 'placeholder';
-
-/** Labeled options for Kyle. Not shown until `headlinePick` is A, B, or C. */
-export const headlineOptions = {
-  A: {
-    headline: 'Building Agent Experience for enterprise engineering orgs',
-    subhead:
-      'SEM at Coinbase leading Agent Experience. Brought Cursor in early; shipping AI coding workflows that raise quality bars, not just autocomplete.',
-  },
-  B: {
-    headline: 'Platform and DX leadership for the AI coding era',
-    subhead:
-      'I lead teams that turn AI coding tools into governed, measurable developer productivity — from enterprise rollout to agent-native workflows.',
-  },
-  C: {
-    headline: '[TODO: C — Head-of-X operator framing]',
-    subhead:
-      'Head of Platform / DX / AI Engineering. Coinbase SEM, Agent Experience. Early Cursor enterprise. Syntax.fm on AI coding at scale.',
-  },
+export const hero = {
+  headline: 'Building Agent Experience for enterprise engineering orgs',
+  subhead:
+    'SEM at Coinbase leading Agent Experience. I founded the AI developer tooling organization, set company-wide AI engineering strategy, and ship governed AI coding workflows that raise quality bars — not just autocomplete. Early Cursor enterprise adopter.',
 } as const;
-
-const placeholderHero = {
-  headline: '[TODO: headline — set headlinePick to A, B, or C in src/site.ts]',
-  subhead: '[TODO: subhead]',
-} as const;
-
-export const hero =
-  headlinePick === 'placeholder' ? placeholderHero : headlineOptions[headlinePick];
 
 export const site = {
   name: 'Kyle Cesmat',
@@ -42,10 +12,10 @@ export const site = {
   location: 'Denver, CO',
   jobTitle: 'Senior Engineering Manager, Agent Experience',
   worksFor: 'Coinbase',
+  help: 'I help engineering organizations turn AI coding tools into governed, measurable developer leverage — platform, DX, and Agent Experience as a product, not a pile of vendor licenses.',
+  bio: 'Kyle Cesmat is a Senior Engineering Manager at Coinbase leading Agent Experience — the organization that builds and integrates AI developer tooling across Coinbase engineering. He founded and scaled that team, set company-wide AI engineering strategy, and established a governed agent platform for coding agents, harnesses, sandboxes, MCPs, and skills. Earlier he led Retail App Infra for Web and Mobile platform, performance, and operational excellence. Previously an engineering manager and lead consultant at Formidable Labs. Has spoken publicly about AI coding at scale, including Syntax.fm. Based in Denver, CO.',
   description:
-    'Kyle Cesmat — Agent Experience, platform engineering, developer experience, and AI engineering leadership.',
-  keywords:
-    'Agent Experience, platform engineering, developer experience, DX, AI engineering leadership, Coinbase',
+    'Senior Engineering Manager at Coinbase leading Agent Experience. Platform, developer experience, and governed AI coding workflows for enterprise engineering organizations.',
   social: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kylecesmat' },
     { label: 'GitHub', href: 'https://github.com/kylecesmat' },

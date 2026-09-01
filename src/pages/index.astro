@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProofCard from '@/components/ProofCard.astro';
-import { proofCards } from '@/data/proof';
+import { proof } from '@/data/proof';
 import { talks } from '@/data/talks';
 import { hero, site, writingPillars } from '@/site';
 
@@ -24,7 +24,7 @@ const writing = (await getCollection('writing'))
   <section class="section" aria-labelledby="work-heading">
     <h2 id="work-heading">selected work</h2>
     <div class="proof-list">
-      {proofCards.map((card) => <ProofCard card={card} />)}
+      {proof.map((block) => <ProofCard block={block} />)}
     </div>
   </section>
 

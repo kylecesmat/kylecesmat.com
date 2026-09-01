@@ -1,6 +1,6 @@
 # kylecesmat.com
 
-Personal site. Visual tone is quiet editorial (attardi.org / nickbytes), not a metrics dashboard. **About copy** is editable MDX at `src/pages/about.mdx` — do not rewrite it in layout PRs.
+Personal site. Visual tone is quiet editorial (attardi.org / nickbytes). **Copy is qualitative** — no quantitative metrics. Hero, proof, and About live in `src/site.ts`, `src/data/proof.ts`, and `src/pages/about.mdx`.
 
 ## Stack
 

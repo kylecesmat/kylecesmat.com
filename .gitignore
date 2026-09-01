@@ -22,3 +22,9 @@ yarn-error.log*
 .DS_Store
 *.pem
 .vercel
+
+# pstack verification evidence and live preview PID (keep .gitkeep)
+.cursor/skills/verify-kylecesmat/evidence/*
+!.cursor/skills/verify-kylecesmat/evidence/.gitkeep
+.cursor/skills/verify-kylecesmat/.run/*
+!.cursor/skills/verify-kylecesmat/.run/.gitkeep

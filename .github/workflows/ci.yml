@@ -9,8 +9,9 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Preview only. Do not deploy to Cloudflare Pages production or attach
-# kylecesmat.com until Kyle has previewed this PR and explicitly approved.
+# Preview only. Replaces Travis CI (Node 12 → next export → gh-pages).
+# Do not deploy to Cloudflare Pages production or attach kylecesmat.com
+# until Kyle has previewed this PR and explicitly approved.
 jobs:
   build:
     name: Build

@@ -1,2 +1,8 @@
+# Path redirects for Cloudflare Pages.
+# Host-level www → apex is NOT supported in this file (Pages has no
+# domain-level redirects). Keep that 301 with a Cloudflare Redirect Rule
+# after orange-clouding www. See README.
+
 /currently /now 301
 /currently/ /now 301
+/sitemap.xml /sitemap-index.xml 301

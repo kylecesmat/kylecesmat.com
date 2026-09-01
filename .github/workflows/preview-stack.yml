@@ -1,0 +1,47 @@
+name: Preview stack
+
+on:
+  push:
+    branches: [cursor/preview-stack-merged-7ac0]
+  workflow_dispatch:
+
+concurrency:
+  group: preview-stack-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Temporary visual preview of content stack #25–#27.
+# Do not attach kylecesmat.com or treat this as production.
+jobs:
+  deploy:
+    name: Deploy preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+      - name: Deploy to Cloudflare Pages preview
+        id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=kylecesmat --branch=preview-stack-merged
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Write deployment URLs
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          DEPLOYMENT_ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+        run: |
+          {
+            echo "## Cloudflare Pages preview"
+            echo "- Deployment URL: ${DEPLOYMENT_URL}"
+            echo "- Alias URL: ${DEPLOYMENT_ALIAS_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -6,7 +6,7 @@ Static [Astro](https://astro.build) + in-repo MDX, built for [Cloudflare Pages](
 
 **This branch is preview-only.** Do not attach `kylecesmat.com` to Pages, do not orange-cloud the GitHub Pages records, and do not retire `gh-pages` until Kyle has previewed the PR and explicitly approved.
 
-Public copy is a **hiring-brief shell**, qualitative on purpose. No Coinbase metrics.
+Public copy is a **hiring-brief shell with labeled placeholders**. Headline A/B/C live in `src/site.ts` (`headlinePick`, default `'placeholder'`). No invented metrics.
 
 ## Local
 
@@ -30,9 +30,13 @@ There is no production deploy script. GitHub Actions **builds** on PRs; it does 
 
 ## Content
 
-Writing and talks are MDX in `src/content/pieces/`. Frontmatter schema lives in `src/content.config.ts`. Hero, proof, help line, and about bio live in `src/site.ts`.
+IA v1: Home / Writing & talks / About & contact. Light `/now` stub in the footer. Formidable work is `/archive` only.
 
-Formidable-era projects and Phoenix meetup talks are in `src/content/archive/` and only appear on `/archive` (footer link, not primary nav). Live vs `master` copy already drifted; this PR does not resurrect the 2020 Formidable gallery as the primary site.
+Homepage order (see `src/pages/index.astro`): name + headline/subhead → proof teaser → selected work (3 case placeholders) → featured writing → talks & podcasts (Syntax.fm #944 first) → about teaser + email/LinkedIn.
+
+Headline options A/B/C are in `src/site.ts`. Set `headlinePick` to `'A' | 'B' | 'C'` when Kyle chooses; until then it stays `'placeholder'`.
+
+Writing pillars are MDX stubs in `src/content/pieces/` (`pillar` frontmatter). Schema: `src/content.config.ts`.
 
 ## SEO, robots, headers
 

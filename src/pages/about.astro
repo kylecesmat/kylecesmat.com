@@ -3,17 +3,26 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/site';
 ---
 
-<BaseLayout title="About" description={site.bio}>
+<BaseLayout
+  title="About"
+  description="About and contact for Kyle Cesmat — Agent Experience, platform, and developer experience."
+>
   <header class="hero">
-    <h1 class="page-title">{site.name}</h1>
+    <h1 class="page-title">About</h1>
+    <p class="subhead">
+      <span class="placeholder">{site.aboutTeaser}</span>
+    </p>
   </header>
 
   <div class="prose">
-    <p>{site.bio}</p>
-
     <h2>Contact</h2>
     <p>
       <a href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+    <p>
+      <a href={site.linkedin} rel="me noopener noreferrer" target="_blank">
+        LinkedIn
+      </a>
     </p>
     <ul class="plain">
       {

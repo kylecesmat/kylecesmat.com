@@ -16,6 +16,15 @@ const pieces = defineCollection({
     proofTheme: z
       .enum(['agent-experience', 'cursor-enterprise', 'syntax-fm', 'other'])
       .optional(),
+    pillar: z
+      .enum([
+        'enterprise-ai-coding-rollout',
+        'agent-experience-as-product',
+        'quality-bars-agent-era',
+        'platform-dx-ai-doesnt-break',
+        'measuring-ai-developer-productivity',
+      ])
+      .optional(),
     tags: z.array(z.string()).default([]),
   }),
 });

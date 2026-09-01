@@ -1,5 +1,5 @@
 ---
-import { site, nav } from '@/site';
+import { site, nav, hero, headlinePick } from '@/site';
 import '@/styles/global.css';
 
 interface Props {
@@ -9,7 +9,9 @@ interface Props {
 }
 
 const { title, description = site.description, canonical } = Astro.props;
-const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.headline}`;
+const homeTitle =
+  headlinePick === 'placeholder' ? site.name : `${site.name} — ${hero.headline}`;
+const pageTitle = title ? `${title} · ${site.name}` : homeTitle;
 const canonicalUrl = new URL(canonical ?? Astro.url.pathname, site.url).href;
 const ogTitle = title ? `${title} · ${site.name}` : pageTitle;
 const analyticsToken = import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN;

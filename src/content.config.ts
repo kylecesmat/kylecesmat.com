@@ -2,30 +2,35 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-const pieces = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pieces' }),
+const writing = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/writing' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    kind: z.enum(['writing', 'talk']),
     draft: z.boolean().default(false),
-    placeholder: z.boolean().default(false),
+    placeholder: z.boolean().default(true),
+    pillar: z.enum([
+      'enterprise-cursor-ai-rollout',
+      'ax-as-product',
+      'quality-bars',
+      'paved-roads-codegen-load',
+      'measuring-ai-productivity',
+    ]),
+    tags: z.array(z.string()).default([]),
+  }),
+});
+
+const talks = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/talks' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    draft: z.boolean().default(false),
+    placeholder: z.boolean().default(true),
     venue: z.string().optional(),
     externalUrl: z.url().optional(),
-    proofTheme: z
-      .enum(['agent-experience', 'cursor-enterprise', 'syntax-fm', 'other'])
-      .optional(),
-    pillar: z
-      .enum([
-        'enterprise-ai-coding-rollout',
-        'agent-experience-as-product',
-        'quality-bars-agent-era',
-        'platform-dx-ai-doesnt-break',
-        'measuring-ai-developer-productivity',
-      ])
-      .optional(),
-    tags: z.array(z.string()).default([]),
   }),
 });
 
@@ -41,4 +46,4 @@ const archive = defineCollection({
   }),
 });
 
-export const collections = { pieces, archive };
+export const collections = { writing, talks, archive };

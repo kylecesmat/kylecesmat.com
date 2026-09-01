@@ -1,26 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { hero, selectedWork, site, writingPillars } from '@/site';
+import ProofCard from '@/components/ProofCard.astro';
+import ProofTeaser from '@/components/ProofTeaser.astro';
+import { proofCards } from '@/data/proof';
+import { talks } from '@/data/talks';
+import { hero, site, writingPillars } from '@/site';
 
-const pieces = (await getCollection('pieces')).filter((entry) => !entry.data.draft);
-
-const pillarIndex = new Map(writingPillars.map((pillar, index) => [pillar, index]));
-
-const writing = pieces
-  .filter((entry) => entry.data.kind === 'writing')
+const writing = (await getCollection('writing'))
+  .filter((entry) => !entry.data.draft)
   .sort((a, b) => {
-    const aN = pillarIndex.get(a.data.pillar ?? 'enterprise-ai-coding-rollout') ?? 99;
-    const bN = pillarIndex.get(b.data.pillar ?? 'enterprise-ai-coding-rollout') ?? 99;
-    return aN - bN;
-  });
-
-const talks = pieces
-  .filter((entry) => entry.data.kind === 'talk')
-  .sort((a, b) => {
-    if (a.data.proofTheme === 'syntax-fm') return -1;
-    if (b.data.proofTheme === 'syntax-fm') return 1;
-    return b.data.date.valueOf() - a.data.date.valueOf();
+    const order = new Map(writingPillars.map((pillar, index) => [pillar, index]));
+    return (order.get(a.data.pillar) ?? 99) - (order.get(b.data.pillar) ?? 99);
   });
 ---
 
@@ -33,21 +24,14 @@ const talks = pieces
 
   <section class="section" aria-labelledby="teaser-heading">
     <h2 id="teaser-heading" class="visually-hidden">Proof teaser</h2>
-    <p>{site.proofTeaser}</p>
+    <ProofTeaser />
   </section>
 
   <section class="section" aria-labelledby="work-heading">
     <h2 id="work-heading">Selected work</h2>
-    {
-      selectedWork.map((item) => (
-        <div class="proof">
-          <h3>{item.title}</h3>
-          <p>
-            <span class="placeholder">{item.body}</span>
-          </p>
-        </div>
-      ))
-    }
+    <div class="proof-cards">
+      {proofCards.map((card) => <ProofCard card={card} />)}
+    </div>
   </section>
 
   <section class="section" aria-labelledby="writing-heading">
@@ -58,42 +42,36 @@ const talks = pieces
           <li>
             <a href={`/writing/${entry.id}`}>
               <span class="list-title">{entry.data.title}</span>
-              <span class="list-meta">
-                {entry.data.placeholder ? 'Draft slot' : entry.data.description}
-              </span>
+              <span class="list-meta">Draft slot</span>
             </a>
           </li>
         ))
       }
     </ul>
-    <p class="more"><a href="/writing">All writing and talks</a></p>
+    <p class="more"><a href="/writing">All writing</a></p>
   </section>
 
   <section class="section" aria-labelledby="talks-heading">
-    <h2 id="talks-heading">Talks & podcasts</h2>
+    <h2 id="talks-heading">Talks & media</h2>
     <ul class="list">
       {
-        talks.map((entry) => (
+        talks.map((talk) => (
           <li>
-            <a href={`/writing/${entry.id}`}>
-              <span class="list-title">{entry.data.title}</span>
-              <span class="list-meta">{entry.data.venue}</span>
+            <a href={talk.notesHref ?? talk.href ?? '/talks'}>
+              <span class="list-title">{talk.title}</span>
+              <span class="list-meta">{talk.venue}</span>
             </a>
           </li>
         ))
       }
     </ul>
+    <p class="more"><a href="/talks">All talks</a></p>
   </section>
 
-  <section class="section" aria-labelledby="about-heading">
-    <h2 id="about-heading">About</h2>
+  <section class="section" aria-labelledby="cta-heading">
+    <h2 id="cta-heading">Contact</h2>
     <p>
-      <span class="placeholder">{site.aboutTeaser}</span>
-    </p>
-    <p>
-      <a href="/about">About</a>
-      <span aria-hidden="true"> · </span>
-      <a href={`mailto:${site.email}`}>Email</a>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
       <span aria-hidden="true"> · </span>
       <a href={site.linkedin} rel="me noopener noreferrer" target="_blank">
         LinkedIn

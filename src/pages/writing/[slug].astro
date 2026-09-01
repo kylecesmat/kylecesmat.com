@@ -3,8 +3,8 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
-  const pieces = await getCollection('pieces');
-  return pieces.map((entry) => ({
+  const writing = await getCollection('writing');
+  return writing.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
@@ -12,24 +12,14 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, kind, venue, placeholder, externalUrl } = entry.data;
+const { title, description, placeholder } = entry.data;
 ---
 
 <BaseLayout title={title} description={description}>
   <article class="prose">
-    <p class="identity">{kind === 'talk' ? 'Talk' : 'Writing'}</p>
+    <p class="identity">Writing</p>
     <h1>{title}</h1>
-    <p class="meta">
-      {venue ? venue : kind === 'talk' ? 'Talk' : 'Writing'}
-      {placeholder ? ' · draft slot' : ''}
-    </p>
-    {externalUrl ? (
-      <p>
-        <a href={externalUrl} rel="noopener noreferrer" target="_blank">
-          External link
-        </a>
-      </p>
-    ) : null}
+    <p class="meta">{placeholder ? 'Draft slot' : description}</p>
     <Content />
   </article>
 </BaseLayout>

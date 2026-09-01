@@ -12,7 +12,7 @@ export const headlineOptions = {
   A: {
     headline: 'Building Agent Experience for enterprise engineering orgs',
     subhead:
-      'SEM at Coinbase leading Agent Experience (~13). Brought Cursor in early; shipping AI coding workflows that raise quality bars, not just autocomplete.',
+      'SEM at Coinbase leading Agent Experience. Brought Cursor in early; shipping AI coding workflows that raise quality bars, not just autocomplete.',
   },
   B: {
     headline: 'Platform and DX leadership for the AI coding era',
@@ -20,9 +20,9 @@ export const headlineOptions = {
       'I lead teams that turn AI coding tools into governed, measurable developer productivity — from enterprise rollout to agent-native workflows.',
   },
   C: {
-    headline: 'Head of Platform / DX / AI Engineering — operators who ship developer leverage',
+    headline: '[TODO: C — Head-of-X operator framing]',
     subhead:
-      'Coinbase SEM, Agent Experience. Early Cursor enterprise adopter. Syntax.fm on AI coding at scale.',
+      'Head of Platform / DX / AI Engineering. Coinbase SEM, Agent Experience. Early Cursor enterprise. Syntax.fm on AI coding at scale.',
   },
 } as const;
 
@@ -43,10 +43,9 @@ export const site = {
   jobTitle: 'Senior Engineering Manager, Agent Experience',
   worksFor: 'Coinbase',
   description:
-    'Kyle Cesmat — Agent Experience, platform, and developer experience. Hiring-brief placeholder site.',
-  proofTeaser:
-    '[TODO: proof teaser — Coinbase SEM · Agent Experience · Cursor early enterprise · Syntax.fm]',
-  aboutTeaser: '[TODO: about teaser]',
+    'Kyle Cesmat — Agent Experience, platform engineering, developer experience, and AI engineering leadership.',
+  keywords:
+    'Agent Experience, platform engineering, developer experience, DX, AI engineering leadership, Coinbase',
   social: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kylecesmat' },
     { label: 'GitHub', href: 'https://github.com/kylecesmat' },
@@ -56,33 +55,19 @@ export const site = {
   ],
 } as const;
 
-/** Three outcome cases. Bodies are placeholders — no invented metrics. */
-export const selectedWork = [
-  {
-    title: 'Cursor enterprise rollout at Coinbase',
-    body: '[TODO: case — Cursor enterprise rollout at Coinbase]',
-  },
-  {
-    title: 'Agent Experience org',
-    body: '[TODO: case — Agent Experience org (~13)]',
-  },
-  {
-    title: 'App Infra / platform outcomes',
-    body: '[TODO: case — App Infra / platform outcomes]',
-  },
-] as const;
-
 export const writingPillars = [
-  'enterprise-ai-coding-rollout',
-  'agent-experience-as-product',
-  'quality-bars-agent-era',
-  'platform-dx-ai-doesnt-break',
-  'measuring-ai-developer-productivity',
+  'enterprise-cursor-ai-rollout',
+  'ax-as-product',
+  'quality-bars',
+  'paved-roads-codegen-load',
+  'measuring-ai-productivity',
 ] as const;
 
 export type WritingPillar = (typeof writingPillars)[number];
 
 export const nav = [
   { label: 'Writing', href: '/writing' },
+  { label: 'Talks', href: '/talks' },
   { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ] as const;

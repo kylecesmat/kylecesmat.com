@@ -1,42 +1,55 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { proofTeaser } from '@/data/proof';
 import { site } from '@/site';
 ---
 
 <BaseLayout
   title="About"
-  description="About and contact for Kyle Cesmat — Agent Experience, platform, and developer experience."
+  description="Press kit for Kyle Cesmat — Agent Experience, platform, developer experience, and AI engineering leadership."
 >
   <header class="hero">
     <h1 class="page-title">About</h1>
-    <p class="subhead">
-      <span class="placeholder">{site.aboutTeaser}</span>
-    </p>
+    <p class="subhead">Press kit. Placeholders only beyond resume-backed facts below.</p>
   </header>
 
   <div class="prose">
-    <h2>Contact</h2>
+    <h2>Headshot</h2>
     <p>
-      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <span class="placeholder">[TODO: press kit — headshot]</span>
     </p>
+
+    <h2>Bio</h2>
     <p>
-      <a href={site.linkedin} rel="me noopener noreferrer" target="_blank">
-        LinkedIn
-      </a>
+      <span class="placeholder">[TODO: press kit — short bio]</span>
     </p>
-    <ul class="plain">
+
+    <h2>Facts</h2>
+    <ul>
+      <li>{proofTeaser.role}</li>
       {
-        site.social.map((item) => (
+        proofTeaser.slots.map((slot) => (
           <li>
-            <a href={item.href} rel="me noopener noreferrer" target="_blank">
-              {item.label}
-            </a>
+            <span
+              class:list={['metric', slot.redactable && 'metric--redactable']}
+              title={slot.redactable ? 'Placeholder metric — may redact' : undefined}
+            >
+              {slot.label}
+            </span>
           </li>
         ))
       }
     </ul>
+
+    <h2>Contact</h2>
     <p>
-      Earlier Formidable work and meetup talks are in the <a href="/archive">archive</a>.
+      <a href="/contact">Contact</a>
+      <span aria-hidden="true"> · </span>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <span aria-hidden="true"> · </span>
+      <a href={site.linkedin} rel="me noopener noreferrer" target="_blank">
+        LinkedIn
+      </a>
     </p>
   </div>
 </BaseLayout>

@@ -213,6 +213,43 @@ main {
   margin-top: 0.85rem;
 }
 
+.proof-cards {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 1rem;
+}
+
+.proof-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+.proof-card__summary {
+  margin: 0 0 0.55rem;
+  color: var(--muted);
+}
+
+.proof-card__metrics {
+  margin: 0 0 0.75rem;
+  padding-left: 1.1rem;
+}
+
+.proof-card__metrics li + li {
+  margin-top: 0.2rem;
+}
+
+.proof-card__link {
+  margin: 0;
+}
+
+.metric--redactable {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.18em;
+}
+
 .placeholder {
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 0.84em;

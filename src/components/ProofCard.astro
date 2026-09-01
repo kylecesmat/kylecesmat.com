@@ -1,0 +1,31 @@
+---
+import type { ProofCardData } from '@/data/proof';
+
+interface Props {
+  card: ProofCardData;
+}
+
+const { card } = Astro.props;
+---
+
+<article class="proof-card" data-proof-id={card.id}>
+  <h3>{card.title}</h3>
+  {card.summary ? <p class="proof-card__summary">{card.summary}</p> : null}
+  <ul class="proof-card__metrics">
+    {
+      card.metrics.map((metric) => (
+        <li>
+          <span
+            class:list={['metric', metric.redactable && 'metric--redactable']}
+            title={metric.redactable ? 'Placeholder metric — may redact' : undefined}
+          >
+            {metric.label}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="proof-card__link">
+    <a href={card.href}>{card.linkLabel}</a>
+  </p>
+</article>

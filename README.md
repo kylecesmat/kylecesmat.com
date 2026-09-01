@@ -6,7 +6,7 @@ Static [Astro](https://astro.build) + in-repo MDX, built for [Cloudflare Pages](
 
 **This branch is preview-only.** Do not attach `kylecesmat.com` to Pages, do not orange-cloud the GitHub Pages records, and do not retire `gh-pages` until Kyle has previewed the PR and explicitly approved.
 
-Public copy is a **hiring-brief shell with labeled placeholders**. Headline A/B/C live in `src/site.ts` (`headlinePick`, default `'placeholder'`). No invented metrics.
+Public copy is a **hiring-brief shell**. Headline A/B/C live in `src/site.ts` (`headlinePick`, default `'placeholder'`). Proof metrics are resume-backed placeholders Kyle can redact (`src/data/proof.ts`).
 
 ## Local
 
@@ -30,13 +30,11 @@ There is no production deploy script. GitHub Actions **builds** on PRs; it does 
 
 ## Content
 
-IA v1: Home / Writing & talks / About & contact. Light `/now` stub in the footer. Formidable work is `/archive` only.
+IA: Home / Writing / Talks & media / About (press kit) / Contact. Light `/now` stub and Formidable `/archive` in the footer.
 
-Homepage order (see `src/pages/index.astro`): name + headline/subhead → proof teaser → selected work (3 case placeholders) → featured writing → talks & podcasts (Syntax.fm #944 first) → about teaser + email/LinkedIn.
+Homepage order: name + headline/subhead → proof teaser → 3 data-driven proof cards → featured writing stubs → talks (Syntax.fm #944 first) → email/LinkedIn CTA.
 
-Headline options A/B/C are in `src/site.ts`. Set `headlinePick` to `'A' | 'B' | 'C'` when Kyle chooses; until then it stays `'placeholder'`.
-
-Writing pillars are MDX stubs in `src/content/pieces/` (`pillar` frontmatter). Schema: `src/content.config.ts`.
+Headline options A/B/C: `src/site.ts` (`headlinePick`). Proof cards: `src/components/ProofCard.astro` + `src/data/proof.ts` (title, 3–5 metrics, 1 link). Talks list: `src/data/talks.ts`. Writing stubs: `src/content/writing/`.
 
 ## SEO, robots, headers
 

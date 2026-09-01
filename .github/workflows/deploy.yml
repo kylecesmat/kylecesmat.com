@@ -1,0 +1,48 @@
+name: Deploy
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: deploy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Production alias tracks master. PR pushes are preview-only.
+# No custom domain / apex cutover until explicitly approved.
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=kylecesmat
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Write deployment URLs
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          DEPLOYMENT_ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+        run: |
+          {
+            echo "## Cloudflare Pages"
+            echo "- Deployment URL: ${DEPLOYMENT_URL}"
+            echo "- Alias URL: ${DEPLOYMENT_ALIAS_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"

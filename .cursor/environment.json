@@ -1,0 +1,11 @@
+{
+  "name": "kylecesmat.com",
+  "install": "yarn install --frozen-lockfile",
+  "terminals": [
+    {
+      "name": "next-dev",
+      "command": "yarn dev"
+    }
+  ],
+  "ports": [3000]
+}

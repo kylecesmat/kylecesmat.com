@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { writingPillars } from '@/site';
+
+const writing = (await getCollection('writing'))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => {
+    const order = new Map(writingPillars.map((pillar, index) => [pillar, index]));
+    return (order.get(a.data.pillar) ?? 99) - (order.get(b.data.pillar) ?? 99);
+  });
+---
+
+<BaseLayout
+  title="Writing"
+  description="Writing from Kyle Cesmat on Agent Experience, platform, developer experience, and AI engineering leadership."
+>
+  <header class="hero">
+    <h1 class="page-title">writing</h1>
+  </header>
+
+  <section class="section">
+    <ul class="list">
+      {
+        writing.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.id}`}>
+              <span class="list-title">{entry.data.title}</span>
+              <span class="list-meta">Draft slot</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

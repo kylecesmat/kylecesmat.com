@@ -1,6 +1,6 @@
 # kylecesmat.com
 
-Personal site. Stack lives on the Cloudflare/Astro PR. **About copy is editable MDX** at `src/pages/about.mdx`.
+Personal site. Visual tone is quiet editorial (attardi.org / nickbytes), not a metrics dashboard. **About copy** is editable MDX at `src/pages/about.mdx` — do not rewrite it in layout PRs.
 
 ## Stack
 

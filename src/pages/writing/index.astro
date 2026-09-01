@@ -2,38 +2,59 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 
-const pieces = (await getCollection('pieces'))
-  .filter((entry) => !entry.data.draft)
+const pieces = (await getCollection('pieces')).filter((entry) => !entry.data.draft);
+
+const talks = pieces
+  .filter((entry) => entry.data.kind === 'talk')
+  .sort((a, b) => {
+    if (a.data.proofTheme === 'syntax-fm') return -1;
+    if (b.data.proofTheme === 'syntax-fm') return 1;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  });
+
+const writing = pieces
+  .filter((entry) => entry.data.kind === 'writing')
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout
   title="Writing & talks"
-  description="Writing and talks from Kyle Cesmat on Agent Experience, developer experience, platform engineering, and AI coding workflows."
+  description="Writing and talks from Kyle Cesmat on Agent Experience, developer experience, and AI coding at scale."
 >
   <header class="hero">
-    <p class="eyebrow">Index</p>
     <h1 class="page-title">Writing & talks</h1>
-    <p class="subhead">
-      MDX in this repo. Placeholder slots are marked until full copy lands.
-    </p>
   </header>
 
-  <section class="section" aria-labelledby="pieces-heading">
-    <h2 id="pieces-heading" class="visually-hidden">Entries</h2>
+  <section class="section" aria-labelledby="talks-heading">
+    <h2 id="talks-heading">Talks</h2>
     <ul class="list">
       {
-        pieces.map((entry) => (
+        talks.map((entry) => (
           <li>
             <a href={`/writing/${entry.id}`}>
-              <span class="list-meta">
-                {entry.data.date.toISOString().slice(0, 10)}
-                {' · '}
-                {entry.data.kind === 'talk' ? 'Talk' : 'Writing'}
-                {entry.data.venue ? ` · ${entry.data.venue}` : ''}
-                {entry.data.placeholder ? ' · draft slot' : ''}
-              </span>
               <span class="list-title">{entry.data.title}</span>
+              <span class="list-meta">
+                {entry.data.venue}
+                {entry.data.placeholder ? ' · notes slot' : ''}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="writing-heading">
+    <h2 id="writing-heading">Writing</h2>
+    <ul class="list">
+      {
+        writing.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.id}`}>
+              <span class="list-title">{entry.data.title}</span>
+              <span class="list-meta">
+                {entry.data.placeholder ? 'Draft slot' : entry.data.description}
+              </span>
             </a>
           </li>
         ))

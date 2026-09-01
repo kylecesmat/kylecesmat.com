@@ -12,16 +12,15 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, date, kind, venue, placeholder, externalUrl } = entry.data;
+const { title, description, kind, venue, placeholder, externalUrl } = entry.data;
 ---
 
 <BaseLayout title={title} description={description}>
   <article class="prose">
-    <p class="eyebrow">{kind === 'talk' ? 'Talk' : 'Writing'}</p>
+    <p class="identity">{kind === 'talk' ? 'Talk' : 'Writing'}</p>
     <h1>{title}</h1>
     <p class="meta">
-      <time datetime={date.toISOString()}>{date.toISOString().slice(0, 10)}</time>
-      {venue ? ` · ${venue}` : ''}
+      {venue ? venue : kind === 'talk' ? 'Talk' : 'Writing'}
       {placeholder ? ' · draft slot' : ''}
     </p>
     {externalUrl ? (

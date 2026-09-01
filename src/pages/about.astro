@@ -3,39 +3,19 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/site';
 ---
 
-<BaseLayout
-  title="About"
-  description="Kyle Cesmat is SEM at Coinbase leading Agent Experience. Platform, developer experience, and applied AI for enterprise engineering orgs."
->
+<BaseLayout title="About" description={site.bio}>
   <header class="hero">
-    <p class="eyebrow">About</p>
     <h1 class="page-title">{site.name}</h1>
-    <p class="subhead">{site.subhead}</p>
   </header>
 
-  <section class="section prose">
-    <h2>Work</h2>
-    <p>
-      I lead Agent Experience at Coinbase and build the platform, developer
-      experience, and AI engineering systems that help large orgs adopt governed
-      coding workflows.
-    </p>
-    <p>
-      Formidable-era consulting projects and 2017–2019 meetup talks are on the
-      <a href="/archive">archive</a> — not the primary proof for this site.
-    </p>
-
-    <h2>Otherwise</h2>
-    <p>
-      Off work I hike, bike, cook, bake bread, and take road trips. More of the
-      current snapshot is on <a href="/now">/now</a>.
-    </p>
+  <div class="prose">
+    <p>{site.bio}</p>
 
     <h2>Contact</h2>
     <p>
       <a href={`mailto:${site.email}`}>{site.email}</a>
     </p>
-    <ul>
+    <ul class="plain">
       {
         site.social.map((item) => (
           <li>
@@ -46,5 +26,8 @@ import { site } from '@/site';
         ))
       }
     </ul>
-  </section>
+    <p>
+      Earlier Formidable work and meetup talks are in the <a href="/archive">archive</a>.
+    </p>
+  </div>
 </BaseLayout>

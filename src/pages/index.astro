@@ -1,123 +1,91 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { site } from '@/site';
+import { proof, site } from '@/site';
 
-const pieces = (await getCollection('pieces'))
-  .filter((entry) => !entry.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 4);
+const pieces = (await getCollection('pieces')).filter((entry) => !entry.data.draft);
 
-const proof = [
-  {
-    kicker: 'Coinbase',
-    title: 'Agent Experience',
-    body: 'SEM leading Agent Experience for enterprise engineering orgs.',
-  },
-  {
-    kicker: 'Platform & DX',
-    title: 'AI developer tooling, 0→15',
-    body: 'Founded the AI developer tooling org across three pods. Company AI eng strategy for 2,200+ engineers (enablement 0%→94%).',
-  },
-  {
-    kicker: 'Cursor',
-    title: 'Governed AI coding workflows',
-    body: 'Early Cursor enterprise. Shipping workflows that raise quality bars, not just autocomplete.',
-  },
-];
+const talks = pieces
+  .filter((entry) => entry.data.kind === 'talk')
+  .sort((a, b) => {
+    if (a.data.proofTheme === 'syntax-fm') return -1;
+    if (b.data.proofTheme === 'syntax-fm') return 1;
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  });
+
+const writing = pieces
+  .filter((entry) => entry.data.kind === 'writing')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout>
-  <section class="hero">
-    <p class="eyebrow">{site.name}</p>
+  <header class="hero">
+    <p class="identity">{site.name}</p>
     <h1>{site.headline}</h1>
     <p class="subhead">{site.subhead}</p>
-    <div class="hero-actions">
-      <a class="button button--primary" href={`mailto:${site.email}`}>Get in touch</a>
-      <a class="button button--ghost" href="/writing">Writing & talks</a>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="who-heading">
-    <h2 id="who-heading">Who this is for</h2>
-    <p>
-      Engineering leaders and platform orgs that need Agent Experience as an operating
-      system — not a sidecar chatbot. If you are rolling AI coding into a large org and
-      care about quality, governance, and developer experience, that is the work.
+    <p class="hero-link">
+      <a href={`mailto:${site.email}`}>Email</a>
+      <span aria-hidden="true"> · </span>
+      <a href="/writing">Writing</a>
     </p>
-    <div class="grid grid--two">
-      <article class="card">
-        <h3>Enterprise engineering orgs</h3>
-        <p>
-          Teams of hundreds or thousands of engineers who cannot treat AI coding as a
-          personal productivity hack. Enablement, defaults, and guardrails have to scale.
-        </p>
-      </article>
-      <article class="card">
-        <h3>Platform, DX, and applied AI</h3>
-        <p>
-          Heads of platform and developer experience who own the workflows, evaluation
-          bars, and internal tooling that make agentic coding safe to ship.
-        </p>
-      </article>
-    </div>
+  </header>
+
+  <section class="section" aria-labelledby="help-heading">
+    <h2 id="help-heading">Ways I can help</h2>
+    <p>{site.help}</p>
   </section>
 
   <section class="section" aria-labelledby="proof-heading">
     <h2 id="proof-heading">Proof</h2>
-    <p>
-      Highlights from current work. Longer write-ups live in
-      <a href="/writing">Writing</a> as MDX slots until full posts land.
-    </p>
-    <div class="grid">
-      {
-        proof.map((item) => (
-          <article class="card">
-            <span class="kicker">{item.kicker}</span>
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </article>
-        ))
-      }
-    </div>
+    {
+      proof.map((item) => (
+        <div class="proof">
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </div>
+      ))
+    }
   </section>
 
-  <section class="section" aria-labelledby="writing-heading">
-    <h2 id="writing-heading">Writing & talks</h2>
-    <p>Notes and talks on Agent Experience, DX, and AI-assisted engineering.</p>
+  <section class="section" aria-labelledby="talks-heading">
+    <h2 id="talks-heading">Talks</h2>
     <ul class="list">
       {
-        pieces.map((entry) => (
+        talks.map((entry) => (
           <li>
             <a href={`/writing/${entry.id}`}>
-              <span class="list-meta">
-                {entry.data.kind === 'talk' ? 'Talk' : 'Writing'}
-                {entry.data.placeholder ? ' · draft slot' : ''}
-              </span>
               <span class="list-title">{entry.data.title}</span>
+              <span class="list-meta">{entry.data.venue}</span>
             </a>
           </li>
         ))
       }
     </ul>
-    <p><a href="/writing">All writing and talks →</a></p>
+  </section>
+
+  <section class="section" aria-labelledby="writing-heading">
+    <h2 id="writing-heading">Writing</h2>
+    <ul class="list">
+      {
+        writing.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.id}`}>
+              <span class="list-title">{entry.data.title}</span>
+              <span class="list-meta">
+                {entry.data.placeholder ? 'Draft slot' : entry.data.description}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="more"><a href="/writing">All writing and talks</a></p>
   </section>
 
   <section class="section" aria-labelledby="now-heading">
     <h2 id="now-heading">Now</h2>
     <p>
-      <span class="placeholder">[TODO: now — last updated]</span>
-      Working snapshot lives on <a href="/now">/now</a>.
+      A current snapshot lives on <a href="/now">/now</a>.
     </p>
-  </section>
-
-  <section class="section">
-    <div class="cta">
-      <h2>Talk about Agent Experience</h2>
-      <p>
-        Open to conversations about platform, DX, and AI engineering leadership.
-        <a href={`mailto:${site.email}`}>{site.email}</a>
-      </p>
-    </div>
   </section>
 </BaseLayout>

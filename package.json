@@ -11,8 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "pages:dev": "npm run build && wrangler pages dev dist",
-    "pages:deploy": "npm run build && wrangler pages deploy dist --project-name=kylecesmat"
+    "pages:dev": "npm run build && wrangler pages dev dist"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

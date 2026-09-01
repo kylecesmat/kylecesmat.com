@@ -27,7 +27,6 @@ const archive = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     kind: z.enum(['project', 'talk']),
-    era: z.string(),
     venue: z.string().optional(),
     externalUrl: z.url().optional(),
   }),

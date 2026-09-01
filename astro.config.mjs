@@ -7,4 +7,7 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'never',
   integrations: [mdx(), sitemap()],
+  redirects: {
+    '/currently': '/now',
+  },
 });

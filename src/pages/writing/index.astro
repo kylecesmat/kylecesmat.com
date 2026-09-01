@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const pieces = (await getCollection('pieces'))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title="Writing & talks"
+  description="Writing and talks from Kyle Cesmat on Agent Experience, developer experience, platform engineering, and AI coding workflows."
+>
+  <header class="hero">
+    <p class="eyebrow">Index</p>
+    <h1 class="page-title">Writing & talks</h1>
+    <p class="subhead">
+      MDX in this repo. Placeholder slots are marked until full copy lands.
+    </p>
+  </header>
+
+  <section class="section" aria-labelledby="pieces-heading">
+    <h2 id="pieces-heading" class="visually-hidden">Entries</h2>
+    <ul class="list">
+      {
+        pieces.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.id}`}>
+              <span class="list-meta">
+                {entry.data.date.toISOString().slice(0, 10)}
+                {' · '}
+                {entry.data.kind === 'talk' ? 'Talk' : 'Writing'}
+                {entry.data.venue ? ` · ${entry.data.venue}` : ''}
+                {entry.data.placeholder ? ' · draft slot' : ''}
+              </span>
+              <span class="list-title">{entry.data.title}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

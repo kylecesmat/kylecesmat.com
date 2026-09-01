@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const pieces = await getCollection('pieces');
+  return pieces.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, date, kind, venue, placeholder, externalUrl } = entry.data;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="prose">
+    <p class="eyebrow">{kind === 'talk' ? 'Talk' : 'Writing'}</p>
+    <h1>{title}</h1>
+    <p class="meta">
+      <time datetime={date.toISOString()}>{date.toISOString().slice(0, 10)}</time>
+      {venue ? ` · ${venue}` : ''}
+      {placeholder ? ' · draft slot' : ''}
+    </p>
+    {externalUrl ? (
+      <p>
+        <a href={externalUrl} rel="noopener noreferrer" target="_blank">
+          External link
+        </a>
+      </p>
+    ) : null}
+    <Content />
+  </article>
+</BaseLayout>

@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const items = (await getCollection('archive')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const projects = items.filter((item) => item.data.kind === 'project');
+const talks = items.filter((item) => item.data.kind === 'talk');
+---
+
+<BaseLayout
+  title="Archive"
+  description="Archived Formidable-era projects and 2017–2019 meetup talks from Kyle Cesmat."
+>
+  <header class="hero">
+    <p class="eyebrow">Archive</p>
+    <h1 class="page-title">Earlier work</h1>
+    <p class="subhead">
+      Formidable consulting projects and Phoenix meetup talks, kept off the primary
+      nav. Details were always light because of NDAs.
+    </p>
+  </header>
+
+  <section class="section" aria-labelledby="projects-heading">
+    <h2 id="projects-heading">Formidable-era projects</h2>
+    <ul class="list">
+      {
+        projects.map((entry) => (
+          <li>
+            <div class="list-row">
+              <span class="list-title">{entry.data.title}</span>
+              <span class="list-meta">
+                {entry.data.era}
+                {' · '}
+                {entry.data.description}
+              </span>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="talks-heading">
+    <h2 id="talks-heading">Meetup talks, 2017–2019</h2>
+    <ul class="list">
+      {
+        talks.map((entry) => (
+          <li>
+            {entry.data.externalUrl ? (
+              <a href={entry.data.externalUrl} rel="noopener noreferrer" target="_blank">
+                <span class="list-title">{entry.data.title}</span>
+                <span class="list-meta">
+                  {entry.data.venue}
+                  {' · '}
+                  {entry.data.era}
+                </span>
+              </a>
+            ) : (
+              <div class="list-row">
+                <span class="list-title">{entry.data.title}</span>
+                <span class="list-meta">
+                  {entry.data.venue}
+                  {' · '}
+                  {entry.data.era}
+                </span>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

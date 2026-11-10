@@ -13,6 +13,8 @@ const updated = new Intl.DateTimeFormat('en-US', {
 <!--
   What I am up to now, from src/data/current.ts: a short table, the label in
   the margin column the home page keeps its dates in and the words beside it.
+  The Listening row is not one of those. The browser fills it from
+  /api/listening, and it stays hidden when that request has no track.
 -->
 <BaseLayout title="Currently" description="What Kyle Cesmat is building, doing and into right now.">
   <article class="flex flex-col gap-8 pt-8 md:gap-10 md:pt-12">
@@ -34,7 +36,57 @@ const updated = new Intl.DateTimeFormat('en-US', {
           </div>
         ))
       }
+      <div
+        id="listening"
+        hidden
+        class="grid gap-x-12 gap-y-1 border-t border-border py-4 @2xl:grid-cols-[10rem_1fr] @2xl:items-baseline"
+      >
+        <dt class="text-sm text-muted-foreground @2xl:text-right">Listening</dt>
+        <dd class="max-w-prose text-lg leading-relaxed text-pretty">
+          Last played <a
+            id="listening-link"
+            class="link-mark py-2 text-foreground"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span id="listening-title"></span><span class="sr-only"> (opens in new tab)</span></a
+          > by <span id="listening-by"></span>.
+        </dd>
+      </div>
     </dl>
+    <script>
+      import { isSpotifyTrackUrl } from '../lib/spotify-track';
+
+      const row = document.getElementById('listening');
+      const link = document.getElementById('listening-link');
+      const title = document.getElementById('listening-title');
+      const by = document.getElementById('listening-by');
+      if (
+        row instanceof HTMLElement &&
+        link instanceof HTMLAnchorElement &&
+        title instanceof HTMLElement &&
+        by instanceof HTMLElement
+      ) {
+        fetch('/api/listening', { headers: { accept: 'application/json' } })
+          .then((res) => (res.status === 200 ? res.json() : null))
+          .then((data: unknown) => {
+            if (!data || typeof data !== 'object') return;
+            const record = data as { title?: unknown; artist?: unknown; url?: unknown };
+            if (
+              typeof record.title !== 'string' ||
+              typeof record.artist !== 'string' ||
+              typeof record.url !== 'string'
+            ) {
+              return;
+            }
+            if (!record.title || !record.artist || !isSpotifyTrackUrl(record.url)) return;
+            title.textContent = record.title;
+            by.textContent = record.artist;
+            link.href = record.url;
+            row.hidden = false;
+          })
+          .catch(() => {});
+      }
+    </script>
     <p>
       <a href="/" class="link-quiet link-arrow py-2 text-sm">Back to the home page</a>
     </p>

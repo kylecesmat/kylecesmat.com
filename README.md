@@ -26,9 +26,28 @@ Everything on the pages comes from four files, and `/llms.txt` is built from the
 - `src/data/site.ts`: name, page title and description, the introduction, email, profiles, the small links in the header and footer, the footer's place
 - `src/data/work.ts`: companies, roles, dates, education. Each role has an `impact`, a sentence or two on what it came to
 - `src/data/talks.ts`: articles, podcasts, talks and press
-- `src/data/current.ts`: the rows on `/current` and the month they were last updated
+- `src/data/current.ts`: the rows on `/current` and the month they were last updated. The Listening row is not one of these; see below.
 
 Dates are `YYYY-MM`; a malformed one fails the build. The text fields take inline Markdown links, `**strong**` and `_emphasis_`; a link that starts with `/` stays on the site.
+
+## Last played
+
+`/current` asks `/api/listening` for the last Spotify track and, when one comes back, adds a Listening row. Until then the row stays hidden. The track is not in `src/data/current.ts` or `/llms.txt`. The function keeps a response for fifteen minutes.
+
+It needs three Pages secrets: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, and `SPOTIFY_REFRESH_TOKEN`. With any of them unset, the function answers `204`.
+
+Create a Spotify app in Development mode (the owner needs Premium) and register the redirect `http://127.0.0.1:8788/callback`. From the repo root:
+
+```bash
+SPOTIFY_CLIENT_ID=... SPOTIFY_CLIENT_SECRET=... node scripts/spotify-auth.mjs
+npx wrangler pages secret put SPOTIFY_CLIENT_ID --project-name=kylecesmat
+npx wrangler pages secret put SPOTIFY_CLIENT_SECRET --project-name=kylecesmat
+npx wrangler pages secret put SPOTIFY_REFRESH_TOKEN --project-name=kylecesmat
+```
+
+Open the URL the script prints and approve access. The refresh token is printed in the terminal, not in the browser. Add `--env preview` to each `secret put` for preview deployments. Set the secrets before the next deploy; a deployment that went out without them keeps answering `204` until the next one.
+
+For `npm run pages:dev`, copy `.dev.vars.example` to `.dev.vars` and fill in the same three names. The script writes `.dev.vars` when that file does not exist yet.
 
 ## Design
 

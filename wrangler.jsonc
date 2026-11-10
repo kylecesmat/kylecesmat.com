@@ -4,5 +4,9 @@
   "compatibility_date": "2026-09-01",
   // Production is the Pages project `kylecesmat`. GitHub Actions deploys
   // `dist/` and attaches kylecesmat.com. Nameservers stay on Cloudflare.
-  "pages_build_output_dir": "./dist"
+  "pages_build_output_dir": "./dist",
+  // /api/listening. Values are Pages secrets and .dev.vars, not this file.
+  "secrets": {
+    "required": ["SPOTIFY_CLIENT_ID", "SPOTIFY_CLIENT_SECRET", "SPOTIFY_REFRESH_TOKEN"],
+  },
 }

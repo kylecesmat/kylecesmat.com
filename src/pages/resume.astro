@@ -1,0 +1,186 @@
+---
+import ContactLine from '../components/ContactLine.astro';
+import DateRange from '../components/DateRange.astro';
+import { INTRO, SITE_NAME } from '../data/site';
+import { KIND_LABEL, talks } from '../data/talks';
+import { companies, education } from '../data/work';
+import { monthLabel, periodLabel } from '../lib/dates';
+import { inlineMarkdown } from '../lib/inline-markdown';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pieces = [...talks].sort((a, b) => b.date.localeCompare(a.date));
+
+const row = 'grid gap-x-12 @2xl:grid-cols-[10rem_1fr] @2xl:items-baseline print:gap-x-8';
+const margin = 'text-sm text-muted-foreground @2xl:text-right @2xl:whitespace-nowrap';
+---
+
+<!--
+  The resume: the same work history as the home page, told in full. It is
+  built from the same data files, so the two cannot disagree, and it is laid
+  out to print: on paper the page's heading is the name, the site's bar and
+  footer are left off, and every panel is simply written out.
+-->
+<BaseLayout
+  title="Resume"
+  description={`${SITE_NAME}’s resume: work history, writing and talks, and education.`}
+>
+  <article class="print-as-is flex flex-col gap-10 pt-8 md:pt-12 print:gap-6 print:pt-0">
+    <header class="flex flex-col gap-4">
+      <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+        <h1 class="text-3xl font-semibold md:text-[2.5rem]/none">
+          <span class="print:hidden">Resume</span>
+          <span class="hidden print:inline">{SITE_NAME}</span>
+        </h1>
+        <!-- Shown by the script below; without it there is nothing to press. -->
+        <button
+          type="button"
+          hidden
+          data-print
+          class="inline-flex h-10 items-center gap-2 rounded-full border border-border px-4 text-sm font-medium outline-hidden transition-colors hover:border-mark hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background print:hidden"
+        >
+          Print or save as PDF
+        </button>
+      </div>
+      <ContactLine />
+      <p
+        class="max-w-prose text-lg leading-relaxed text-pretty print:max-w-none print:text-base [&_strong]:font-semibold"
+        set:html={inlineMarkdown(`${INTRO.lede} ${INTRO.work}`)}
+      />
+    </header>
+
+    <section
+      aria-labelledby="experience-heading"
+      class="@container flex flex-col gap-6 print:gap-4"
+    >
+      <h2 id="experience-heading" class="heading-section">Experience</h2>
+      {
+        companies.map((company) => (
+          <div class="flex flex-col gap-4 border-t border-border pt-5 print:gap-3 print:pt-4">
+            <div class={row}>
+              <p class:list={[margin, 'font-semibold']}>
+                <DateRange start={company.start} end={company.end} />
+              </p>
+              <div>
+                <h3 class="text-lg font-semibold">{company.name}</h3>
+                {company.summary && (
+                  <p
+                    class="max-w-prose text-sm text-muted-foreground"
+                    set:html={inlineMarkdown(company.summary)}
+                  />
+                )}
+              </div>
+            </div>
+            {company.entries.map((entry) => {
+              const points = entry.detail?.length
+                ? entry.detail
+                : entry.impact
+                  ? [entry.impact]
+                  : [];
+              return (
+                <div class={row}>
+                  <p class={margin}>
+                    {periodLabel(entry) && <DateRange start={entry.start} end={entry.end} />}
+                  </p>
+                  <div class="flex flex-col gap-1.5">
+                    <h4 class="font-medium print:break-after-avoid">
+                      {entry.title}
+                      {entry.subtitle && (
+                        <span class="block font-semibold text-primary @2xl:inline">
+                          <span class="hidden font-normal text-muted-foreground @2xl:inline">
+                            {' '}
+                            ·{' '}
+                          </span>
+                          {entry.subtitle}
+                        </span>
+                      )}
+                    </h4>
+                    {points.length > 0 && (
+                      <ul class="max-w-prose list-disc space-y-1.5 pl-4 text-sm leading-relaxed marker:text-muted-foreground/60 print:max-w-none print:space-y-0.5 print:leading-normal">
+                        {points.map((point) => (
+                          <li class="print:break-inside-avoid">
+                            <p set:html={inlineMarkdown(point)} />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))
+      }
+    </section>
+
+    <section
+      aria-labelledby="resume-talks-heading"
+      class="@container flex flex-col gap-4 print:gap-3"
+    >
+      <h2 id="resume-talks-heading" class="heading-section">Writing &amp; Talks</h2>
+      <ul class="flex flex-col gap-3 border-t border-border pt-5 print:gap-1.5 print:pt-4">
+        {
+          pieces.map((piece) => (
+            <li class:list={[row, 'print:break-inside-avoid']}>
+              <p class={margin}>
+                <time datetime={piece.date}>{monthLabel(piece.date)}</time>
+              </p>
+              <p class="text-sm">
+                {piece.url ? (
+                  <a
+                    href={piece.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link-mark py-1 font-medium"
+                  >
+                    {piece.title}
+                    <span class="sr-only"> (opens in new tab)</span>
+                  </a>
+                ) : (
+                  <span class="font-medium">{piece.title}</span>
+                )}
+                <span class="text-muted-foreground">
+                  {' '}
+                  · {KIND_LABEL[piece.kind]}, {piece.venue}
+                </span>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {
+      education.length > 0 && (
+        <section
+          aria-labelledby="resume-education-heading"
+          class="@container flex flex-col gap-4 print:gap-3"
+        >
+          <h2 id="resume-education-heading" class="heading-section">
+            Education
+          </h2>
+          <ul class="flex flex-col gap-3 border-t border-border pt-5 print:pt-4">
+            {education.map((item) => (
+              <li class={row}>
+                <p class:list={[margin, 'figures']}>
+                  {item.startYear}&nbsp;–&nbsp;{item.endYear}
+                </p>
+                <p>
+                  <span class="font-medium">{item.school}</span>
+                  <span class="text-sm text-muted-foreground"> · {item.degree}</span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-print]');
+  if (button) {
+    button.hidden = false;
+    button.addEventListener('click', () => window.print());
+  }
+</script>

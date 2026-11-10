@@ -1,0 +1,18 @@
+---
+import { INTRO } from '../data/site';
+import { inlineMarkdown } from '../lib/inline-markdown';
+---
+
+<!--
+  The introduction, from src/data/site.ts: the one line that says what I do,
+  then the paragraph that places it.
+-->
+<div class="flex w-full flex-col gap-5">
+  <p class="lede max-w-prose text-[1.75rem]/[1.2] font-medium text-balance md:text-[2rem]/[1.15]">
+    {INTRO.lede}
+  </p>
+  <p
+    class="max-w-prose text-lg leading-relaxed text-pretty [&_strong]:font-semibold [&_strong]:text-primary"
+    set:html={inlineMarkdown(`${INTRO.work} ${INTRO.life}`)}
+  />
+</div>

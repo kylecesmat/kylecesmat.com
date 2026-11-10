@@ -1,0 +1,48 @@
+---
+import { KIND_LABEL, talks } from '../data/talks';
+import { monthLabel } from '../lib/dates';
+
+/** Newest first; `YYYY-MM` strings order correctly as text. */
+const pieces = [...talks].sort((a, b) => b.date.localeCompare(a.date));
+---
+
+<!--
+  One row per piece from src/data/talks.ts: the title (linked when there is
+  somewhere to send people), then what kind of thing it is and where it ran,
+  in words. The date is the row's margin note: beside the title in the same
+  column as the work history's dates when the section is wide, at the end of
+  the second line when it is narrow. Pointing at a row dims the others (see
+  `dim-others` in global.css), and a linked title shows where it leads.
+-->
+<section aria-labelledby="talks-heading" class="flex w-full flex-col gap-2">
+  <h2 id="talks-heading" class="heading-section">Writing &amp; Talks</h2>
+  <ul class="dim-others @container flex flex-col">
+    {
+      pieces.map((piece) => (
+        <li class="grid grid-cols-[1fr_auto] items-baseline gap-x-4 py-2.5 first:pt-1 last:pb-0 @2xl:grid-cols-[10rem_1fr] @2xl:gap-x-12">
+          <p class="col-span-full font-semibold @2xl:col-span-1 @2xl:col-start-2">
+            {piece.url ? (
+              <a
+                href={piece.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-mark link-arrow py-1"
+              >
+                {piece.title}
+                <span class="sr-only"> (opens in new tab)</span>
+              </a>
+            ) : (
+              piece.title
+            )}
+          </p>
+          <p class="col-start-1 row-start-2 text-sm text-muted-foreground @2xl:col-start-2">
+            {KIND_LABEL[piece.kind]} · {piece.venue}
+          </p>
+          <p class="col-start-2 row-start-2 text-sm whitespace-nowrap text-muted-foreground @2xl:col-start-1 @2xl:row-start-1 @2xl:text-right">
+            <time datetime={piece.date}>{monthLabel(piece.date)}</time>
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

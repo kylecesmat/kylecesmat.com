@@ -1,0 +1,14 @@
+---
+import type { Period } from '../data/work';
+import { periodView } from '../lib/dates';
+
+type Props = Period;
+
+const { start, end } = periodView(Astro.props);
+---
+
+{start && !end && 'From '}
+{!start && end?.iso && 'Until '}
+{start && <time datetime={start.iso}>{start.label}</time>}
+{start && end && '\u00a0–\u00a0'}
+{end && (end.iso ? <time datetime={end.iso}>{end.label}</time> : end.label)}

@@ -1,0 +1,33 @@
+---
+import { CONTACT_EMAIL, PLACE, PROFILES } from '../data/site';
+
+/** "linkedin.com/in/kylecesmat": the address as someone would type it. */
+const bare = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+
+const site = new URL('/', Astro.site).href;
+const profiles = PROFILES.filter((profile) => profile.name !== 'Twitter');
+---
+
+<!--
+  A letterhead line: where I am and how to reach me, with every address
+  written out, since on paper a link's text is all there is.
+-->
+<p class="flex flex-wrap gap-x-4 text-sm text-muted-foreground">
+  <span class="py-1">{PLACE.short}</span>
+  <a href={`mailto:${CONTACT_EMAIL}`} class="link-mark py-1 text-foreground">{CONTACT_EMAIL}</a>
+  <a href={site} class="link-mark print-as-is py-1 text-foreground">{bare(site)}</a>
+  {
+    profiles.map((profile) => (
+      <a
+        href={profile.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        translate="no"
+        class="link-mark print-as-is py-1 text-foreground"
+      >
+        {bare(profile.url)}
+        <span class="sr-only"> (opens in new tab)</span>
+      </a>
+    ))
+  }
+</p>

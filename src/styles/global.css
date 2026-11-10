@@ -1,37 +1,650 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@import 'tailwindcss';
+
+/* The theme script toggles a `dark` class on <html>; keep `dark:` bound to it
+   rather than to prefers-color-scheme. */
+@custom-variant dark (&:is(.dark *));
+
+/* Arial resized to Inter's metrics, so text does not reflow when the web
+   font swaps in. The width is matched at body sizes (16–18px), where most of
+   the text is and where Inter's optical-size axis makes it 5% wider than
+   Arial; the ascent and descent are Inter's own, divided by that factor. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 92.26%;
+  descent-override: 22.97%;
+  line-gap-override: 0%;
+  size-adjust: 105%;
 }
 
-html {
-  color-scheme: light;
+/*
+ * Design tokens. The palette is OKLCH so every tint is a true lightness step
+ * of one hue: change --accent-hue and the whole palette moves with it.
+ * `@theme inline` maps the tokens to Tailwind's colour names by reference, so
+ * utilities compile to var(--x) directly and a class swap flips every colour.
+ */
+@theme inline {
+  --font-sans:
+    'Inter Variable', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-mark: var(--mark);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
-body {
-  margin: 0 auto;
-  max-width: 40rem;
-  padding: 1.5rem;
-  font-family: system-ui, sans-serif;
-  line-height: 1.5;
-  color: #111;
-  background: #fff;
+/*
+ * One accent, green, in two strengths. --primary is the one text may use: in
+ * light mode it is dark enough to read on white (5.6:1). --mark is for ink
+ * beside text: the stroke under a link, a dot on the timeline. It is the
+ * previous site's bright green (#00c805) deepened just far enough to hold
+ * 3:1 against white, since a link's stroke is the only thing that says it is
+ * a link; on the dark page the bright green already clears that. The
+ * surfaces are a lightness ramp of the same hue. color-scheme tells the
+ * browser which theme is on, so scrollbars and form controls match it.
+ */
+@layer base {
+  :root {
+    color-scheme: light;
+    --accent-hue: 145;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(0.99 0.006 var(--accent-hue));
+    --card-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.5 0.16 var(--accent-hue));
+    --primary-foreground: oklch(1 0 0);
+    --mark: oklch(0.62 0.2 calc(var(--accent-hue) - 2));
+    --link-fill: color-mix(in oklch, var(--mark) 30%, transparent);
+    --muted: oklch(0.965 0.012 var(--accent-hue));
+    --muted-foreground: oklch(0.51 0 0);
+    --accent: oklch(0.91 0.035 var(--accent-hue));
+    --accent-foreground: oklch(0.205 0 0);
+    --border: oklch(0.9 0.02 var(--accent-hue));
+    --input: oklch(0.9 0.02 var(--accent-hue));
+    --ring: oklch(0.5 0.16 var(--accent-hue));
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: oklch(0.183 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.215 0.012 var(--accent-hue));
+    --card-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.82 0.19 var(--accent-hue));
+    --primary-foreground: oklch(0.225 0.044 var(--accent-hue));
+    --mark: oklch(0.78 0.22 calc(var(--accent-hue) - 2.5));
+    --link-fill: color-mix(in oklch, var(--mark) 40%, transparent);
+    --muted: oklch(0.25 0.019 var(--accent-hue));
+    --muted-foreground: oklch(0.715 0 0);
+    --accent: oklch(0.344 0.05 var(--accent-hue));
+    --accent-foreground: oklch(0.985 0 0);
+    --border: oklch(0.365 0.03 var(--accent-hue));
+    --input: oklch(0.365 0.03 var(--accent-hue));
+    --ring: oklch(0.82 0.19 var(--accent-hue));
+  }
 }
 
-.skip-link {
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Grayscale antialiasing in both themes: macOS otherwise renders light
+       text on dark heavier than dark on light, and the switch looks like a
+       change of weight. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  /* Inter is drawn loose for small sizes. Large type is set tighter, the
+     more so the larger it is; the font's optical-size axis does the rest. */
+  h1,
+  .lede {
+    letter-spacing: -0.035em;
+  }
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+  /* Dates sit in a column and are compared down it, so their figures are
+     all one width. */
+  time,
+  .figures {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  ::selection {
+    background-color: var(--link-fill);
+  }
+  /* The header bar sticks to the top, so an anchor jump or a focus scroll
+     leaves this much room above the target instead of hiding it under the bar. */
+  html {
+    scroll-padding-top: 4.5rem;
+  }
+  [id] {
+    scroll-margin-top: 4.5rem;
+  }
+  a,
+  button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: color-mix(in oklch, var(--primary) 20%, transparent);
+  }
+}
+
+/*
+ * Links are marked the way the previous site marked them: a stroke of green
+ * under the text, and a highlighter that is drawn across it on hover or
+ * focus. The text keeps the body colour, so reading a link never depends on
+ * coloured text; the stroke is the cue, which is why --mark holds 3:1
+ * against the page. Both are placed against the text itself, not the padding
+ * that enlarges the link's touch target, and box-decoration-break gives
+ * every line of a wrapped link its own.
+ *
+ * The highlighter is anchored to the right at rest and to the left while
+ * hovered, and only its width is animated: so it sweeps in from the left and
+ * leaves to the right, the way a pen would.
+ */
+@utility link-mark {
+  text-decoration-line: none;
+  background-image:
+    linear-gradient(var(--mark), var(--mark)), linear-gradient(var(--link-fill), var(--link-fill));
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-position:
+    0 94%,
+    100% 94%;
+  background-size:
+    100% max(0.09em, 1.5px),
+    0 88%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size var(--sweep);
+  &:hover,
+  &:focus-visible,
+  :is(a:hover, a:focus-visible) > & {
+    background-position:
+      0 94%,
+      0 94%;
+    background-size:
+      100% max(0.09em, 1.5px),
+      100% 88%;
+  }
+}
+
+/*
+ * The quiet link: the small ones at the top of the page and in the footer.
+ * A hairline in the text's own colour at rest; on hover or focus a green
+ * stroke is drawn over it with the same left-to-right sweep. Like link-mark
+ * it can sit on a span inside the link, so the link's padding (which makes
+ * neighbouring targets meet, and tall enough for a thumb) stays unmarked.
+ */
+@utility link-quiet {
+  text-decoration-line: none;
+  background-image:
+    linear-gradient(var(--mark), var(--mark)), linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-position:
+    100% 96%,
+    0 94%;
+  background-size:
+    0 2px,
+    100% 1px;
+  transition: background-size var(--sweep);
+  &:hover,
+  &:focus-visible,
+  :is(a:hover, a:focus-visible) > & {
+    background-position:
+      0 96%,
+      0 94%;
+    background-size:
+      100% 2px,
+      100% 1px;
+  }
+}
+
+@utility heading-section {
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+/*
+ * Hover, as a set. Each one answers the pointer with a small, quick move and
+ * none of them carries information: touch screens and keyboards lose
+ * nothing, and reduced motion (below) makes them instant.
+ */
+:root {
+  --sweep: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Pointing at one item in a list lets the others fall back. */
+.dim-others > * {
+  transition: opacity 200ms ease-out;
+}
+@media (hover: hover) {
+  .dim-others:has(> :hover) > :not(:hover) {
+    opacity: 0.45;
+  }
+}
+
+/*
+ * An arrow that slides in after a link to say where it leads: up and out for
+ * another site, straight on for a page here. It takes no room in the line,
+ * so the stroke under the link stops where the words do and nothing shifts
+ * when it appears.
+ */
+.link-arrow::after {
+  content: '';
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: -1em;
+  margin-left: 0.3em;
+  background-color: var(--primary);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 18 18 6M8 6h10v10'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  opacity: 0;
+  translate: -0.3em 0.3em;
+  transition:
+    opacity 200ms ease-out,
+    translate var(--sweep);
+}
+.link-arrow[href^='/']::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h16M13 5l7 7-7 7'/%3E%3C/svg%3E");
+  translate: -0.4em 0;
+}
+.link-arrow:focus-visible::after {
+  opacity: 1;
+  translate: 0 0;
+}
+@media (hover: hover) {
+  .link-arrow:hover::after,
+  .dim-others > :hover .link-arrow::after {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* The portrait leans in. */
+.portrait {
+  transition:
+    rotate var(--spring),
+    scale var(--spring);
+}
+/* The sun turns and the moon tips. */
+[data-theme-toggle] svg {
+  transition: rotate var(--spring);
+}
+/* A company's row: its dot on the timeline swells, its logo tilts, and its
+   chevron leans the way a click would send the panel. */
+.timeline-dot {
+  transition:
+    scale var(--spring),
+    box-shadow 200ms ease-out;
+}
+[data-slot='accordion-trigger'] img {
+  transition:
+    rotate var(--spring),
+    scale var(--spring);
+}
+.accordion-chevron {
+  transition:
+    rotate 200ms ease-out,
+    translate 200ms ease-out;
+}
+[aria-expanded='true'] > .accordion-chevron {
+  rotate: 180deg;
+}
+@media (hover: hover) {
+  .portrait:hover,
+  a:hover > .portrait {
+    rotate: -6deg;
+    scale: 1.06;
+  }
+  [data-theme-toggle]:hover svg {
+    rotate: 45deg;
+  }
+  .dark [data-theme-toggle]:hover svg {
+    rotate: 90deg;
+  }
+  [data-slot='accordion-trigger']:hover {
+    color: var(--primary);
+  }
+  [data-slot='accordion-trigger']:hover img {
+    rotate: -8deg;
+    scale: 1.1;
+  }
+  [data-slot='accordion-trigger']:hover > .accordion-chevron {
+    translate: 0 3px;
+  }
+  [data-slot='accordion-trigger'][aria-expanded='true']:hover > .accordion-chevron {
+    translate: 0 -3px;
+  }
+  [data-slot='accordion-item']:has([data-slot='accordion-trigger']:hover) .timeline-dot {
+    scale: 1.5;
+    box-shadow:
+      0 0 0 3px var(--link-fill),
+      0 0 0 3px var(--background);
+  }
+}
+
+/*
+ * The footer is a small map of where I am: the contour lines again, a pin,
+ * and the two hairlines that cross at it. The image is dark lines on white,
+ * so it is multiplied into the panel (the white drops out) and, inverted,
+ * screened into the dark one. Pointing at the panel brings the lines up and
+ * sets the pin pulsing.
+ */
+.place {
+  /* Narrow: the map keeps to the top corner, clear of the legend. */
+  --pin-x: 84%;
+  --pin-y: 17%;
+  --map-rx: 44%;
+  --map-ry: 42%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: var(--muted);
+}
+@media (width >= 40rem) {
+  .place {
+    --pin-x: 78%;
+    --pin-y: 44%;
+    --map-rx: 52%;
+    --map-ry: 115%;
+  }
+}
+.place-contours,
+.place-cross {
   position: absolute;
-  left: -9999px;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.place-contours {
+  background-image: var(--topo-image);
+  background-position: right -6rem top -9rem;
+  background-size: 44rem auto;
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+  /* Faded out around the pin, and again before the bottom row of links. */
+  mask-image:
+    radial-gradient(
+      ellipse var(--map-rx) var(--map-ry) at var(--pin-x) var(--pin-y),
+      black 15%,
+      transparent 85%
+    ),
+    linear-gradient(to bottom, black 62%, transparent 86%);
+  mask-composite: intersect;
+  transition: opacity 400ms ease-out;
+}
+.dark .place-contours {
+  filter: invert(1);
+  mix-blend-mode: screen;
+  opacity: 0.2;
+}
+.place-cross {
+  background-image:
+    linear-gradient(var(--mark), var(--mark)), linear-gradient(var(--mark), var(--mark));
+  background-repeat: no-repeat;
+  background-position:
+    0 var(--pin-y),
+    var(--pin-x) 0;
+  background-size:
+    100% 1px,
+    1px 100%;
+  opacity: 0.35;
+  mask-image: radial-gradient(
+    ellipse calc(var(--map-rx) * 0.8) calc(var(--map-ry) * 0.8) at var(--pin-x) var(--pin-y),
+    black,
+    transparent 85%
+  );
+}
+.place-pin {
+  position: absolute;
+  top: var(--pin-y);
+  left: var(--pin-x);
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: var(--mark);
+  box-shadow: 0 0 0 4px var(--link-fill);
+  translate: -50% -50%;
+}
+.place-pin::after {
+  content: '';
+  position: absolute;
+  inset: -0.25rem;
+  border: 1.5px solid var(--mark);
+  border-radius: 50%;
+  opacity: 0;
+}
+@media (hover: hover) {
+  .place:hover .place-contours {
+    opacity: 0.36;
+  }
+  .dark .place:hover .place-contours {
+    opacity: 0.34;
+  }
+  .place:hover .place-pin::after {
+    animation: place-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+@keyframes place-ping {
+  from {
+    scale: 0.6;
+    opacity: 0.9;
+  }
+  to {
+    scale: 3;
+    opacity: 0;
+  }
 }
 
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
+/*
+ * The contour lines from the previous site, behind the top of the page, and
+ * faded out before the first paragraph. The image is dark lines on white:
+ * at this opacity the white vanishes into a white page, and inverted it
+ * vanishes into a dark one, so the lines follow the theme. Kept faint enough
+ * to be texture: nothing has to be read through it.
+ */
+.topo {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 26rem;
+  pointer-events: none;
+  background-image: var(--topo-image);
+  background-position: center top;
+  background-size: 50rem auto;
+  opacity: 0.09;
+  mask-image: linear-gradient(to bottom, black 30%, transparent);
+}
+.dark .topo {
+  filter: invert(1);
 }
 
-header {
-  margin-bottom: 2rem;
+/*
+ * The bar is clear over the contour lines at the top of the page and takes
+ * its translucent background as the page scrolls under it. On a page too
+ * short to scroll the timeline is inactive and the bar simply stays clear.
+ * Browsers without scroll-driven animations keep the background throughout.
+ */
+.site-bar {
+  background-color: color-mix(in oklch, var(--background) 85%, transparent);
+  backdrop-filter: blur(12px);
+}
+@supports (animation-timeline: scroll()) {
+  .site-bar {
+    background-color: transparent;
+    backdrop-filter: none;
+    animation: site-bar-fill linear both;
+    animation-range: 0 5rem;
+  }
+  /* Its own rule on purpose: the CSS minifier folds animation-timeline into
+     the shorthand above when they share one, and browsers reject that. */
+  header.site-bar {
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes site-bar-fill {
+  to {
+    background-color: color-mix(in oklch, var(--background) 85%, transparent);
+    backdrop-filter: blur(12px);
+  }
 }
 
-a {
-  color: #111;
+/* The agent view replaces the human sections. */
+html[data-view='agent'] .human-view {
+  display: none;
+}
+
+@media (forced-colors: active) {
+  a {
+    text-decoration: underline;
+  }
+}
+
+/*
+ * The timeline draws itself: as a row scrolls into view its stretch of line
+ * grows down from the dot and the dot fills with the accent, on the scroll
+ * timeline, off the main thread. Rows already past the range are simply
+ * drawn, so nothing moves on load. Only where the browser has scroll-driven
+ * animations and the visitor has not asked for reduced motion.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Both animations follow the dot's box, not the (possibly tall) row. */
+    .timeline-spine {
+      timeline-scope: --timeline-dot;
+    }
+    .timeline-dot-box {
+      view-timeline: --timeline-dot block;
+    }
+    .timeline-line {
+      transform-origin: top;
+      animation: timeline-draw linear both;
+      animation-range: entry 0% cover 30%;
+    }
+    .timeline-dot {
+      animation: timeline-fill linear both;
+      animation-range: entry 0% entry 100%;
+    }
+    /* Their own rules on purpose: the CSS minifier folds animation-timeline
+       into the shorthand when they share one, and browsers reject that. */
+    .timeline-spine .timeline-line,
+    .timeline-spine .timeline-dot {
+      animation-timeline: --timeline-dot;
+    }
+  }
+}
+@keyframes timeline-draw {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes timeline-fill {
+  from {
+    background-color: var(--border);
+  }
+  to {
+    background-color: var(--mark);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* A pulse cut to a hundredth of a millisecond is a flicker; drop it. */
+  .place:hover .place-pin::after {
+    animation: none;
+  }
+}
+
+/* On paper: black on white, the timeline simply drawn, external link targets
+   written out. */
+/* The page's own margins on paper; the column's padding is dropped there. */
+@page {
+  margin: 14mm 16mm;
+}
+@media print {
+  /* Paper holds more than a screen at arm's length: everything is sized in
+     rem, so this scales the whole page down together. */
+  html {
+    font-size: 13px;
+  }
+  :root,
+  .dark {
+    color-scheme: light;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0 0 0);
+    --primary: oklch(0 0 0);
+    --mark: oklch(0 0 0);
+    --link-fill: transparent;
+    --muted: oklch(1 0 0);
+    --muted-foreground: oklch(0.35 0 0);
+    --accent: oklch(1 0 0);
+    --border: oklch(0.65 0 0);
+  }
+  .timeline-line,
+  .timeline-dot {
+    animation: none;
+  }
+  .topo {
+    display: none;
+  }
+  .link-arrow::after {
+    display: none;
+  }
+  /* Backgrounds do not print, so the stroke under a link would be lost. */
+  a {
+    text-decoration: underline;
+  }
+  /* A link's target is written out after it, except where the text already
+     is the address. */
+  a[href^='http']:not(.print-as-is)::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    font-weight: 400;
+    word-break: break-all;
+  }
 }

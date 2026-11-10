@@ -1,0 +1,76 @@
+---
+const options = [
+  { value: 'human', title: 'View the page as a person sees it' },
+  { value: 'agent', title: 'View the page as an agent receives it' },
+];
+---
+
+<!--
+  A two-way switch, human | agent. Flipping it swaps the page for the Markdown
+  an agent gets from /llms.txt (see AgentView.astro). The pressed state is
+  styled from aria-pressed, so the script only has to flip the attribute.
+  Each option's ::after reaches past the pill, so the target is 44px tall
+  while the pill stays the height of the bar's other marks.
+-->
+<div
+  role="group"
+  aria-label="View as"
+  class="flex h-8 items-center rounded-full border border-border p-0.5 font-mono text-xs print:hidden"
+>
+  {
+    options.map((option) => (
+      <button
+        type="button"
+        title={option.title}
+        data-view-option={option.value}
+        aria-pressed={option.value === 'human' ? 'true' : 'false'}
+        class="relative h-full rounded-full px-2.5 leading-none outline-hidden after:absolute after:inset-x-0 after:-inset-y-2.5 transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-[pressed=false]:text-muted-foreground aria-[pressed=false]:hover:text-foreground"
+      >
+        {option.value}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  type View = 'human' | 'agent';
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-view-option]');
+  const current = (): View =>
+    document.documentElement.dataset.view === 'agent' ? 'agent' : 'human';
+
+  function setView(next: View) {
+    if (next === 'agent') document.documentElement.dataset.view = 'agent';
+    else delete document.documentElement.dataset.view;
+    for (const button of buttons) {
+      button.setAttribute('aria-pressed', String(button.dataset.viewOption === next));
+    }
+    // The URL says which view is up, so a link can open the page as an agent
+    // sees it; replaceState keeps the switch out of the back button's history.
+    const url = new URL(window.location.href);
+    if (next === 'agent') url.searchParams.set('view', 'agent');
+    else url.searchParams.delete('view');
+    window.history.replaceState(window.history.state, '', url);
+    document.dispatchEvent(new CustomEvent('viewchange', { detail: next }));
+  }
+
+  function choose(next: View) {
+    if (next === current()) return;
+    const main = document.getElementById('main');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduce || !main) return setView(next);
+    // Only the main column cross-fades; the sticky bar stays put.
+    main.style.viewTransitionName = 'page-main';
+    document
+      .startViewTransition(() => setView(next))
+      .finished.finally(() => {
+        main.style.viewTransitionName = '';
+      });
+  }
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => choose(button.dataset.viewOption as View));
+  }
+
+  if (new URLSearchParams(window.location.search).get('view') === 'agent') setView('agent');
+</script>

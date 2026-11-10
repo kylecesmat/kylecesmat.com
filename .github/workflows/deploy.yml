@@ -10,10 +10,10 @@ concurrency:
   group: deploy-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Push to master deploys the production Pages branch and keeps
-# kylecesmat.com attached. Pull requests from this repository deploy
-# a preview. Dependabot and fork PRs cannot read Actions secrets, so
-# those deploys are skipped; merging to master still publishes.
+# Push to master deploys Cloudflare Pages. While the apex DNS still
+# points at GitHub Pages, that same build is published to gh-pages.
+# Pull requests from this repository deploy a Pages preview. Dependabot
+# and fork PRs cannot read Actions secrets, so those deploys are skipped.
 jobs:
   deploy:
     name: Deploy
@@ -55,16 +55,13 @@ jobs:
           echo "skipped=false" >> "$GITHUB_OUTPUT"
       - name: Attach kylecesmat.com
         id: domain
-        # Production pushes always reconcile the domain. This branch's pull
-        # request does it once, because workflow_dispatch is not available
-        # to the GitHub token that opens the pull request.
-        if: github.event_name != 'pull_request' || github.head_ref == 'cursor/cloudflare-pages-cd-4768'
+        if: github.event_name != 'pull_request'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node scripts/ensure-cloudflare-domain.mjs
       - name: Publish GitHub Pages
-        if: steps.domain.outputs.dns == 'github-pages' && (github.ref == 'refs/heads/master' || github.head_ref == 'cursor/cloudflare-pages-cd-4768')
+        if: steps.domain.outputs.dns == 'github-pages' && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

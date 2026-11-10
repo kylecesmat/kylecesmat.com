@@ -1,6 +1,6 @@
-import { CONTACT_EMAIL, PROFILES, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
-import { talks } from '../data/talks';
-import { companies, type Period } from '../data/work';
+import { CONTACT_EMAIL, INTRO, PROFILES, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
+import { KIND_LABEL, talks } from '../data/talks';
+import { companies, education, type Period } from '../data/work';
 import { monthLabel, periodLabel } from './dates';
 
 const dated = (period: Period) => {
@@ -19,7 +19,15 @@ export function buildLlmsText(site: URL): string {
     '',
     `> ${SITE_DESCRIPTION}`,
     '',
-    'The site is one page: a short introduction, a work history, talks, and ways to get in touch. This document is all of it as Markdown, served at `/llms.txt` and `/index.md`.',
+    'The site is one page: a short introduction, a work history, writing and talks, education, and ways to get in touch. This document is all of it as Markdown, served at `/llms.txt` and `/index.md`.',
+    '',
+    '## About',
+    '',
+    INTRO.lede,
+    '',
+    INTRO.work,
+    '',
+    INTRO.life,
     '',
     '## Links',
     '',
@@ -45,10 +53,15 @@ export function buildLlmsText(site: URL): string {
     while (lines.at(-1) === '') lines.pop();
   }
 
-  lines.push('', '## Talks', '');
+  lines.push('', '## Writing & Talks', '');
   for (const piece of talks) {
     const title = piece.url ? `[${piece.title}](${piece.url})` : piece.title;
-    lines.push(`- ${title}, ${piece.venue}, ${monthLabel(piece.date)}`);
+    lines.push(`- ${KIND_LABEL[piece.kind]}: ${title}, ${piece.venue}, ${monthLabel(piece.date)}`);
+  }
+
+  lines.push('', '## Education', '');
+  for (const item of education) {
+    lines.push(`- ${item.school}: ${item.degree}, ${item.startYear} – ${item.endYear}`);
   }
 
   return `${lines.join('\n')}\n`;

@@ -39,6 +39,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           BRANCH: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
         run: |
+          set -o pipefail
           if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
             echo "Cloudflare credentials are not available for this event."
             echo "Dependabot and fork pull requests cannot read Actions secrets."
@@ -52,6 +53,10 @@ jobs:
             --commit-hash="$GITHUB_SHA" \
             --commit-message="$GITHUB_SHA" 2>&1 | tee "$log"
           url=$(sed -n 's/.*\(https:\/\/[^[:space:]]*pages\.dev\).*/\1/p' "$log" | head -n 1)
+          if [ -z "$url" ]; then
+            echo "Wrangler finished without a pages.dev deployment URL."
+            exit 1
+          fi
           echo "deployment-url=${url}" >> "$GITHUB_OUTPUT"
           echo "skipped=false" >> "$GITHUB_OUTPUT"
       - name: Attach kylecesmat.com

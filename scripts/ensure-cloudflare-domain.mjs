@@ -75,6 +75,11 @@ function isGithubPagesAddress(record) {
   return false;
 }
 
+async function listDomains() {
+  const result = await cfOk(`/accounts/${accountId}/pages/projects/${PROJECT}/domains`);
+  return Array.isArray(result) ? result : [];
+}
+
 async function listAll(path) {
   const records = [];
   for (let page = 1; page <= 20; page += 1) {
@@ -162,9 +167,7 @@ async function ensureApexCname(zoneId, target) {
 }
 
 async function ensureDomain(name) {
-  const domains = await listAll(
-    `/accounts/${accountId}/pages/projects/${PROJECT}/domains`,
-  );
+  const domains = await listDomains();
   const existing = domains.find((domain) => domain.name === name);
   if (existing) {
     console.log(`Pages domain ${name} is ${existing.status}.`);
@@ -179,18 +182,16 @@ async function ensureDomain(name) {
 
 async function waitUntilActive(name) {
   for (let attempt = 1; attempt <= 8; attempt += 1) {
-    const domains = await listAll(
-      `/accounts/${accountId}/pages/projects/${PROJECT}/domains`,
-    );
+    const domains = await listDomains();
     const domain = domains.find((item) => item.name === name);
     const status = domain?.status ?? "missing";
-    console.log(`Domain ${name} status: ${status} (check ${attempt}/12)`);
+    console.log(`Domain ${name} status: ${status} (check ${attempt}/8)`);
     if (status === "active") return domain;
     if (status === "error" || status === "blocked" || status === "deactivated") {
       const detail = domain?.verification_data?.error_message || domain?.validation_data?.error_message;
       throw new Error(`Domain ${name} is ${status}${detail ? `: ${detail}` : ""}`);
     }
-    await new Promise((resolve) => setTimeout(resolve, 15000));
+    await new Promise((resolve) => setTimeout(resolve, 10000));
   }
   console.log(`Domain ${name} is not active yet. Certificate issuance can finish after DNS is in place.`);
 }

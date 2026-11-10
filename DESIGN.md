@@ -2,7 +2,7 @@
 
 What the redesign of this site settled, written so the next change keeps it. Each lesson says what to do, why, and where it lives in the code. The measurements are from the build that shipped; re-measure if the palette or the type changes.
 
-The direction came from three places: Edward Tufte's rules for ink, the previous kylecesmat.com, and two sites used as reference ([tonigemayel.com/about](https://tonigemayel.com/about), [clearing.co](https://www.clearing.co/)). The owner's own instruction was plain language and data-ink over decorative formatting.
+The direction came from three places: Edward Tufte's rules for ink, the previous kylecesmat.com, and two sites used as reference ([tonigemayel.com/about](https://tonigemayel.com/about), [clearing.co](https://www.clearing.co/)). The full list of sites looked at is `INSPIRATION.md`. The owner's own instruction was plain language and data-ink over decorative formatting.
 
 ## Say it in one line, then stop
 

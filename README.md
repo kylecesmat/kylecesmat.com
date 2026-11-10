@@ -53,7 +53,7 @@ For `npm run pages:dev`, copy `.dev.vars.example` to `.dev.vars` and fill in the
 
 The layout is adapted from an MIT-licensed open-source site, credited in `THIRD_PARTY_NOTICES.md`. The colours are in `src/styles/global.css`, all derived from `--accent-hue`. The contour lines behind the header and in the footer's map are `src/assets/topo.png`, from the previous version of this site. The hover effects are one block in `global.css`; they are skipped on touch screens and under reduced motion.
 
-`DESIGN.md` records the lessons the redesign settled: one column with one margin, ink that carries information, links marked by a stroke instead of coloured text, hover that says nothing new, and the checks that caught mistakes. Read it before changing the layout or the type.
+`DESIGN.md` records the lessons the redesign settled: one column with one margin, ink that carries information, links marked by a stroke instead of coloured text, hover that says nothing new, and the checks that caught mistakes. Read it before changing the layout or the type. `INSPIRATION.md` is the list of sites used as reference.
 
 ## Agent skills
 

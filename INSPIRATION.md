@@ -1,6 +1,6 @@
 # Inspiration
 
-Personal sites looked at while this one was rebuilt, and the one company site named with them. `DESIGN.md` is what the redesign kept. This file is where it was looked at.
+Personal sites looked at while this one was rebuilt, and the one company site named with them. The home page lists the same sites, from `src/data/inspiration.ts`. `DESIGN.md` is what the redesign kept. This file is why each one is here.
 
 Add an entry when a new site is used. Give the address, who it is, what was taken from it, and whether the page changed.
 
@@ -28,7 +28,7 @@ A personal site: name and title, writing, and a short list of projects. The Sept
 
 ### [Nick Beattie](https://nickbytes.com/)
 
-A personal site. Engineering at Coinbase. The homepage is a name, a line of history, and a long list of links. The September pass used it for the same quiet weight as attardi.org, and noted the link list as a possible "things I like" pattern. The list stayed an idea.
+A personal site. Engineering at Coinbase. The homepage is a name, a line of history, and a long list of links. The September pass used it for the same quiet weight as attardi.org, and noted the link list as a possible "things I like" pattern. The home page now lists these sites by name.
 
 ### [Nick Gavalas](https://ngavalas.com/)
 
@@ -38,4 +38,4 @@ A personal site written as one long lowercase letter about developer infrastruct
 
 ### [Paul Stamatiou](https://paulstamatiou.com/)
 
-A personal site that has run for about twenty years. Designer who codes, Head of Design at Sesame. Writing, photos, and a gear list. Added in November 2026. Nothing on this site has been changed from it yet.
+A personal site that has run for about twenty years. Designer who codes, Head of Design at Sesame. Writing, photos, and a gear list. Added in November 2026. The home page links to it. The layout has taken nothing from it yet.

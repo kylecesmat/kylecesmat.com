@@ -1,4 +1,5 @@
 import { CURRENT_UPDATED, current } from '../data/current';
+import { inspiration } from '../data/inspiration';
 import { CONTACT_EMAIL, INTRO, PROFILES, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
 import { KIND_LABEL, talks } from '../data/talks';
 import { companies, education, type Period } from '../data/work';
@@ -22,7 +23,7 @@ export function buildLlmsText(site: URL): string {
     '',
     `> ${SITE_DESCRIPTION}`,
     '',
-    'The home page is a short introduction, a work history in broad strokes, writing and talks, and education. This document is that page and the "currently" page as Markdown, served at `/llms.txt` and `/index.md`.',
+    'The home page is a short introduction, a work history in broad strokes, writing and talks, education, and sites used for inspiration. This document is that page and the "currently" page as Markdown, served at `/llms.txt` and `/index.md`.',
     '',
     '## About',
     '',
@@ -66,6 +67,11 @@ export function buildLlmsText(site: URL): string {
   lines.push('', '## Education', '');
   for (const item of education) {
     lines.push(`- ${item.school}: ${item.degree}, ${item.startYear} – ${item.endYear}`);
+  }
+
+  lines.push('', '## Inspiration', '');
+  for (const site of inspiration) {
+    lines.push(`- [${site.name}](${site.url}): ${site.note}`);
   }
 
   return `${lines.join('\n')}\n`;

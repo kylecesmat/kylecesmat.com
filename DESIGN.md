@@ -17,7 +17,7 @@ The page opens with what he does, in his words, before any title or employer. On
 
 Each fact is written once, in `src/data/`, and the pages, `/llms.txt` and the structured data all read from there. A second copy drifts the first time someone edits one of them.
 
-- Content changes are edits to `site.ts`, `work.ts`, `talks.ts` or `current.ts` and nothing else.
+- Content changes are edits to `site.ts`, `work.ts`, `talks.ts`, `current.ts` or `inspiration.ts` and nothing else.
 - `/current` is the page meant to change often. It is a list of rows and a month, and the page renders whatever is there.
 - Dates are `YYYY-MM`. A malformed one fails the build, which is cheaper than a wrong date on the page.
 - Leave a date out when it is unknown. Nothing on the page is a guess, and an omitted end reads as "not stated", which is the truth.

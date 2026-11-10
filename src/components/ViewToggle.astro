@@ -9,6 +9,8 @@ const options = [
   A two-way switch, human | agent. Flipping it swaps the page for the Markdown
   an agent gets from /llms.txt (see AgentView.astro). The pressed state is
   styled from aria-pressed, so the script only has to flip the attribute.
+  Each option's ::after reaches past the pill, so the target is 44px tall
+  while the pill stays the height of the bar's other marks.
 -->
 <div
   role="group"
@@ -22,7 +24,7 @@ const options = [
         title={option.title}
         data-view-option={option.value}
         aria-pressed={option.value === 'human' ? 'true' : 'false'}
-        class="h-full rounded-full px-2.5 leading-none outline-hidden transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-[pressed=false]:text-muted-foreground aria-[pressed=false]:hover:text-foreground"
+        class="relative h-full rounded-full px-2.5 leading-none outline-hidden after:absolute after:inset-x-0 after:-inset-y-2.5 transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-[pressed=false]:text-muted-foreground aria-[pressed=false]:hover:text-foreground"
       >
         {option.value}
       </button>

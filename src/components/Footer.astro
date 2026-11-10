@@ -1,25 +1,28 @@
 ---
-import { SITE_NAME, SOURCE_URL } from '../data/site';
-
-const linkClass =
-  'py-2 underline decoration-border underline-offset-4 transition-colors hover:decoration-primary';
+import { CONTACT_EMAIL, SOURCE_URL } from '../data/site';
 ---
 
-<footer class="mt-auto w-full pt-16 pb-8 text-center">
-  <p class="text-base text-muted-foreground">
-    Built with <span aria-hidden="true">🤍</span> by{' '}
+<!-- The previous site's sign-off, then the two things a curious visitor or an
+     agent might want: the source and the Markdown. -->
+<footer
+  class="mx-auto mt-auto w-full max-w-3xl px-8 pt-20 pb-10 text-center text-sm text-muted-foreground"
+>
+  <p>
+    Thanks for visiting.{' '}
+    <a href={`mailto:${CONTACT_EMAIL}`} class="link-mark py-1 text-foreground">Send me an email</a>
+    {' '}if you’d like to say hello.
+  </p>
+  <p class="mt-4">
     <a
       href={SOURCE_URL}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`${SITE_NAME} — source on GitHub (opens in new tab)`}
-      class:list={[linkClass, 'font-semibold text-primary']}
+      class="link-mark py-1 text-foreground"
     >
-      {SITE_NAME}
+      Source on GitHub<span class="sr-only"> (opens in new tab)</span>
     </a>
-  </p>
-  <p class="mt-2 text-sm text-muted-foreground">
+    <span aria-hidden="true"> · </span>
     For agents:{' '}
-    <a href="/llms.txt" class:list={[linkClass, 'font-mono hover:text-foreground']}>/llms.txt</a>
+    <a href="/llms.txt" class="link-mark py-1 font-mono text-foreground">/llms.txt</a>
   </p>
 </footer>

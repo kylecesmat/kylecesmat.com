@@ -8,7 +8,7 @@ const ESCAPES: Record<string, string> = {
 
 const escapeHtml = (text: string) => text.replace(/[&<>"']/g, (char) => ESCAPES[char]);
 
-const LINK_CLASS = 'py-2 text-primary underline underline-offset-4 hover:decoration-2';
+const LINK_CLASS = 'link-mark py-2 text-foreground';
 
 const LINK = String.raw`\[([^\]]+)\]\(([^)\s]+)\)`;
 

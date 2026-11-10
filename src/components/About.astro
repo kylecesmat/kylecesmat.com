@@ -5,17 +5,18 @@ import { inlineMarkdown } from '../lib/inline-markdown';
 
 <!--
   The introduction, from src/data/site.ts: what I do first, then where, then
-  the rest of life. The email lives in Connect, so nothing is repeated here.
+  the rest of life, each a step quieter than the one before. The email lives
+  in Connect, so nothing is repeated here.
 -->
-<div class="flex w-full flex-col gap-4 px-1 xl:px-0">
-  <p class="max-w-prose text-xl leading-snug font-medium text-pretty md:leading-relaxed">
+<div class="flex w-full flex-col gap-4">
+  <p class="max-w-prose text-2xl leading-snug font-semibold tracking-tight text-balance">
     {INTRO.lede}
   </p>
   <p
-    class="max-w-prose text-lg leading-relaxed font-light text-pretty [&_strong]:font-semibold [&_strong]:text-primary"
+    class="max-w-prose text-lg leading-relaxed text-pretty [&_strong]:font-semibold [&_strong]:text-primary"
     set:html={inlineMarkdown(INTRO.work)}
   />
-  <p class="max-w-prose text-base leading-relaxed text-pretty text-muted-foreground">
+  <p class="max-w-prose leading-relaxed text-pretty text-muted-foreground">
     {INTRO.life}
   </p>
 </div>

@@ -2,7 +2,9 @@
 import '@fontsource-variable/raleway/wght.css';
 import '../styles/global.css';
 import ralewayLatin from '@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2?url';
+import { getImage } from 'astro:assets';
 
+import topoSource from '../assets/topo.png';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from '../data/site';
@@ -19,6 +21,10 @@ interface Props {
 const { title, description = SITE_DESCRIPTION, noindex = false, viewToggle = false } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_TITLE;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Shown at under a tenth of full opacity, so it can be small and heavily
+// compressed.
+const topo = await getImage({ src: topoSource, format: 'avif', width: 640, quality: 35 });
 ---
 
 <!doctype html>
@@ -57,7 +63,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   </head>
   <!-- A column at least one screen tall, so the footer sits at the bottom of
        short pages (the 404) instead of halfway up. -->
-  <body class="flex min-h-dvh flex-col font-sans">
+  <body class="relative flex min-h-dvh flex-col font-sans">
+    <div aria-hidden="true" class="topo" style={`--topo-image:url(${topo.src})`}></div>
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:font-medium focus:text-foreground focus:ring-2 focus:ring-ring focus:outline-hidden print:hidden"

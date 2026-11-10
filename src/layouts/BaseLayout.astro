@@ -32,5 +32,47 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <main id="main">
       <slot />
     </main>
+    <footer>
+      <p id="load-timing" aria-live="polite"></p>
+    </footer>
+    <script>
+      // Navigation Timing for this document, from the moment the browser sent
+      // the request (requestStart) through the load event. DNS, TCP, and TLS
+      // are outside that window.
+      //   wait      request sent -> first response byte
+      //   download  first byte -> last byte of the document
+      //   render    last byte -> load event finished
+      // Timestamps are rounded before subtracting so the three phases sum to
+      // the total. Kept inline so measuring the page does not add a request.
+      addEventListener(
+        'load',
+        () => {
+          setTimeout(() => {
+            const el = document.getElementById('load-timing');
+            const nav = performance.getEntriesByType('navigation')[0];
+            if (!el || !(nav instanceof PerformanceNavigationTiming) || nav.loadEventEnd <= 0) {
+              return;
+            }
+
+            const request = Math.round(nav.requestStart);
+            const firstByte = Math.round(nav.responseStart);
+            const lastByte = Math.round(nav.responseEnd);
+            const loaded = Math.round(nav.loadEventEnd);
+
+            el.textContent =
+              'Loaded in ' +
+              (loaded - request) +
+              ' ms (wait ' +
+              (firstByte - request) +
+              ', download ' +
+              (lastByte - firstByte) +
+              ', render ' +
+              (loaded - lastByte) +
+              ')';
+          });
+        },
+        { once: true },
+      );
+    </script>
   </body>
 </html>

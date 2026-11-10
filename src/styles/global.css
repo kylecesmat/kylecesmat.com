@@ -32,6 +32,18 @@ header {
   margin-bottom: 2rem;
 }
 
+footer {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+#load-timing {
+  margin: 0;
+  /* Filled in after load. Reserve the line so the page does not grow. */
+  min-height: 1.5em;
+}
+
 a {
   color: #111;
 }

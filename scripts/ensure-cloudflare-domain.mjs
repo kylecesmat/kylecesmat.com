@@ -2,6 +2,8 @@
 // Idempotent. Refuses to delete any DNS record that is not a GitHub Pages address.
 // Never prints the API token.
 
+import { Resolver } from "node:dns/promises";
+
 const API = "https://api.cloudflare.com/client/v4";
 const APEX = "kylecesmat.com";
 const WWW = "www.kylecesmat.com";
@@ -101,9 +103,19 @@ async function ensureProductionBranch() {
 }
 
 async function zoneForApex() {
-  const zones = await cfOk(`/zones?name=${APEX}`);
+  const listed = await cf(`/zones?name=${APEX}`);
+  if (!listed.ok) {
+    console.log(`Zone lookup failed (${listed.status}): ${errorText(listed.json)}`);
+    return null;
+  }
+  const zones = listed.json.result ?? [];
   const zone = zones.find((item) => item.name === APEX);
-  if (!zone) throw new Error(`Zone ${APEX} was not found in this account.`);
+  if (!zone) {
+    console.log(
+      `Token cannot see the ${APEX} zone (${zones.length} name matches). DNS edits will be skipped.`,
+    );
+    return null;
+  }
   return zone;
 }
 
@@ -166,7 +178,7 @@ async function ensureDomain(name) {
 }
 
 async function waitUntilActive(name) {
-  for (let attempt = 1; attempt <= 12; attempt += 1) {
+  for (let attempt = 1; attempt <= 8; attempt += 1) {
     const domains = await listAll(
       `/accounts/${accountId}/pages/projects/${PROJECT}/domains`,
     );
@@ -279,30 +291,59 @@ async function pointWwwAtPages(zoneId, target) {
   });
 }
 
+async function authoritativeApexAddresses() {
+  const bootstrap = new Resolver();
+  const nameservers = await bootstrap.resolve4("lisa.ns.cloudflare.com");
+  const resolver = new Resolver();
+  resolver.setServers(nameservers);
+  return resolver.resolve4(APEX);
+}
+
+async function assertApexLeftGithubPages() {
+  for (let attempt = 1; attempt <= 6; attempt += 1) {
+    const addresses = await authoritativeApexAddresses();
+    const stillGithub = addresses.every((address) => GITHUB_PAGES_A.has(address));
+    console.log(`Authoritative ${APEX} A: ${addresses.join(", ")}`);
+    if (!stillGithub) return;
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+  }
+  throw new Error(`${APEX} still resolves to GitHub Pages at the Cloudflare nameservers.`);
+}
+
 async function main() {
   const project = await ensureProductionBranch();
   const target = project.subdomain || `${PROJECT}.pages.dev`;
-  const zone = await zoneForApex();
-  console.log(`Zone ${zone.name} ${zone.id}`);
 
+  let zone = null;
   try {
     await ensureDomain(APEX);
   } catch (error) {
     console.log(`Adding ${APEX} failed: ${error.message}`);
+    zone = await zoneForApex();
+    if (!zone) throw error;
     console.log("Removing the GitHub Pages apex addresses, then retrying.");
     await deleteGithubPagesApexRecords(zone.id);
     await ensureDomain(APEX);
   }
 
-  try {
-    await ensureApexCname(zone.id, target);
-  } catch (error) {
-    console.log(`Apex CNAME failed: ${error.message}`);
-    console.log("Removing the GitHub Pages apex addresses, then retrying.");
-    await deleteGithubPagesApexRecords(zone.id);
-    await ensureApexCname(zone.id, target);
+  zone ??= await zoneForApex();
+  if (zone) {
+    console.log(`Zone ${zone.name} ${zone.id}`);
+    try {
+      await ensureApexCname(zone.id, target);
+    } catch (error) {
+      console.log(`Apex CNAME failed: ${error.message}`);
+      console.log("Removing the GitHub Pages apex addresses, then retrying.");
+      await deleteGithubPagesApexRecords(zone.id);
+      await ensureApexCname(zone.id, target);
+    }
+  } else {
+    console.log("Pages is attaching the domain with its own DNS write.");
   }
+
   await waitUntilActive(APEX);
+
+  if (!zone) return;
 
   const redirected = await ensureWwwRedirect(zone.id);
   if (redirected) {
@@ -310,12 +351,15 @@ async function main() {
     try {
       await ensureDomain(WWW);
     } catch (error) {
-      console.log(`www Pages domain was not attached (${error.message}). The redirect rule still sends www to the apex.`);
+      console.log(
+        `www Pages domain was not attached (${error.message}). The redirect rule still sends www to the apex.`,
+      );
     }
   } else {
     console.log("Left the existing www DNS record alone because the redirect rule was not saved.");
   }
 
+  await assertApexLeftGithubPages();
   console.log("Custom domain setup finished.");
 }
 

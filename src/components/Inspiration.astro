@@ -1,0 +1,32 @@
+---
+import { inspiration } from '../data/inspiration';
+---
+
+<!--
+  The sites in src/data/inspiration.ts. Same rows as Writing & Talks: the
+  name sits in the column the titles use, and one line under it says what
+  the site is. The margin stays empty, so the names line up with the rest.
+-->
+<section aria-labelledby="inspiration-heading" class="flex w-full flex-col gap-2">
+  <h2 id="inspiration-heading" class="heading-section">Inspiration</h2>
+  <ul class="dim-others @container flex flex-col">
+    {
+      inspiration.map((site) => (
+        <li class="grid grid-cols-[1fr_auto] items-baseline gap-x-4 py-2.5 first:pt-1 last:pb-0 @2xl:grid-cols-[10rem_1fr] @2xl:gap-x-12">
+          <p class="col-span-full font-semibold @2xl:col-span-1 @2xl:col-start-2">
+            <a
+              href={site.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-mark link-arrow py-1"
+            >
+              {site.name}
+              <span class="sr-only"> (opens in new tab)</span>
+            </a>
+          </p>
+          <p class="col-span-full text-sm text-muted-foreground @2xl:col-start-2">{site.note}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

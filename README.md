@@ -1,6 +1,6 @@
 # kylecesmat.com
 
-Personal site. The home page is an introduction, a work history in broad strokes, writing and talks, and education. `/current` says what I am up to now. The home page and `/current` are also served as Markdown at `/llms.txt` and `/index.md`.
+Personal site. The home page is an introduction, a work history in broad strokes, writing and talks, education, and sites used for inspiration. `/current` says what I am up to now. The home page and `/current` are also served as Markdown at `/llms.txt` and `/index.md`.
 
 ## Stack
 
@@ -21,12 +21,13 @@ npm run build
 
 ## Editing the content
 
-Everything on the pages comes from four files, and `/llms.txt` is built from the same four, so they cannot drift apart.
+Everything on the pages comes from five files, and `/llms.txt` is built from the same five, so they cannot drift apart.
 
 - `src/data/site.ts`: name, page title and description, the introduction, email, profiles, the small links in the header and footer, the footer's place
 - `src/data/work.ts`: companies, roles, dates, education. Each role has an `impact`, a sentence or two on what it came to
 - `src/data/talks.ts`: articles, podcasts, talks and press
 - `src/data/current.ts`: the rows on `/current` and the month they were last updated. The Listening row is not one of these; see below.
+- `src/data/inspiration.ts`: the sites under Inspiration. `INSPIRATION.md` is why each one is there.
 
 Dates are `YYYY-MM`; a malformed one fails the build. The text fields take inline Markdown links, `**strong**` and `_emphasis_`; a link that starts with `/` stays on the site.
 
@@ -53,7 +54,7 @@ For `npm run pages:dev`, copy `.dev.vars.example` to `.dev.vars` and fill in the
 
 The layout is adapted from an MIT-licensed open-source site, credited in `THIRD_PARTY_NOTICES.md`. The colours are in `src/styles/global.css`, all derived from `--accent-hue`. The contour lines behind the header and in the footer's map are `src/assets/topo.png`, from the previous version of this site. The hover effects are one block in `global.css`; they are skipped on touch screens and under reduced motion.
 
-`DESIGN.md` records the lessons the redesign settled: one column with one margin, ink that carries information, links marked by a stroke instead of coloured text, hover that says nothing new, and the checks that caught mistakes. Read it before changing the layout or the type.
+`DESIGN.md` records the lessons the redesign settled: one column with one margin, ink that carries information, links marked by a stroke instead of coloured text, hover that says nothing new, and the checks that caught mistakes. Read it before changing the layout or the type. `INSPIRATION.md` is the list of sites used as reference.
 
 ## Agent skills
 

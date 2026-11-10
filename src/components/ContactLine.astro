@@ -1,10 +1,11 @@
 ---
 import { CONTACT_EMAIL, PLACE, PROFILES } from '../data/site';
+import { publicHref } from '../lib/public-href';
 
 /** "linkedin.com/in/kylecesmat": the address as someone would type it. */
 const bare = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
-const site = new URL('/', Astro.site).href;
+const site = publicHref(new URL('/', Astro.site).href);
 const profiles = PROFILES.filter((profile) => profile.name !== 'Twitter');
 ---
 
@@ -14,12 +15,14 @@ const profiles = PROFILES.filter((profile) => profile.name !== 'Twitter');
 -->
 <p class="flex flex-wrap gap-x-4 text-sm text-muted-foreground">
   <span class="py-1">{PLACE.short}</span>
-  <a href={`mailto:${CONTACT_EMAIL}`} class="link-mark py-1 text-foreground">{CONTACT_EMAIL}</a>
+  <a href={publicHref(`mailto:${CONTACT_EMAIL}`)} class="link-mark py-1 text-foreground"
+    >{CONTACT_EMAIL}</a
+  >
   <a href={site} class="link-mark print-as-is py-1 text-foreground">{bare(site)}</a>
   {
     profiles.map((profile) => (
       <a
-        href={profile.url}
+        href={publicHref(profile.url)}
         target="_blank"
         rel="noopener noreferrer"
         translate="no"

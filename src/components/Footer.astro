@@ -1,5 +1,6 @@
 ---
 import { CONTACT_EMAIL, LINKS, PLACE, SITE_NAME, SOURCE_URL } from '../data/site';
+import { publicHref } from '../lib/public-href';
 
 interface Props {
   /** URL of the contour image the layout already loads for the page top. */
@@ -13,7 +14,9 @@ const degrees = (value: number, positive: string, negative: string) =>
 const latitude = degrees(PLACE.latitude, 'N', 'S');
 const longitude = degrees(PLACE.longitude, 'E', 'W');
 
-const mapUrl = `https://www.openstreetmap.org/?mlat=${PLACE.latitude}&mlon=${PLACE.longitude}#map=11/${PLACE.latitude}/${PLACE.longitude}`;
+const mapUrl = publicHref(
+  `https://www.openstreetmap.org/?mlat=${PLACE.latitude}&mlon=${PLACE.longitude}#map=11/${PLACE.latitude}/${PLACE.longitude}`,
+);
 
 const focusRing =
   'outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-muted';
@@ -59,7 +62,7 @@ const focusRing =
 
     <p class="mt-12 max-w-[17rem] text-pretty sm:mt-16">
       Thanks for visiting.{' '}
-      <a href={`mailto:${CONTACT_EMAIL}`} class="link-mark py-1">Send me an email</a>
+      <a href={publicHref(`mailto:${CONTACT_EMAIL}`)} class="link-mark py-1">Send me an email</a>
       {' '}if you’d like to say hello.
     </p>
 
@@ -72,7 +75,7 @@ const focusRing =
               return (
                 <li>
                   <a
-                    href={link.url}
+                    href={publicHref(link.url)}
                     class:list={['inline-block rounded-sm px-2 py-3', focusRing]}
                     {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   >
@@ -88,7 +91,7 @@ const focusRing =
       <ul class="dim-others -mx-2 flex flex-wrap text-muted-foreground">
         <li>
           <a
-            href={SOURCE_URL}
+            href={publicHref(SOURCE_URL)}
             target="_blank"
             rel="noopener noreferrer"
             class:list={['inline-block rounded-sm px-2 py-3', focusRing]}

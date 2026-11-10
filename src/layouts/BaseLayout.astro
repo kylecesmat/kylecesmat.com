@@ -40,18 +40,7 @@ const topo = await getImage({ src: topoSource, format: 'avif', width: 640, quali
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Runs before first paint so the stored or system theme never flashes. -->
-    <script is:inline>
-      (() => {
-        let stored = null;
-        try {
-          stored = localStorage.getItem('theme');
-        } catch {}
-        const dark =
-          stored === 'dark' ||
-          (stored !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
-        document.documentElement.classList.toggle('dark', dark);
-      })();
-    </script>
+    <script is:inline src="/theme-init.js"></script>
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />

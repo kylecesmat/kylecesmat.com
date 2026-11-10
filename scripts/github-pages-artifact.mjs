@@ -5,6 +5,7 @@
 
 import { cp, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { indexDirectory } from "./pages-path.mjs";
 
 const source = "dist";
 const destination = "dist-pages";
@@ -23,7 +24,7 @@ async function addDirectoryIndexes(directory) {
     if (!entry.name.endsWith(".html") || entry.name === "index.html" || entry.name === "404.html") {
       continue;
     }
-    const folder = path.join(directory, entry.name.slice(0, -".html".length));
+    const folder = indexDirectory(directory, entry.name);
     await mkdir(folder, { recursive: true });
     await cp(fullPath, path.join(folder, "index.html"));
   }

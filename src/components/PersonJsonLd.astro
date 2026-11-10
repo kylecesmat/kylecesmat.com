@@ -1,8 +1,9 @@
 ---
 import { CONTACT_EMAIL, PROFILES, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
 import { companies, education } from '../data/work';
+import { publicHref } from '../lib/public-href';
 
-const home = new URL('/', Astro.site).href;
+const home = publicHref(new URL('/', Astro.site).href);
 const current = companies.find((company) => company.end === 'present');
 const role = current?.entries.find((entry) => entry.end === 'present');
 
@@ -31,15 +32,15 @@ const data = {
       worksFor: {
         '@type': 'Organization',
         name: current.name,
-        ...(current.url && { url: current.url }),
+        ...(current.url && { url: publicHref(current.url) }),
       },
     }),
     alumniOf: education.map((item) => ({
       '@type': 'CollegeOrUniversity',
       name: item.school,
-      ...(item.url && { url: item.url }),
+      ...(item.url && { url: publicHref(item.url) }),
     })),
-    sameAs: PROFILES.map((profile) => profile.url),
+    sameAs: PROFILES.map((profile) => publicHref(profile.url)),
   },
 };
 

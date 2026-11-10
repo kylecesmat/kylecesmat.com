@@ -1,5 +1,6 @@
 ---
 import { education } from '../data/work';
+import { publicHref } from '../lib/public-href';
 ---
 
 <!-- Same rows as Writing & Talks: the years in the margin, the school and
@@ -15,7 +16,7 @@ import { education } from '../data/work';
             <p class="col-span-full font-semibold @2xl:col-span-1 @2xl:col-start-2">
               {item.url ? (
                 <a
-                  href={item.url}
+                  href={publicHref(item.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="link-mark link-arrow py-1"

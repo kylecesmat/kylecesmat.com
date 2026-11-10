@@ -26,11 +26,11 @@ export const current: CurrentRow[] = [
     text: 'Biking, skiing, and fishing year-round with my family.',
   },
   {
-    label: 'At home',
-    text: 'A 1920s brick house that always needs something, a garden, and a pottery wheel.',
+    label: 'Interests',
+    text: 'Coffee, cooking, gardening, home projects, photography, and breweries.',
   },
   {
-    label: 'Getting around',
-    text: 'Two e-bikes and a camper van.',
+    label: 'At home',
+    text: 'A 1920s brick house that always needs something, and a pottery wheel.',
   },
 ];

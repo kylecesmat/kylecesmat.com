@@ -292,12 +292,6 @@
   }
 }
 
-/* The portrait leans in. */
-.portrait {
-  transition:
-    rotate var(--spring),
-    scale var(--spring);
-}
 /* The sun turns and the moon tips. */
 [data-theme-toggle] svg {
   transition: rotate var(--spring);
@@ -323,11 +317,6 @@
   rotate: 180deg;
 }
 @media (hover: hover) {
-  .portrait:hover,
-  a:hover > .portrait {
-    rotate: -6deg;
-    scale: 1.06;
-  }
   [data-theme-toggle]:hover svg {
     rotate: 45deg;
   }

@@ -19,7 +19,7 @@ export const SITE_DESCRIPTION =
 export const INTRO = {
   lede: 'I build agentic systems that make teams faster.',
   work: 'I’m currently focused on building the Agent Platform at **Coinbase**. Before this I led teams in DevX, app infrastructure, and trading systems.',
-  life: 'I call Denver, CO home and get to bike, ski, and fish year-round with my family. See what else I’m [currently](/current) into.',
+  life: 'I call Denver, CO home and get to bike, ski, and camp year-round with my family. See what else I’m [currently](/current) into.',
 };
 
 export const CONTACT_EMAIL = 'kylecesmat@gmail.com';
@@ -42,11 +42,12 @@ export type SiteLink = { label: string; url: string };
 
 /**
  * The small links at the top left of every page and again in the footer:
- * the profiles, then email.
+ * the profiles, then the currently page. Email stays in the footer sentence
+ * and on the printed letterhead, not in this row.
  */
 export const LINKS: SiteLink[] = [
   ...PROFILES.map(({ name, url }) => ({ label: name.toLowerCase(), url })),
-  { label: 'email', url: `mailto:${CONTACT_EMAIL}` },
+  { label: 'current', url: '/current' },
 ];
 
 /**

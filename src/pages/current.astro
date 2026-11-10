@@ -16,7 +16,11 @@ const updated = new Intl.DateTimeFormat('en-US', {
   The Listening row is not one of those. The browser fills it from
   /api/listening, and it stays hidden when that request has no track.
 -->
-<BaseLayout title="Currently" description="What Kyle Cesmat is building, doing and into right now.">
+<BaseLayout
+  backHome
+  title="Currently"
+  description="What Kyle Cesmat is building, doing and into right now."
+>
   <article class="flex flex-col gap-8 pt-8 md:gap-10 md:pt-12">
     <header class="flex flex-col gap-3">
       <h1 class="text-3xl font-semibold md:text-[2.5rem]/none">Currently</h1>
@@ -87,8 +91,5 @@ const updated = new Intl.DateTimeFormat('en-US', {
           .catch(() => {});
       }
     </script>
-    <p>
-      <a href="/" class="link-quiet link-arrow py-2 text-sm">Back to the home page</a>
-    </p>
   </article>
 </BaseLayout>

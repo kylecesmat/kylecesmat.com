@@ -19,12 +19,8 @@ export const current: CurrentRow[] = [
     text: 'The Agent Platform at Coinbase: agent workstations, cloud sandboxes, model routing, and autonomous software delivery.',
   },
   {
-    label: 'Located',
-    text: 'Denver, CO.',
-  },
-  {
     label: 'Outside',
-    text: 'Biking, skiing, and fishing year-round with my family.',
+    text: 'Biking, skiing, and camping year-round with my family.',
   },
   {
     label: 'Interests',

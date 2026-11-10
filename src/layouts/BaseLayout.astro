@@ -20,9 +20,20 @@ interface Props {
    * heading.
    */
   home?: boolean;
+  /**
+   * A small control back to the home page, in place of the portrait and
+   * name. The currently page uses this.
+   */
+  backHome?: boolean;
 }
 
-const { title, description = SITE_DESCRIPTION, noindex = false, home = false } = Astro.props;
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  noindex = false,
+  home = false,
+  backHome = false,
+} = Astro.props;
 const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_TITLE;
 // Pages are built as files (current.html), and that is the path Astro reports
 // during the build; the address people use has no extension.
@@ -67,7 +78,7 @@ const topo = await getImage({ src: topoSource, format: 'avif', width: 640, quali
     >
       Skip to Content
     </a>
-    <Header home={home} />
+    <Header home={home} backHome={backHome} />
     <main
       id="main"
       tabindex="-1"

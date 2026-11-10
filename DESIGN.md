@@ -52,7 +52,7 @@ Reading a sentence should not depend on seeing a colour. Links keep the body col
 
 Every hover is a small, quick confirmation that the pointer hit something. None of them carries information, so a touch screen or a keyboard loses nothing.
 
-- The set: the stroke sweeps in, a highlighter is drawn across the words, the other items in a list fall back, an arrow slides in after a title, a dot swells, the portrait leans, the footer map comes up.
+- The set: the stroke sweeps in, a highlighter is drawn across the words, the other items in a list fall back, an arrow slides in after a title, a dot swells, the footer map comes up. The portrait stays still.
 - The sweep is anchored so it arrives from the left and leaves to the right, like a pen. Only the size is animated, not the position, which keeps it on the compositor.
 - An arrow that appears must take no room, or the line shifts when it shows. Negative margin and a mask do that.
 - Gate hover styles behind `@media (hover: hover)`. Otherwise the first tap on a phone sticks the hover on and the second tap follows the link.

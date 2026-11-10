@@ -1,6 +1,6 @@
 ---
 import { CONTACT_EMAIL, LINKS, PLACE, SITE_NAME, SOURCE_URL } from '../data/site';
-import { publicHref } from '../lib/public-href';
+import { navHref, publicHref } from '../lib/public-href';
 
 interface Props {
   /** URL of the contour image the layout already loads for the page top. */
@@ -20,6 +20,8 @@ const mapUrl = publicHref(
 
 const focusRing =
   'outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-muted';
+
+const path = Astro.url.pathname.replace(/(\/index)?\.html$/, '').replace(/\/$/, '') || '/';
 ---
 
 <!--
@@ -72,12 +74,14 @@ const focusRing =
           {
             LINKS.map((link) => {
               const external = /^https?:/.test(link.url);
+              const here = !external && (link.url.replace(/\/$/, '') || '/') === path;
               return (
                 <li>
                   <a
-                    href={publicHref(link.url)}
+                    href={navHref(link.url)}
                     class:list={['inline-block rounded-sm px-2 py-3', focusRing]}
                     {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    aria-current={here ? 'page' : undefined}
                   >
                     <span class="link-quiet">{link.label}</span>
                     {external && <span class="sr-only"> (opens in new tab)</span>}

@@ -1,7 +1,6 @@
 name: Deploy
 
 on:
-  pull_request:
   push:
     branches: [master]
   workflow_dispatch:
@@ -10,21 +9,24 @@ concurrency:
   group: deploy-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Push to master deploys Cloudflare Pages. While the apex DNS still
-# points at GitHub Pages, that same build is published to gh-pages.
-# Pull requests from this repository deploy a Pages preview. Dependabot
-# and fork PRs cannot read Actions secrets, so those deploys are skipped.
+# Only master is deployed. A pull request from this repository would check
+# out its own workflow and run it with the production Cloudflare token, and
+# the Pages Function in that deployment could read the Spotify secrets.
+# CI still builds pull requests. It does not publish them.
 jobs:
   deploy:
     name: Deploy
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    outputs:
+      dns: ${{ steps.domain.outputs.dns }}
     permissions:
-      contents: write
-      deployments: write
-      pull-requests: write
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version-file: '.nvmrc'
           cache: npm
@@ -32,24 +34,27 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
       - name: Deploy to Cloudflare Pages
         id: deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          BRANCH: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
         run: |
           set -o pipefail
           if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
             echo "Cloudflare credentials are not available for this event."
-            echo "Dependabot and fork pull requests cannot read Actions secrets."
             echo "skipped=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           log=$(mktemp)
           npx wrangler pages deploy dist \
             --project-name=kylecesmat \
-            --branch="$BRANCH" \
+            --branch=master \
             --commit-hash="$GITHUB_SHA" \
             --commit-message="$GITHUB_SHA" 2>&1 | tee "$log"
           url=$(sed -n 's/.*\(https:\/\/[^[:space:]]*pages\.dev\).*/\1/p' "$log" | head -n 1)
@@ -61,13 +66,42 @@ jobs:
           echo "skipped=false" >> "$GITHUB_OUTPUT"
       - name: Attach kylecesmat.com
         id: domain
-        if: github.event_name != 'pull_request'
+        if: steps.deploy.outputs.skipped != 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node scripts/ensure-cloudflare-domain.mjs
+      - name: Write deployment URLs
+        if: steps.deploy.outputs.skipped != 'true'
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          {
+            echo "## Cloudflare Pages"
+            echo "- Branch: master"
+            echo "- Production: https://kylecesmat.com"
+            echo "- Pages: https://kylecesmat.pages.dev"
+            if [ -n "$DEPLOYMENT_URL" ]; then
+              echo "- Deployment URL: ${DEPLOYMENT_URL}"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  publish-github-pages:
+    name: Publish GitHub Pages
+    needs: deploy
+    if: needs.deploy.outputs.dns == 'github-pages'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: dist
+          path: dist
       - name: Publish GitHub Pages
-        if: steps.domain.outputs.dns == 'github-pages' && github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -77,24 +111,14 @@ jobs:
           git -C dist-pages config user.name "github-actions[bot]"
           git -C dist-pages add -A
           git -C dist-pages commit -m "Publish ${GITHUB_SHA}"
-          git -C dist-pages push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+          askpass=$(mktemp)
+          printf '%s\n' '#!/bin/sh' 'printf "%s\n" "$GITHUB_TOKEN"' > "$askpass"
+          chmod 700 "$askpass"
+          GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 \
+            git -C dist-pages push --force "https://x-access-token@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+          rm -f "$askpass"
           {
             echo "## GitHub Pages"
             echo "- https://kylecesmat.com"
             echo "The Cloudflare token cannot edit DNS, so the apex stays on this branch."
-          } >> "$GITHUB_STEP_SUMMARY"
-      - name: Write deployment URLs
-        if: steps.deploy.outputs.skipped != 'true'
-        env:
-          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
-          BRANCH: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
-        run: |
-          {
-            echo "## Cloudflare Pages"
-            echo "- Branch: ${BRANCH}"
-            echo "- Production: https://kylecesmat.com"
-            echo "- Pages: https://kylecesmat.pages.dev"
-            if [ -n "$DEPLOYMENT_URL" ]; then
-              echo "- Deployment URL: ${DEPLOYMENT_URL}"
-            fi
           } >> "$GITHUB_STEP_SUMMARY"

@@ -1,6 +1,7 @@
 ---
 import { KIND_LABEL, talks } from '../data/talks';
 import { monthLabel } from '../lib/dates';
+import { publicHref } from '../lib/public-href';
 
 /** Newest first; `YYYY-MM` strings order correctly as text. */
 const pieces = [...talks].sort((a, b) => b.date.localeCompare(a.date));
@@ -23,7 +24,7 @@ const pieces = [...talks].sort((a, b) => b.date.localeCompare(a.date));
           <p class="col-span-full font-semibold @2xl:col-span-1 @2xl:col-start-2">
             {piece.url ? (
               <a
-                href={piece.url}
+                href={publicHref(piece.url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="link-mark link-arrow py-1"

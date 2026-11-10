@@ -131,7 +131,7 @@ async function zoneForApex() {
   return zone;
 }
 
-async function deleteGithubPagesApexRecords(zoneId) {
+async function deleteGithubPagesApexRecords(zoneId, removed) {
   const records = await listAll(`/zones/${zoneId}/dns_records?name=${APEX}`);
   const addresses = records.filter((record) => record.type === "A" || record.type === "AAAA");
   if (addresses.length === 0) {
@@ -148,6 +148,20 @@ async function deleteGithubPagesApexRecords(zoneId) {
   for (const record of addresses) {
     console.log(`Deleting ${record.type} ${record.name} → ${record.content}`);
     await cfOk(`/zones/${zoneId}/dns_records/${record.id}`, { method: "DELETE" });
+    removed.push({
+      type: record.type,
+      name: record.name,
+      content: record.content,
+      ttl: record.ttl ?? 1,
+      proxied: Boolean(record.proxied),
+    });
+  }
+}
+
+async function restoreApexRecords(zoneId, removed) {
+  for (const record of removed) {
+    console.log(`Restoring ${record.type} ${record.name} → ${record.content}`);
+    await cfOk(`/zones/${zoneId}/dns_records`, { method: "POST", body: record });
   }
 }
 
@@ -200,7 +214,7 @@ async function waitUntilActive(name) {
     }
     await new Promise((resolve) => setTimeout(resolve, 10000));
   }
-  console.log(`Domain ${name} is not active yet. Certificate issuance can finish after DNS is in place.`);
+  throw new Error(`Domain ${name} was not active after 8 checks.`);
 }
 
 function wwwRedirectRule() {
@@ -310,9 +324,10 @@ async function authoritativeApexAddresses() {
 async function assertApexLeftGithubPages() {
   for (let attempt = 1; attempt <= 6; attempt += 1) {
     const addresses = await authoritativeApexAddresses();
-    const stillGithub = addresses.every((address) => GITHUB_PAGES_A.has(address));
-    console.log(`Authoritative ${APEX} A: ${addresses.join(", ")}`);
-    if (!stillGithub) return;
+    const migrated =
+      addresses.length > 0 && addresses.every((address) => !GITHUB_PAGES_A.has(address));
+    console.log(`Authoritative ${APEX} A: ${addresses.join(", ") || "(none)"}`);
+    if (migrated) return;
     await new Promise((resolve) => setTimeout(resolve, 5000));
   }
   throw new Error(`${APEX} still resolves to GitHub Pages at the Cloudflare nameservers.`);
@@ -364,8 +379,21 @@ async function main() {
   } catch (error) {
     console.log(`Apex CNAME failed: ${error.message}`);
     console.log("Removing the GitHub Pages apex addresses, then retrying.");
-    await deleteGithubPagesApexRecords(zone.id);
-    await ensureApexCname(zone.id, target);
+    const removed = [];
+    try {
+      await deleteGithubPagesApexRecords(zone.id, removed);
+      await ensureApexCname(zone.id, target);
+    } catch (retryError) {
+      if (removed.length > 0) {
+        console.log("The retry failed. Putting the deleted apex records back.");
+        try {
+          await restoreApexRecords(zone.id, removed);
+        } catch (restoreError) {
+          console.error(`Could not restore the apex records: ${restoreError.message}`);
+        }
+      }
+      throw retryError;
+    }
   }
 
   await waitUntilActive(APEX);

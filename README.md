@@ -45,7 +45,7 @@ npx wrangler pages secret put SPOTIFY_CLIENT_SECRET --project-name=kylecesmat
 npx wrangler pages secret put SPOTIFY_REFRESH_TOKEN --project-name=kylecesmat
 ```
 
-Open the URL the script prints and approve access. The refresh token is printed in the terminal, not in the browser. Add `--env preview` to each `secret put` for preview deployments. Set the secrets before the next deploy; a deployment that went out without them keeps answering `204` until the next one.
+Open the URL the script prints and approve access. The refresh token is printed in the terminal, not in the browser. Set the secrets before the next deploy; a deployment that went out without them keeps answering `204` until the next one. Actions deploys only `master`, so these are production secrets.
 
 For `npm run pages:dev`, copy `.dev.vars.example` to `.dev.vars` and fill in the same three names. The script writes `.dev.vars` when that file does not exist yet.
 
@@ -66,9 +66,9 @@ They are reference material for the agent, not part of the site, and the build d
 
 ## Deployment
 
-Cloudflare Pages is the host for previews and for `kylecesmat.pages.dev`. A push to `master` deploys that production branch. Pull requests from this repository get their own preview branch. The zone nameservers are already Cloudflare, which is what lets an apex domain be a proxied CNAME and what makes `_headers` and `_redirects` apply.
+Cloudflare Pages is the host for `kylecesmat.pages.dev` and, once DNS points there, for `kylecesmat.com`. A push to `master` deploys that production branch. Pull requests are built by CI and are not deployed. A pull request from this repository would otherwise run its own copy of the deploy script with the production Cloudflare token, and the listening function in that deployment could read the Spotify secrets. The zone nameservers are already Cloudflare, which is what lets an apex domain be a proxied CNAME and what makes `_headers` and `_redirects` apply.
 
-The Actions API token can deploy Pages and attach `kylecesmat.com` to the project, and it cannot edit DNS. While the apex still points at GitHub Pages, the same master build is published to the `gh-pages` branch, which is what `kylecesmat.com` serves. `www` keeps the existing GitHub Pages 301 to the apex. Mail records are not touched. When the token can edit the zone, `scripts/ensure-cloudflare-domain.mjs` moves the apex to Cloudflare Pages and the GitHub Pages publish is skipped.
+The Actions API token can deploy Pages and attach `kylecesmat.com` to the project, and it cannot edit DNS. While the apex still points at GitHub Pages, the same master build is published to the `gh-pages` branch, which is what `kylecesmat.com` serves. `www` keeps the existing GitHub Pages 301 to the apex. Mail records are not touched. When the token can edit the zone, `scripts/ensure-cloudflare-domain.mjs` moves the apex to Cloudflare Pages and the GitHub Pages publish is skipped. If that move deletes the GitHub Pages addresses and the replacement record still fails, the script puts the deleted addresses back.
 
 ## Removed vs the old Next site
 

@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 
 import profile from '../assets/profile.jpg';
 import { LINKS, SITE_NAME } from '../data/site';
+import { publicHref } from '../lib/public-href';
 import ContactLine from './ContactLine.astro';
 import ThemeButton from './ThemeButton.astro';
 import ViewToggle from './ViewToggle.astro';
@@ -41,7 +42,7 @@ const focusRing =
             return (
               <li>
                 <a
-                  href={link.url}
+                  href={publicHref(link.url)}
                   class:list={[
                     'inline-block rounded-sm px-1.5 py-3 min-[23.5rem]:px-2 sm:px-2.5',
                     focusRing,

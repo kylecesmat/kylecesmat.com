@@ -19,8 +19,12 @@ const TOKEN = new RegExp(
   'g',
 );
 
-/** A path on this site: one leading slash, so `//host` is not mistaken for one. */
-const INTERNAL = /^\/(?!\/)/;
+/**
+ * A path on this site: one leading slash, and no backslash. `//host` and
+ * `/\host` are not paths; `new URL` would turn the backslash form into a
+ * protocol-relative URL.
+ */
+const INTERNAL = /^\/(?![/\\])[^\\]*$/;
 
 /**
  * Renders the inline Markdown used in the content files to HTML: links,
@@ -41,6 +45,8 @@ export function inlineMarkdown(source: string): string {
       html += `<strong>${inlineMarkdown(strong)}</strong>`;
     } else if (emphasis !== undefined) {
       html += `<em>${inlineMarkdown(emphasis)}</em>`;
+    } else if (url.includes('\\')) {
+      html += inlineMarkdown(linkText);
     } else if (/^https?:/i.test(url)) {
       html += `<a href="${escapeHtml(url)}" class="${LINK_CLASS}" target="_blank" rel="noopener noreferrer">${inlineMarkdown(linkText)}<span class="sr-only"> (opens in new tab)</span></a>`;
     } else if (/^mailto:/i.test(url) || INTERNAL.test(url)) {

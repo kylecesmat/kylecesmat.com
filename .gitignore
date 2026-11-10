@@ -25,4 +25,6 @@ yarn-error.log*
 # misc
 .DS_Store
 *.pem
+*.key
+credentials.json
 .vercel

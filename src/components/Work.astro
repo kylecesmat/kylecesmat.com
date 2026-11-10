@@ -91,7 +91,10 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
                       class:list={[logoBase, 'hidden dark:block print:hidden!']}
                     />
                   )}
-                  <span>{company.name}</span>
+                  {/* The chevron is hidden from assistive tech, so the name says what the button does.
+                      Kept on one line so no space lands before the comma. */}
+                  {/* prettier-ignore */}
+                  <span>{company.name}<span class="sr-only" data-accordion-verb set:text={open ? ', hide roles' : ', show roles'} /></span>
                 </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -193,6 +196,8 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
 
     const open = trigger.getAttribute('aria-expanded') !== 'true';
     trigger.setAttribute('aria-expanded', String(open));
+    const verb = trigger.querySelector('[data-accordion-verb]');
+    if (verb) verb.textContent = open ? ', hide roles' : ', show roles';
 
     // A second click mid-animation picks up from the height on screen.
     const from = panel.getBoundingClientRect().height;

@@ -1,15 +1,9 @@
 ---
-import { talks, type Piece } from '../data/talks';
+import { KIND_LABEL, talks } from '../data/talks';
 import { monthLabel } from '../lib/dates';
 
 /** Newest first; `YYYY-MM` strings order correctly as text. */
 const pieces = [...talks].sort((a, b) => b.date.localeCompare(a.date));
-
-const KIND_LABEL: Record<Piece['kind'], string> = {
-  article: 'Article',
-  talk: 'Talk',
-  video: 'Video',
-};
 
 const titleClass = 'w-fit py-1 font-semibold';
 ---
@@ -19,7 +13,7 @@ const titleClass = 'w-fit py-1 font-semibold';
   (linked when there is somewhere to send people), and where and when.
 -->
 <section aria-labelledby="talks-heading" class="flex w-full flex-col gap-2">
-  <h2 id="talks-heading" class="text-2xl font-semibold">Talks</h2>
+  <h2 id="talks-heading" class="text-2xl font-semibold">Writing &amp; Talks</h2>
   <ul class="divide-y">
     {
       pieces.map((piece) => (
@@ -38,7 +32,7 @@ const titleClass = 'w-fit py-1 font-semibold';
               aria-hidden="true"
               class="size-4 text-muted-foreground"
             >
-              {piece.kind === 'article' ? (
+              {piece.kind === 'article' || piece.kind === 'press' ? (
                 <>
                   <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
                   <path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8" />

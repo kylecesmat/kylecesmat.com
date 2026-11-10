@@ -19,12 +19,16 @@ const TOKEN = new RegExp(
   'g',
 );
 
+/** A path on this site: one leading slash, so `//host` is not mistaken for one. */
+const INTERNAL = /^\/(?!\/)/;
+
 /**
- * Renders the inline Markdown used in the work history to HTML: links,
+ * Renders the inline Markdown used in the content files to HTML: links,
  * `_emphasis_` and `**strong**`, nested one inside another. Everything else
- * is escaped and shown as text, and a link whose URL is not http(s) or mailto
- * is shown as its text alone, so content can never inject markup or a
- * `javascript:` URL.
+ * is escaped and shown as text. A link may go to an http(s) or mailto URL or
+ * to a path on this site (`/current`); any other target is shown as its text
+ * alone, so content can never inject markup or a `javascript:` URL. Links to
+ * other sites open in a new tab and say so.
  */
 export function inlineMarkdown(source: string): string {
   let html = '';
@@ -37,13 +41,24 @@ export function inlineMarkdown(source: string): string {
       html += `<strong>${inlineMarkdown(strong)}</strong>`;
     } else if (emphasis !== undefined) {
       html += `<em>${inlineMarkdown(emphasis)}</em>`;
-    } else if (!/^(https?:|mailto:)/i.test(url)) {
-      html += inlineMarkdown(linkText);
     } else if (/^https?:/i.test(url)) {
       html += `<a href="${escapeHtml(url)}" class="${LINK_CLASS}" target="_blank" rel="noopener noreferrer">${inlineMarkdown(linkText)}<span class="sr-only"> (opens in new tab)</span></a>`;
-    } else {
+    } else if (/^mailto:/i.test(url) || INTERNAL.test(url)) {
       html += `<a href="${escapeHtml(url)}" class="${LINK_CLASS}">${inlineMarkdown(linkText)}</a>`;
+    } else {
+      html += inlineMarkdown(linkText);
     }
   }
   return html + escapeHtml(source.slice(last));
+}
+
+/**
+ * The same source as Markdown for a document served on its own (/llms.txt):
+ * paths on this site become full URLs, since a reader of that file has no
+ * page to resolve them against.
+ */
+export function absoluteLinks(source: string, site: URL): string {
+  return source.replace(new RegExp(LINK, 'g'), (whole, text: string, url: string) =>
+    INTERNAL.test(url) ? `[${text}](${new URL(url, site).href})` : whole,
+  );
 }

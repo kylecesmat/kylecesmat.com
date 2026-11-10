@@ -1,7 +1,16 @@
-import { CONTACT_EMAIL, INTRO, PROFILES, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
+import { CURRENT_UPDATED, current } from '../data/current';
+import {
+  CONTACT_EMAIL,
+  INTRO,
+  PROFILES,
+  RESUME_URL,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+} from '../data/site';
 import { KIND_LABEL, talks } from '../data/talks';
 import { companies, education, type Period } from '../data/work';
 import { monthLabel, periodLabel } from './dates';
+import { absoluteLinks } from './inline-markdown';
 
 const dated = (period: Period) => {
   const label = periodLabel(period);
@@ -9,9 +18,11 @@ const dated = (period: Period) => {
 };
 
 /**
- * The whole site as one Markdown document, for agents: served at /llms.txt
- * and /index.md and shown by the header's "agent" switch. Built from the
- * same data as the page, so the two cannot drift apart.
+ * The site as one Markdown document, for agents: served at /llms.txt and
+ * /index.md and shown by the header's "agent" switch. Built from the same
+ * data as the pages, so they cannot drift apart. It carries the home page
+ * and /current in full and links the resume, which tells the same work
+ * history at greater length.
  */
 export function buildLlmsText(site: URL): string {
   const lines: string[] = [
@@ -19,22 +30,26 @@ export function buildLlmsText(site: URL): string {
     '',
     `> ${SITE_DESCRIPTION}`,
     '',
-    'The site is one page: a short introduction, a work history, writing and talks, education, and ways to get in touch. This document is all of it as Markdown, served at `/llms.txt` and `/index.md`.',
+    'The home page is a short introduction, a work history in broad strokes, writing and talks, and education. This document is that page and the "currently" page as Markdown, served at `/llms.txt` and `/index.md`. The resume linked below tells the work history in full.',
     '',
     '## About',
     '',
     INTRO.lede,
     '',
-    INTRO.work,
-    '',
-    INTRO.life,
+    absoluteLinks(`${INTRO.work} ${INTRO.life}`, site),
     '',
     '## Links',
     '',
     `- Site: ${site.href}`,
+    `- Resume: ${new URL(RESUME_URL, site).href}`,
+    `- Currently: ${new URL('/current', site).href}`,
     `- Email: ${CONTACT_EMAIL}`,
     ...PROFILES.map((profile) => `- ${profile.name}: ${profile.url}`),
     `- Sitemap: ${new URL('/sitemap-index.xml', site).href}`,
+    '',
+    `## Currently (updated ${monthLabel(CURRENT_UPDATED)})`,
+    '',
+    ...current.map((row) => `- ${row.label}: ${absoluteLinks(row.text, site)}`),
     '',
     '## Work Experience',
   ];
@@ -42,13 +57,11 @@ export function buildLlmsText(site: URL): string {
   for (const company of companies) {
     lines.push('', `### ${company.name}${dated(company)}`, '');
     if (company.url) lines.push(company.url, '');
-    if (company.summary) lines.push(company.summary, '');
+    if (company.summary) lines.push(absoluteLinks(company.summary, site), '');
     for (const entry of company.entries) {
       const subtitle = entry.subtitle ? `, ${entry.subtitle}` : '';
       lines.push(`**${entry.title}**${subtitle}${dated(entry)}`, '');
-      if (entry.bullets?.length) {
-        lines.push(...entry.bullets.map((bullet) => `- ${bullet}`), '');
-      }
+      if (entry.impact) lines.push(absoluteLinks(entry.impact, site), '');
     }
     while (lines.at(-1) === '') lines.pop();
   }

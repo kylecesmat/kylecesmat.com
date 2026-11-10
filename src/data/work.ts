@@ -1,10 +1,13 @@
 /**
  * The work history. This file is the source of truth: the timeline on the
- * page and the Markdown at /llms.txt are both rendered from it, so a content
- * change is an edit here and nothing else.
+ * home page, the resume at /resume and the Markdown at /llms.txt are all
+ * rendered from it, so a content change is an edit here and nothing else.
  *
- * Titles, teams and dates follow the public LinkedIn profile; the bullets are
- * its wording, moved into the past tense for roles that have ended.
+ * Each role is told twice. `impact` is the broad stroke, a sentence or two,
+ * for the home page and /llms.txt. `detail` is the longer account, for the
+ * resume. Titles, teams and dates follow the public LinkedIn profile, and
+ * `detail` is its wording, moved into the past tense for roles that have
+ * ended.
  */
 
 /** A month, written `YYYY-MM`. */
@@ -25,11 +28,13 @@ export type Entry = Period & {
   /** The line in the accent colour under the title: the team or org. */
   subtitle?: string;
   /**
-   * One bullet per item, each a short paragraph of Markdown. Inline links
+   * What the role came to, in a sentence or two of inline Markdown: links
    * (`[text](https://…)`), `_emphasis_` and `**strong**` are rendered;
    * anything else is shown as plain text.
    */
-  bullets?: string[];
+  impact?: string;
+  /** The longer account for the resume, one list item each, same Markdown. */
+  detail?: string[];
 };
 
 export type Company = Period & {
@@ -66,7 +71,8 @@ export const companies: Company[] = [
         subtitle: 'Agent Experience',
         start: '2026-08',
         end: 'present',
-        bullets: [
+        impact: 'Lead the org that builds how Coinbase engineers work with agents.',
+        detail: [
           'I lead Agent Experience (AI DevEx), the org that builds how Coinbase engineers work with agents: agent workstations, cloud sandboxes, model routing, and autonomous software delivery.',
         ],
       },
@@ -75,7 +81,9 @@ export const companies: Company[] = [
         subtitle: 'Agent Experience',
         start: '2025-02',
         end: '2026-08',
-        bullets: [
+        impact:
+          'Founded the AI developer tooling team. Its tools pushed Coinbase past 3x developer productivity in a year and moved coding agents into the cloud, where they now account for [more than 15% of merged PRs](https://aws.amazon.com/blogs/machine-learning/its-safe-to-close-your-laptop-now-hosting-coding-agents-on-amazon-bedrock-agentcore/).',
+        detail: [
           'Founded the AI developer tooling team in June 2025 and grew it into the Agent Experience org.',
           'Built and integrated the tools that pushed Coinbase to more than 3x its developer productivity in a year.',
           'Moved coding agents off laptops and into cloud sandboxes, where [more than 15% of merged PRs](https://aws.amazon.com/blogs/machine-learning/its-safe-to-close-your-laptop-now-hosting-coding-agents-on-amazon-bedrock-agentcore/) are now attributed to cloud agents.',
@@ -86,7 +94,9 @@ export const companies: Company[] = [
         subtitle: 'App Infra',
         start: '2022-08',
         end: '2025-02',
-        bullets: [
+        impact:
+          'Led reliability, performance, and developer productivity for the Coinbase app and its 100M+ users.',
+        detail: [
           'Engineering lead and EM of App Infra, a frontend-focused team delivering mobile and web platform reliability and performance for the Coinbase app (100M+ users worldwide).',
           'Drastically decreased error cases across the app by improving attribution and observability, and by enforcing guardrails across the Retail org.',
           'Scaled developer productivity with advanced build systems, AI-enabled PR reviews, OTA release pipelines, and CI tooling.',
@@ -99,7 +109,8 @@ export const companies: Company[] = [
         subtitle: 'Prime Trading Experience',
         start: '2020-10',
         end: '2022-07',
-        bullets: ['Client performance and latency lead.', 'Advanced trading for Coinbase Prime.'],
+        impact: 'Led client performance and latency for advanced trading on Coinbase Prime.',
+        detail: ['Client performance and latency lead.', 'Advanced trading for Coinbase Prime.'],
       },
     ],
   },
@@ -114,7 +125,8 @@ export const companies: Company[] = [
         title: 'Engineering Manager + PHX Location Lead',
         start: '2018-11',
         end: '2020-10',
-        bullets: [
+        impact: 'Opened the Phoenix office and hired 8 engineers.',
+        detail: [
           'Planted the Phoenix office, hired 8 engineers, and helped define Formidable’s distributed work environment.',
         ],
       },
@@ -122,7 +134,9 @@ export const companies: Company[] = [
         title: 'Senior Software Engineer',
         start: '2018-06',
         end: '2020-10',
-        bullets: [
+        impact:
+          'Led the team that built a realtime trading platform for Tagomi, later acquired by Coinbase.',
+        detail: [
           'Architected a realtime advanced trading platform for Tagomi (acquired by Coinbase), a prime-broker cryptocurrency platform. Led a team of 6 engineers focused on a custom websocket framework, performance engineering, and complex UI.',
           'Created a large server-rendered app for a biosciences company using Lerna, custom Babel transpilation, and Node API services.',
           'Led a team of 8 to platform an e-commerce experience for MilliporeSigma using GraphQL, a custom pattern library, and static site generation.',
@@ -132,7 +146,8 @@ export const companies: Company[] = [
         title: 'Software Engineer III',
         start: '2016-05',
         end: '2018-06',
-        bullets: [
+        impact: 'Consulted on UI-heavy greenfield apps, shared libraries, and release pipelines.',
+        detail: [
           'Consulted across a wide spectrum: building UI-intensive greenfield applications, helping teams organize and scale their development process, architecting reusable code and modules, and building release pipelines.',
           'A user-event-driven mapping dashboard using Mapbox, redux-saga, and Flow.',
           'Reusable UI and Node service libraries for Ookla/Speedtest.',
@@ -151,7 +166,8 @@ export const companies: Company[] = [
     entries: [
       {
         title: 'UI Engineer',
-        bullets: [
+        impact: 'Designed client web apps and built their frontends.',
+        detail: [
           'Designed interfaces that promote intuitive interaction, usability, and comprehension of our clients’ web apps, and developed the designs into functioning frontend code.',
         ],
       },
@@ -164,7 +180,8 @@ export const companies: Company[] = [
     entries: [
       {
         title: 'Web Developer',
-        bullets: [
+        impact: 'Built the career sites companies use to attract job seekers.',
+        detail: [
           'Part of the sites team that designed and developed the career sites companies use to attract job seekers. Also maintained and improved the Jobing.com platform.',
         ],
       },

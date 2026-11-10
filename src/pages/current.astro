@@ -1,0 +1,42 @@
+---
+import { CURRENT_UPDATED, current } from '../data/current';
+import { inlineMarkdown } from '../lib/inline-markdown';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updated = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(`${CURRENT_UPDATED}-01T00:00:00Z`));
+---
+
+<!--
+  What I am up to now, from src/data/current.ts: a short table, the label in
+  the margin column the home page keeps its dates in and the words beside it.
+-->
+<BaseLayout title="Currently" description="What Kyle Cesmat is building, doing and into right now.">
+  <article class="flex flex-col gap-8 pt-8 md:gap-10 md:pt-12">
+    <header class="flex flex-col gap-3">
+      <h1 class="text-3xl font-semibold md:text-[2.5rem]/none">Currently</h1>
+      <p class="text-muted-foreground">
+        What I’m into right now. Updated <time datetime={CURRENT_UPDATED}>{updated}</time>.
+      </p>
+    </header>
+    <dl class="dim-others @container flex flex-col border-b border-border">
+      {
+        current.map((row) => (
+          <div class="grid gap-x-12 gap-y-1 border-t border-border py-4 @2xl:grid-cols-[10rem_1fr] @2xl:items-baseline">
+            <dt class="text-sm text-muted-foreground @2xl:text-right">{row.label}</dt>
+            <dd
+              class="max-w-prose text-lg leading-relaxed text-pretty"
+              set:html={inlineMarkdown(row.text)}
+            />
+          </div>
+        ))
+      }
+    </dl>
+    <p>
+      <a href="/" class="link-quiet link-arrow py-2 text-sm">Back to the home page</a>
+    </p>
+  </article>
+</BaseLayout>

@@ -1,0 +1,50 @@
+---
+import { CONTACT_EMAIL, PROFILES, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
+import { companies, education } from '../data/work';
+
+const home = new URL('/', Astro.site).href;
+const current = companies.find((company) => company.end === 'present');
+const role = current?.entries.find((entry) => entry.end === 'present');
+
+/**
+ * Schema.org structured data for the home page: a ProfilePage whose main
+ * entity is the Person, with the current employer and title and the schools
+ * taken from src/data/work.ts and `sameAs` links to the profiles in
+ * src/data/site.ts.
+ */
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  '@id': `${home}#profile`,
+  url: home,
+  name: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  mainEntity: {
+    '@type': 'Person',
+    '@id': `${home}#person`,
+    name: SITE_NAME,
+    url: home,
+    description: SITE_DESCRIPTION,
+    email: CONTACT_EMAIL,
+    ...(role && { jobTitle: role.title }),
+    ...(current && {
+      worksFor: {
+        '@type': 'Organization',
+        name: current.name,
+        ...(current.url && { url: current.url }),
+      },
+    }),
+    alumniOf: education.map((item) => ({
+      '@type': 'CollegeOrUniversity',
+      name: item.school,
+      ...(item.url && { url: item.url }),
+    })),
+    sameAs: PROFILES.map((profile) => profile.url),
+  },
+};
+
+// `<` is escaped so nothing in the content can close the script element.
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<script is:inline type="application/ld+json" set:html={json} />

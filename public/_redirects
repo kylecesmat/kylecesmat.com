@@ -2,6 +2,6 @@
 # Host-level www → apex is not supported here; keep that 301 with a
 # Cloudflare Redirect Rule after orange-clouding www. See README.
 
-/currently / 301
-/currently/ / 301
+/currently /current 301
+/currently/ /current 301
 /sitemap.xml /sitemap-index.xml 301

@@ -1,13 +1,37 @@
 ---
+import '@fontsource-variable/inter/opsz.css';
 import '../styles/global.css';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2?url';
+import { getImage } from 'astro:assets';
+
+import topoSource from '../assets/topo.png';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from '../data/site';
 
 interface Props {
-  title: string;
+  /** A page title, shown as "Title · Kyle Cesmat". The home page leaves it out. */
+  title?: string;
   description?: string;
+  noindex?: boolean;
+  /**
+   * The home page: the name is the page's heading and the human | agent
+   * switch shows. Every other page gets a link home and brings its own
+   * heading.
+   */
+  home?: boolean;
 }
 
-const { title, description = 'Personal website of Kyle Cesmat.' } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const { title, description = SITE_DESCRIPTION, noindex = false, home = false } = Astro.props;
+const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_TITLE;
+// Pages are built as files (current.html), and that is the path Astro reports
+// during the build; the address people use has no extension.
+const path = Astro.url.pathname.replace(/(\/index)?\.html$/, '') || '/';
+const canonical = new URL(path, Astro.site).href;
+
+// Shown faintly, behind the top of the page and again in the footer's map,
+// so it can be small and heavily compressed.
+const topo = await getImage({ src: topoSource, format: 'avif', width: 640, quality: 35 });
 ---
 
 <!doctype html>
@@ -15,47 +39,53 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <!-- Runs before first paint so the stored or system theme never flashes. -->
+    <script is:inline>
+      (() => {
+        let stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch {}
+        const dark =
+          stored === 'dark' ||
+          (stored !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="text/markdown" href={new URL('/index.md', Astro.site).href} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="profile" />
+    <slot name="head" />
   </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header>
-      <a href="/">Kyle Cesmat</a>
-    </header>
-    <main id="main">
+  <!-- A column at least one screen tall, so the footer sits at the bottom of
+       short pages (the 404) instead of halfway up. -->
+  <body class="relative flex min-h-dvh flex-col font-sans">
+    <div aria-hidden="true" class="topo" style={`--topo-image:url(${topo.src})`}></div>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:font-medium focus:text-foreground focus:ring-2 focus:ring-ring focus:outline-hidden print:hidden"
+    >
+      Skip to Content
+    </a>
+    <Header home={home} />
+    <main
+      id="main"
+      tabindex="-1"
+      class="mx-auto w-full max-w-3xl px-5 outline-hidden sm:px-8 print:max-w-none print:px-0"
+    >
       <slot />
     </main>
-    <footer>
-      <p id="load-timing" aria-live="polite"></p>
-    </footer>
-    <script>
-      // Navigation Timing for this document, from the moment the browser sent
-      // the request (requestStart) through the load event. DNS, TCP, and TLS
-      // are outside that window. Kept inline so measuring the page does not
-      // add a request.
-      addEventListener(
-        'load',
-        () => {
-          setTimeout(() => {
-            const el = document.getElementById('load-timing');
-            const nav = performance.getEntriesByType('navigation')[0];
-            if (!el || !(nav instanceof PerformanceNavigationTiming) || nav.loadEventEnd <= 0) {
-              return;
-            }
-
-            const elapsed = nav.loadEventEnd - nav.requestStart;
-            el.textContent = 'Loaded in ' + elapsed.toFixed(5) + ' ms';
-          });
-        },
-        { once: true },
-      );
-    </script>
+    <Footer topo={topo.src} />
   </body>
 </html>

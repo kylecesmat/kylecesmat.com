@@ -1,0 +1,78 @@
+---
+
+---
+
+<!-- The icons are chosen by CSS from the `dark` class, so the button is
+     right in the server HTML with no pop-in before the script runs. -->
+<button
+  type="button"
+  data-theme-toggle
+  aria-label="Toggle theme"
+  class="inline-flex h-11 w-11 items-center justify-center rounded-full p-0 text-sm font-medium whitespace-nowrap text-foreground ring-offset-background transition-colors hover:bg-accent hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-hidden print:hidden"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    class="size-4 dark:hidden"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    class="hidden size-4 dark:block"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path
+      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+    ></path>
+  </svg>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const system = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const stored = () => {
+    try {
+      return localStorage.getItem('theme');
+    } catch {
+      return null;
+    }
+  };
+
+  function apply(dark: boolean) {
+    root.classList.toggle('dark', dark);
+    button?.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+
+  apply(root.classList.contains('dark'));
+
+  button?.addEventListener('click', () => {
+    const dark = !root.classList.contains('dark');
+    apply(dark);
+    try {
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    } catch {
+      // Storage can be unavailable (private mode); the choice lasts the visit.
+    }
+  });
+
+  // Until the visitor picks a theme, the page keeps following the system's.
+  system.addEventListener('change', (event) => {
+    if (!stored()) apply(event.matches);
+  });
+</script>

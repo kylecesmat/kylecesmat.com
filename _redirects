@@ -1,0 +1,6 @@
+# Path redirects for Cloudflare Pages.
+# www → apex is a zone Redirect Rule; Pages cannot match on the hostname.
+
+/currently /current 301
+/currently/ /current 301
+/sitemap.xml /sitemap-index.xml 301

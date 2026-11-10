@@ -159,13 +159,17 @@ html[data-view='agent'] .human-view {
     .timeline-line {
       transform-origin: top;
       animation: timeline-draw linear both;
-      animation-timeline: --timeline-dot;
       animation-range: entry 0% cover 30%;
     }
     .timeline-dot {
       animation: timeline-fill linear both;
-      animation-timeline: --timeline-dot;
       animation-range: entry 0% entry 100%;
+    }
+    /* Their own rules on purpose: the CSS minifier folds animation-timeline
+       into the shorthand when they share one, and browsers reject that. */
+    .timeline-spine .timeline-line,
+    .timeline-spine .timeline-dot {
+      animation-timeline: --timeline-dot;
     }
   }
 }

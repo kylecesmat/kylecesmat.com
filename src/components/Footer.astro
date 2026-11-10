@@ -139,7 +139,7 @@ const focusRing =
       const nav = performance.getEntriesByType('navigation')[0];
       if (!(nav instanceof PerformanceNavigationTiming) || nav.loadEventEnd <= 0) return;
       loadValue.textContent =
-        'Loaded in ' + (nav.loadEventEnd - nav.requestStart).toFixed(5) + ' ms';
+        'Loaded in ' + (nav.loadEventEnd - nav.requestStart).toFixed(1) + ' ms';
       loadTiming.hidden = false;
     };
     if (document.readyState === 'complete') window.setTimeout(report);

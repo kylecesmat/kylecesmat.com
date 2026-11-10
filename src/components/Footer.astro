@@ -102,6 +102,14 @@ const focusRing =
         </li>
       </ul>
     </div>
+    <p
+      id="load-timing"
+      class="mt-2 flex items-center gap-1.5 font-mono text-xs text-muted-foreground"
+      hidden
+    >
+      <span aria-hidden="true">🚀</span>
+      <span id="load-timing-value"></span>
+    </p>
   </div>
 </footer>
 
@@ -120,5 +128,21 @@ const focusRing =
     tick();
     clock.hidden = false;
     window.setInterval(tick, 15_000);
+  }
+
+  // From the request being sent through the load event. loadEventEnd is still
+  // 0 inside the load handler, so the read waits one task.
+  const loadTiming = document.querySelector<HTMLElement>('#load-timing');
+  const loadValue = document.querySelector<HTMLElement>('#load-timing-value');
+  if (loadTiming && loadValue) {
+    const report = () => {
+      const nav = performance.getEntriesByType('navigation')[0];
+      if (!(nav instanceof PerformanceNavigationTiming) || nav.loadEventEnd <= 0) return;
+      loadValue.textContent =
+        'Loaded in ' + (nav.loadEventEnd - nav.requestStart).toFixed(5) + ' ms';
+      loadTiming.hidden = false;
+    };
+    if (document.readyState === 'complete') window.setTimeout(report);
+    else window.addEventListener('load', () => window.setTimeout(report), { once: true });
   }
 </script>

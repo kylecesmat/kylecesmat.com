@@ -28,10 +28,6 @@ export const current: CurrentRow[] = [
   },
   {
     label: 'Interests',
-    text: 'Coffee, cooking, gardening, home projects, photography, and breweries.',
-  },
-  {
-    label: 'At home',
-    text: 'A 1920s brick house that always needs something, and a pottery wheel.',
+    text: 'Coffee, cooking, gardening, home projects, photography, pottery, and breweries.',
   },
 ];

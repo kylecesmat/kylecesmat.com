@@ -34,6 +34,17 @@ Dates are `YYYY-MM`; a malformed one fails the build. The text fields take inlin
 
 The layout is adapted from an MIT-licensed open-source site, credited in `THIRD_PARTY_NOTICES.md`. The colours are in `src/styles/global.css`, all derived from `--accent-hue`. The contour lines behind the header and in the footer's map are `src/assets/topo.png`, from the previous version of this site. The hover effects are one block in `global.css`; they are skipped on touch screens and under reduced motion.
 
+`DESIGN.md` records the lessons the redesign settled: one column with one margin, ink that carries information, links marked by a stroke instead of coloured text, hover that says nothing new, and the checks that caught mistakes. Read it before changing the layout or the type.
+
+## Agent skills
+
+`.agents/skills/` holds agent skills for building and reviewing interfaces, installed with the [skills CLI](https://github.com/vercel-labs/skills) and pinned in `skills-lock.json`. Two collections:
+
+- [jakubkrehel/skills](https://github.com/jakubkrehel/skills): typography, colour, layout, accessibility, UI polish and interface review.
+- [emilkowalski/skill](https://github.com/emilkowalski/skill): animation and interaction craft.
+
+They are reference material for the agent, not part of the site, and the build does not read them. Update them with `npx skills update`. Some skills act on their own when a task matches; the ones marked `disable-model-invocation` in their `SKILL.md` run only when named.
+
 ## Deployment
 
 Cloudflare Pages is the host for previews and for `kylecesmat.pages.dev`. A push to `master` deploys that production branch. Pull requests from this repository get their own preview branch. The zone nameservers are already Cloudflare, which is what lets an apex domain be a proxied CNAME and what makes `_headers` and `_redirects` apply.
@@ -42,6 +53,6 @@ The Actions API token can deploy Pages and attach `kylecesmat.com` to the projec
 
 ## Removed vs the old Next site
 
-- Travis CI + `gh-pages` deploy
+- Travis CI. Actions publishes `gh-pages` only while the apex DNS still points there.
 - Universal Analytics (`UA-104533559-1`)
 - Next 13 `next export`

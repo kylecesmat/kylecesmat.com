@@ -19,14 +19,12 @@ const focusRing =
 <!--
   Two parts. A bar with the mark on the left and the two switches on the
   right, which sticks to the top of the window as the page scrolls; and below
-  it, in normal flow, the identity block: the portrait and the name.
-  w-full matters: the body is a flex column, and a flex item with auto side
-  margins shrinks to its content instead of stretching.
+  it, in normal flow, the identity block: the portrait and the name. The bar
+  spans the window so its background meets both edges; its contents keep the
+  page's column.
 -->
-<header
-  class="sticky top-0 z-40 mx-auto w-full max-w-3xl bg-background/85 px-8 backdrop-blur-md print:static print:bg-background"
->
-  <div class="flex w-full items-center justify-between py-3">
+<header class="site-bar sticky top-0 z-40 w-full print:static print:bg-background">
+  <div class="mx-auto flex w-full max-w-3xl items-center justify-between px-8 py-3">
     <a href="/" aria-label={`${SITE_NAME}, home`} class:list={['rounded-md py-1', focusRing]}>
       <span
         aria-hidden="true"
@@ -43,31 +41,19 @@ const focusRing =
   </div>
 </header>
 <div class="mx-auto flex w-full max-w-3xl items-center gap-4 px-8 pt-3 pb-6 md:gap-5 md:pb-8">
-  <a
-    href="/"
-    aria-label={`${SITE_NAME}, home`}
-    class:list={['group shrink-0 rounded-full', focusRing]}
-  >
-    <!-- On a desktop the portrait rests in grayscale and takes its colour and
-         a ring in the accent on hover; phones have no hover and keep the
-         colour photo. -->
-    <span
-      class="block h-16 w-16 overflow-hidden rounded-full ring-primary ring-offset-2 ring-offset-background transition-shadow duration-300 motion-reduce:transition-none md:h-20 md:w-20 md:group-hover:ring-2"
-    >
-      <!-- 160px covers 2× on both breakpoints; 320px is for 3× phones. -->
-      <Image
-        src={profile}
-        alt={SITE_NAME}
-        width={80}
-        height={80}
-        widths={[160, 320]}
-        sizes="(min-width: 768px) 80px, 64px"
-        format="webp"
-        priority
-        class="h-full w-full rounded-full object-cover transition-[filter] duration-300 motion-reduce:transition-none md:grayscale md:group-hover:grayscale-0"
-      />
-    </span>
-  </a>
+  <!-- The portrait is not a link: the mark in the bar is already the way
+       home. 160px covers 2× on both breakpoints; 320px is for 3× phones. -->
+  <Image
+    src={profile}
+    alt=""
+    width={80}
+    height={80}
+    widths={[160, 320]}
+    sizes="(min-width: 768px) 80px, 64px"
+    format="webp"
+    priority
+    class="h-16 w-16 shrink-0 rounded-full object-cover md:h-20 md:w-20"
+  />
   <!-- The largest type on the page: the name, one step above the mark. -->
   <h1 class="text-3xl font-bold tracking-tight md:text-[2.5rem]/none">{SITE_NAME}</h1>
 </div>

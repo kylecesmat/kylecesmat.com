@@ -7,7 +7,6 @@ import DateRange from './DateRange.astro';
 if (companies.length === 0) throw new Error('No companies in src/data/work.ts');
 
 const slug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-const hostname = (url: string) => new URL(url).hostname.replace(/^www\./, '');
 
 const logoBase = 'h-8 w-8 shrink-0 rounded-full';
 ---
@@ -19,8 +18,11 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
   Every row is its own grid with the same columns, so the dots line up from
   row to row: `[spine | content]` when the section is narrow and
   `[date | spine | content]` once it is wide enough (a container query on the
-  list, not the viewport). Rows: 1 = header (dot, logo, name, chevron),
-  2 = date (narrow only), 3 = the panel.
+  list, not the viewport). The panel is a subgrid across all of them, so a
+  role's dates sit in the same margin as its company's and its dot on the
+  same line. Rows: 1 = header (dot, name, chevron), 2 = date (narrow only),
+  3 = what the company is, which shows whether or not the row is open,
+  4 = the panel.
 
   Closed panels stay in the DOM and are hidden with `data-closed` rather than
   the `hidden` attribute, which Tailwind's preflight makes impossible to
@@ -36,24 +38,26 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
         return (
           <li
             data-slot="accordion-item"
-            class="group grid grid-cols-[auto_1fr] gap-x-4 border-0 @2xl:grid-cols-[10rem_auto_1fr]"
+            class="group grid grid-cols-[auto_1fr] gap-x-4 @2xl:grid-cols-[10rem_auto_1fr]"
           >
             {periodLabel(company) && (
-              <p class="col-start-2 row-start-2 text-sm font-semibold text-muted-foreground @2xl:col-start-1 @2xl:row-start-1 @2xl:self-center @2xl:text-right @2xl:whitespace-nowrap">
+              <p class="col-start-2 row-start-2 pb-1 text-sm font-semibold text-muted-foreground @2xl:col-start-1 @2xl:row-start-1 @2xl:self-center @2xl:pb-0 @2xl:text-right @2xl:whitespace-nowrap">
                 <DateRange start={company.start} end={company.end} />
               </p>
             )}
             {/* The dot and the line down to the next row. A closed row is only
                 as tall as its header, so the spine keeps a minimum height that
-                leaves a stretch of line between one dot and the next. */}
+                leaves a stretch of line between one dot and the next. The
+                last row has nothing below it to reach, so its line shows only
+                while its panel is open and there are roles to thread. */}
             <div
               aria-hidden="true"
-              class="timeline-spine col-start-1 row-start-1 row-end-4 flex min-h-16 w-4 flex-col items-center group-last:min-h-0 @2xl:col-start-2"
+              class="timeline-spine col-start-1 row-start-1 row-end-5 flex min-h-16 w-4 flex-col items-center group-last:min-h-0 @2xl:col-start-2"
             >
               <span class="timeline-dot-box flex h-12 shrink-0 items-center">
-                <span class="timeline-dot size-2 rounded-full bg-primary ring-4 ring-background forced-colors:bg-[CanvasText]" />
+                <span class="timeline-dot size-2 rounded-full bg-mark ring-4 ring-background forced-colors:bg-[CanvasText]" />
               </span>
-              <span class="timeline-line w-px flex-1 bg-border group-last:hidden forced-colors:bg-[CanvasText]" />
+              <span class="timeline-line w-px flex-1 bg-border group-last:group-has-data-closed:hidden forced-colors:bg-[CanvasText]" />
             </div>
             <h3 class="col-start-2 row-start-1 flex @2xl:col-start-3">
               <button
@@ -62,40 +66,28 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
                 aria-controls={`${id}-panel`}
                 aria-expanded={open ? 'true' : 'false'}
                 data-slot="accordion-trigger"
-                class="group/accordion-trigger flex flex-1 items-center justify-between gap-3 py-2 text-left text-lg font-semibold text-foreground outline-hidden transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                class="group/accordion-trigger flex min-h-12 flex-1 items-center justify-between gap-3 py-2 text-left text-lg font-semibold text-foreground outline-hidden transition-colors hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 <span class="flex items-center gap-3">
-                  {company.logo ? (
-                    <>
-                      <img
-                        src={company.logo}
-                        width="32"
-                        height="32"
-                        alt=""
-                        loading="lazy"
-                        class:list={[logoBase, company.logoDark && 'dark:hidden print:block!']}
-                      />
-                      {company.logoDark && (
-                        <img
-                          src={company.logoDark}
-                          width="32"
-                          height="32"
-                          alt=""
-                          loading="lazy"
-                          class:list={[logoBase, 'hidden dark:block print:hidden!']}
-                        />
-                      )}
-                    </>
-                  ) : (
-                    <span
-                      aria-hidden="true"
-                      class:list={[
-                        logoBase,
-                        'inline-flex items-center justify-center bg-muted text-xs font-semibold text-muted-foreground',
-                      ]}
-                    >
-                      {company.name.charAt(0)}
-                    </span>
+                  {company.logo && (
+                    <img
+                      src={company.logo}
+                      width="32"
+                      height="32"
+                      alt=""
+                      loading="lazy"
+                      class:list={[logoBase, company.logoDark && 'dark:hidden print:block!']}
+                    />
+                  )}
+                  {company.logo && company.logoDark && (
+                    <img
+                      src={company.logoDark}
+                      width="32"
+                      height="32"
+                      alt=""
+                      loading="lazy"
+                      class:list={[logoBase, 'hidden dark:block print:hidden!']}
+                    />
                   )}
                   <span>{company.name}</span>
                 </span>
@@ -114,73 +106,65 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
                 </svg>
               </button>
             </h3>
+            {company.summary && (
+              <p
+                class="col-start-2 row-start-3 max-w-prose pb-2 text-sm text-muted-foreground @2xl:col-start-3"
+                set:html={inlineMarkdown(company.summary)}
+              />
+            )}
             <div
               id={`${id}-panel`}
               role="region"
               aria-labelledby={`${id}-trigger`}
               data-slot="accordion-content"
               data-closed={open ? undefined : ''}
-              class="col-start-2 row-start-3 overflow-hidden text-sm data-closed:hidden @2xl:col-start-3 print:block! print:h-auto!"
+              class="col-span-full row-start-4 grid grid-cols-subgrid overflow-hidden text-sm data-closed:hidden print:grid! print:h-auto!"
             >
-              <div class="pt-3 pb-8 group-last:pb-0">
-                <div
-                  data-slot="card"
-                  class="rounded-lg border border-border bg-card p-5 forced-colors:border-[CanvasText] print:break-inside-avoid"
-                >
-                  {company.url && (
-                    <p class="mb-3 text-xs">
-                      <a
-                        href={company.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-block py-2 text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-primary"
+              <div class="col-span-full grid grid-cols-subgrid pt-2 pb-8 group-last:pb-0">
+                {company.entries.length > 0 && (
+                  <ul class="col-span-full grid grid-cols-subgrid gap-y-6">
+                    {company.entries.map((entry) => (
+                      <li
+                        data-slot="role"
+                        class="col-span-full grid grid-cols-subgrid items-baseline print:break-inside-avoid"
                       >
-                        {hostname(company.url)}
-                        <span class="sr-only"> (opens in new tab)</span>
-                      </a>
-                    </p>
-                  )}
-                  <div class="divide-y">
-                    {company.summary && (
-                      <p
-                        class="py-4 first:pt-0 last:pb-0"
-                        set:html={inlineMarkdown(company.summary)}
-                      />
-                    )}
-                    {company.entries.length > 0 && (
-                      <ul class="divide-y not-first:pt-4">
-                        {company.entries.map((entry) => (
-                          <li class="space-y-2 py-4 first:pt-0 last:pb-0">
-                            <h4 class="text-base leading-none font-medium tracking-tight">
-                              {entry.title}
-                            </h4>
-                            {(entry.subtitle || periodLabel(entry)) && (
-                              <div class="flex flex-wrap items-baseline justify-between gap-x-4 text-sm text-muted-foreground">
-                                {entry.subtitle && (
-                                  <span class="font-semibold text-primary">{entry.subtitle}</span>
-                                )}
-                                {periodLabel(entry) && (
-                                  <span class="text-xs">
-                                    <DateRange start={entry.start} end={entry.end} />
-                                  </span>
-                                )}
-                              </div>
+                        {/* A smaller dot on the same spine: one per role. */}
+                        <span
+                          aria-hidden="true"
+                          class="col-start-1 row-start-1 flex h-6 w-4 items-center justify-center self-start @2xl:col-start-2"
+                        >
+                          <span class="size-1.5 rounded-full bg-muted-foreground ring-4 ring-background forced-colors:bg-[CanvasText]" />
+                        </span>
+                        <h4 class="col-start-2 row-start-1 text-base leading-6 font-medium @2xl:col-start-3">
+                          {entry.title}
+                        </h4>
+                        {(entry.subtitle || periodLabel(entry)) && (
+                          <div class="col-start-2 row-start-2 flex flex-wrap items-baseline justify-between gap-x-4 @2xl:contents">
+                            {entry.subtitle && (
+                              <p class="font-semibold text-primary @2xl:col-start-3 @2xl:row-start-2">
+                                {entry.subtitle}
+                              </p>
                             )}
-                            {entry.bullets && entry.bullets.length > 0 && (
-                              <ul class="list-disc space-y-1 pl-5 text-sm">
-                                {entry.bullets.map((bullet) => (
-                                  <li>
-                                    <p set:html={inlineMarkdown(bullet)} />
-                                  </li>
-                                ))}
-                              </ul>
+                            {periodLabel(entry) && (
+                              <p class="text-xs text-muted-foreground @2xl:col-start-1 @2xl:row-start-1 @2xl:text-right @2xl:whitespace-nowrap">
+                                <DateRange start={entry.start} end={entry.end} />
+                              </p>
                             )}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+                          </div>
+                        )}
+                        {entry.bullets && entry.bullets.length > 0 && (
+                          <ul class="col-start-2 row-start-3 mt-2 max-w-prose list-disc space-y-1.5 pl-4 marker:text-muted-foreground/60 @2xl:col-start-3">
+                            {entry.bullets.map((bullet) => (
+                              <li>
+                                <p set:html={inlineMarkdown(bullet)} />
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </li>
@@ -191,7 +175,7 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
   <noscript>
     <style is:inline>
       [data-slot='accordion-content'] {
-        display: block !important;
+        display: grid !important;
       }
     </style>
   </noscript>

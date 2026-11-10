@@ -34,12 +34,17 @@ export type Entry = Period & {
 
 export type Company = Period & {
   name: string;
+  /** For /llms.txt and the structured data; link it in `summary` to show it. */
   url?: string;
   /** Path under public/ of a mark shown before the name. Optional. */
   logo?: string;
   /** A variant for the dark theme, when the light one does not read on it. */
   logoDark?: string;
-  /** A sentence of inline Markdown shown at the top of the panel. */
+  /**
+   * What the company is, as a sentence of inline Markdown. Shown under the
+   * name whether or not the row is open, so leave it out where the name
+   * says enough.
+   */
   summary?: string;
   /**
    * Leave an entry's dates out when it is the only role and ran the whole
@@ -55,8 +60,6 @@ export const companies: Company[] = [
     url: 'https://www.coinbase.com/',
     start: '2020-10',
     end: 'present',
-    summary:
-      'Senior engineer on Prime trading, then staff engineer and manager on app infrastructure, then founder of the AI developer tooling org.',
     entries: [
       {
         title: 'Senior Engineering Manager',
@@ -105,7 +108,7 @@ export const companies: Company[] = [
     url: 'https://nearform.com/',
     start: '2016-05',
     end: '2020-10',
-    summary: 'A JavaScript consultancy, now part of Nearform.',
+    summary: 'A JavaScript consultancy, now part of [Nearform](https://nearform.com/).',
     entries: [
       {
         title: 'Engineering Manager + PHX Location Lead',
@@ -113,7 +116,6 @@ export const companies: Company[] = [
         end: '2020-10',
         bullets: [
           'Planted the Phoenix office, hired 8 engineers, and helped define Formidable’s distributed work environment.',
-          'Made sure projects were properly scoped, staffed, and executed, and that my team of engineers was empowered and supported to do their best work.',
         ],
       },
       {
@@ -145,7 +147,7 @@ export const companies: Company[] = [
     start: '2015-01',
     end: '2016-05',
     summary:
-      'A dev shop that works with startups, corporations, and large agencies to build advanced web apps.',
+      'A [dev shop](https://synapsestudios.com/) that works with startups, corporations, and large agencies to build advanced web apps.',
     entries: [
       {
         title: 'UI Engineer',

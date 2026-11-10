@@ -1,0 +1,36 @@
+---
+import { education } from '../data/work';
+---
+
+<!-- Same rows as Writing & Talks: the years in the margin, the school and
+     the degree beside them. -->{
+  education.length > 0 && (
+    <section aria-labelledby="education-heading" class="flex w-full flex-col gap-2">
+      <h2 id="education-heading" class="text-2xl font-semibold">
+        Education
+      </h2>
+      <ul class="@container flex flex-col">
+        {education.map((item) => (
+          <li class="grid grid-cols-[1fr_auto] items-baseline gap-x-4 py-2.5 first:pt-1 last:pb-0 @2xl:grid-cols-[10rem_1fr] @2xl:gap-x-12">
+            <p class="col-span-full font-semibold @2xl:col-span-1 @2xl:col-start-2">
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer" class="link-mark py-1">
+                  {item.school}
+                  <span class="sr-only"> (opens in new tab)</span>
+                </a>
+              ) : (
+                item.school
+              )}
+            </p>
+            <p class="col-start-1 row-start-2 text-sm text-muted-foreground @2xl:col-start-2">
+              {item.degree}
+            </p>
+            <p class="figures col-start-2 row-start-2 text-sm whitespace-nowrap text-muted-foreground @2xl:col-start-1 @2xl:row-start-1 @2xl:text-right">
+              {item.startYear}&nbsp;–&nbsp;{item.endYear}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

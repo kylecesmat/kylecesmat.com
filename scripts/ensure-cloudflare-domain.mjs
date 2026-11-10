@@ -2,6 +2,7 @@
 // Idempotent. Refuses to delete any DNS record that is not a GitHub Pages address.
 // Never prints the API token.
 
+import { appendFileSync } from "node:fs";
 import { Resolver } from "node:dns/promises";
 
 const API = "https://api.cloudflare.com/client/v4";
@@ -26,6 +27,12 @@ const GITHUB_PAGES_AAAA = new Set([
 
 const token = process.env.CLOUDFLARE_API_TOKEN;
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+
+function setOutput(key, value) {
+  const file = process.env.GITHUB_OUTPUT;
+  if (!file) return;
+  appendFileSync(file, `${key}=${value}\n`);
+}
 
 if (!token || !accountId) {
   console.error("CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are required.");
@@ -311,40 +318,57 @@ async function assertApexLeftGithubPages() {
   throw new Error(`${APEX} still resolves to GitHub Pages at the Cloudflare nameservers.`);
 }
 
+async function zoneFromPagesDomain(domain) {
+  const zoneId = domain?.zone_tag;
+  if (!zoneId) {
+    console.log("Pages domain response did not include a zone id.");
+    return null;
+  }
+  const probe = await cf(`/zones/${zoneId}/dns_records?name=${APEX}&per_page=20`);
+  if (!probe.ok) {
+    console.log(`DNS read via the Pages zone id failed (${probe.status}): ${errorText(probe.json)}`);
+    return null;
+  }
+  console.log("DNS is readable through the Pages domain zone id.");
+  return { id: zoneId, name: APEX };
+}
+
 async function main() {
   const project = await ensureProductionBranch();
   const target = project.subdomain || `${PROJECT}.pages.dev`;
 
-  let zone = null;
+  let domain;
   try {
-    await ensureDomain(APEX);
+    domain = await ensureDomain(APEX);
   } catch (error) {
     console.log(`Adding ${APEX} failed: ${error.message}`);
-    zone = await zoneForApex();
-    if (!zone) throw error;
-    console.log("Removing the GitHub Pages apex addresses, then retrying.");
-    await deleteGithubPagesApexRecords(zone.id);
-    await ensureDomain(APEX);
+    domain = null;
   }
 
-  zone ??= await zoneForApex();
-  if (zone) {
-    console.log(`Zone ${zone.name} ${zone.id}`);
-    try {
-      await ensureApexCname(zone.id, target);
-    } catch (error) {
-      console.log(`Apex CNAME failed: ${error.message}`);
-      console.log("Removing the GitHub Pages apex addresses, then retrying.");
-      await deleteGithubPagesApexRecords(zone.id);
-      await ensureApexCname(zone.id, target);
-    }
-  } else {
-    console.log("Pages is attaching the domain with its own DNS write.");
+  let zone = await zoneForApex();
+  zone ??= await zoneFromPagesDomain(domain);
+  if (!zone && !domain) {
+    throw new Error(`Could not attach ${APEX} or read its DNS zone.`);
+  }
+  if (!zone) {
+    console.log(
+      "The API token can deploy Pages but cannot edit DNS. kylecesmat.com stays on GitHub Pages.",
+    );
+    setOutput("dns", "github-pages");
+    return;
+  }
+
+  console.log(`Zone ${zone.name} ${zone.id}`);
+  try {
+    await ensureApexCname(zone.id, target);
+  } catch (error) {
+    console.log(`Apex CNAME failed: ${error.message}`);
+    console.log("Removing the GitHub Pages apex addresses, then retrying.");
+    await deleteGithubPagesApexRecords(zone.id);
+    await ensureApexCname(zone.id, target);
   }
 
   await waitUntilActive(APEX);
-
-  if (!zone) return;
 
   const redirected = await ensureWwwRedirect(zone.id);
   if (redirected) {
@@ -361,6 +385,7 @@ async function main() {
   }
 
   await assertApexLeftGithubPages();
+  setOutput("dns", "cloudflare");
   console.log("Custom domain setup finished.");
 }
 

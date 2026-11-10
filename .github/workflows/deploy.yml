@@ -19,7 +19,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       deployments: write
       pull-requests: write
     steps:
@@ -54,6 +54,7 @@ jobs:
           echo "deployment-url=${url}" >> "$GITHUB_OUTPUT"
           echo "skipped=false" >> "$GITHUB_OUTPUT"
       - name: Attach kylecesmat.com
+        id: domain
         # Production pushes always reconcile the domain. This branch's pull
         # request does it once, because workflow_dispatch is not available
         # to the GitHub token that opens the pull request.
@@ -62,6 +63,23 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node scripts/ensure-cloudflare-domain.mjs
+      - name: Publish GitHub Pages
+        if: steps.domain.outputs.dns == 'github-pages' && (github.ref == 'refs/heads/master' || github.head_ref == 'cursor/cloudflare-pages-cd-4768')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/github-pages-artifact.mjs
+          git -C dist-pages init -b gh-pages
+          git -C dist-pages config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C dist-pages config user.name "github-actions[bot]"
+          git -C dist-pages add -A
+          git -C dist-pages commit -m "Publish ${GITHUB_SHA}"
+          git -C dist-pages push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+          {
+            echo "## GitHub Pages"
+            echo "- https://kylecesmat.com"
+            echo "The Cloudflare token cannot edit DNS, so the apex stays on this branch."
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Write deployment URLs
         if: steps.deploy.outputs.skipped != 'true'
         env:

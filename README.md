@@ -36,9 +36,9 @@ The layout is adapted from an MIT-licensed open-source site, credited in `THIRD_
 
 ## Deployment
 
-Cloudflare Pages hosts the site. The zone already uses Cloudflare nameservers, so the apex can be a proxied CNAME to `kylecesmat.pages.dev`, and Pages can apply `_headers` and `_redirects`. GitHub Pages was the previous host; it cannot do that on the apex while the nameservers stay here.
+Cloudflare Pages is the host for previews and for `kylecesmat.pages.dev`. A push to `master` deploys that production branch. Pull requests from this repository get their own preview branch. The zone nameservers are already Cloudflare, which is what lets an apex domain be a proxied CNAME and what makes `_headers` and `_redirects` apply.
 
-`master` is the production branch. Each push builds the site, deploys it, and runs `scripts/ensure-cloudflare-domain.mjs`, which keeps `kylecesmat.com` on the project and keeps the www → apex 301. Pages `_redirects` cannot match the hostname, so that 301 is a zone Redirect Rule. Mail records are left alone.
+The Actions API token can deploy Pages and attach `kylecesmat.com` to the project, and it cannot edit DNS. While the apex still points at GitHub Pages, the same master build is published to the `gh-pages` branch, which is what `kylecesmat.com` serves. `www` keeps the existing GitHub Pages 301 to the apex. Mail records are not touched. When the token can edit the zone, `scripts/ensure-cloudflare-domain.mjs` moves the apex to Cloudflare Pages and the GitHub Pages publish is skipped.
 
 ## Removed vs the old Next site
 

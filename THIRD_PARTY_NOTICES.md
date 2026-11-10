@@ -32,7 +32,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## Raleway
+## Inter
 
-The typeface is [Raleway](https://github.com/impallari/Raleway), self-hosted
-through `@fontsource-variable/raleway` under the SIL Open Font License 1.1.
+The typeface is [Inter](https://github.com/rsms/inter), self-hosted through
+`@fontsource-variable/inter` under the SIL Open Font License 1.1.

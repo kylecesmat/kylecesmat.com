@@ -4,15 +4,17 @@
    rather than to prefers-color-scheme. */
 @custom-variant dark (&:is(.dark *));
 
-/* Arial resized to Raleway's metrics, so text does not reflow when the web
-   font swaps in. */
+/* Arial resized to Inter's metrics, so text does not reflow when the web
+   font swaps in. The width is matched at body sizes (16–18px), where most of
+   the text is and where Inter's optical-size axis makes it 5% wider than
+   Arial; the ascent and descent are Inter's own, divided by that factor. */
 @font-face {
-  font-family: 'Raleway Fallback';
+  font-family: 'Inter Fallback';
   src: local('Arial');
-  ascent-override: 90.51%;
-  descent-override: 22.53%;
+  ascent-override: 92.26%;
+  descent-override: 22.97%;
   line-gap-override: 0%;
-  size-adjust: 103.86%;
+  size-adjust: 105%;
 }
 
 /*
@@ -23,8 +25,8 @@
  */
 @theme inline {
   --font-sans:
-    'Raleway Variable', 'Raleway Fallback', ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    'Inter Variable', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   --color-border: var(--border);
   --color-input: var(--input);
@@ -120,9 +122,18 @@
   h4 {
     text-wrap: balance;
   }
-  /* Raleway's default figures are old-style, which suits running text. Dates
-     sit in a column and are compared down it, so they get lining figures of
-     equal width. */
+  /* Inter is drawn loose for small sizes. Large type is set tighter, the
+     more so the larger it is; the font's optical-size axis does the rest. */
+  h1,
+  .lede {
+    letter-spacing: -0.035em;
+  }
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+  /* Dates sit in a column and are compared down it, so their figures are
+     all one width. */
   time,
   .figures {
     font-variant-numeric: lining-nums tabular-nums;

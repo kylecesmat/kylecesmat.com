@@ -1,6 +1,4 @@
-# Applied by Cloudflare Pages when the hostname is proxied (orange-cloud).
-# Today the zone is DNS-only (grey-cloud) to GitHub Pages, so these do not
-# apply on the live site. See README cutover notes.
+# Applied by Cloudflare Pages on the proxied kylecesmat.com hostname.
 
 /*
   X-Content-Type-Options: nosniff

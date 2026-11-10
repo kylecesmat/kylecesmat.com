@@ -1,6 +1,5 @@
 # Path redirects for Cloudflare Pages.
-# Host-level www → apex is not supported here; keep that 301 with a
-# Cloudflare Redirect Rule after orange-clouding www. See README.
+# www → apex is a zone Redirect Rule; Pages cannot match on the hostname.
 
 /currently /current 301
 /currently/ /current 301

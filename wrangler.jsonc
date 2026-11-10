@@ -2,7 +2,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "kylecesmat",
   "compatibility_date": "2026-09-01",
-  // Preview-only. Do not attach kylecesmat.com or orange-cloud GitHub Pages
-  // records until a later, approved cutover. Nameservers are already Cloudflare.
+  // Production is the Pages project `kylecesmat`. GitHub Actions deploys
+  // `dist/` and attaches kylecesmat.com. Nameservers stay on Cloudflare.
   "pages_build_output_dir": "./dist"
 }

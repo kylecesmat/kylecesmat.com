@@ -1,14 +1,11 @@
 {
   "name": "kylecesmat.com",
   "install": "npm ci",
-  "terminals": [
+  "start": "exec npm run dev -- --host 0.0.0.0 --port 4321",
+  "ports": [
     {
-      "name": "astro-dev",
-      "command": "npm run dev"
+      "name": "web",
+      "port": 4321
     }
-  ],
-  "ports": [{
-    "name": "web",
-    "port": 4321
-  }]
+  ]
 }

@@ -1,0 +1,5 @@
+# Copy to .dev.vars for `npm run pages:dev`. Git ignores .dev.vars.
+# Mint the refresh token with scripts/spotify-auth.mjs.
+SPOTIFY_CLIENT_ID=
+SPOTIFY_CLIENT_SECRET=
+SPOTIFY_REFRESH_TOKEN=

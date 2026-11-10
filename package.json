@@ -10,7 +10,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check",
+    "check": "astro check && wrangler types functions/types.d.ts --check && tsc -p functions --noEmit && mkdir -p .wrangler/functions && wrangler pages functions build --outdir=.wrangler/functions --output-routes-path=.wrangler/functions/_routes.json",
+    "test": "node --test src/lib/listening.test.ts",
     "pages:dev": "npm run build && wrangler pages dev dist"
   },
   "dependencies": {

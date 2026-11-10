@@ -8,7 +8,7 @@ Personal site. The home page is an introduction, a work history in broad strokes
 - [Tailwind CSS](https://tailwindcss.com/) 4 through `@tailwindcss/vite`; self-hosted Inter
 - Node 22 (see `.nvmrc`)
 - Cloudflare Pages via `wrangler.jsonc` (`pages_build_output_dir: ./dist`)
-- GitHub Actions: `astro check` and build on every push, preview deploys on pull requests
+- GitHub Actions deploys `dist/` on every push to `master` and on pull requests from this repository. Dependabot and fork pull requests cannot read the Actions secrets, so those checks skip the deploy and the merge to `master` publishes.
 
 ## Local
 
@@ -45,14 +45,14 @@ The layout is adapted from an MIT-licensed open-source site, credited in `THIRD_
 
 They are reference material for the agent, not part of the site, and the build does not read them. Update them with `npx skills update`. Some skills act on their own when a task matches; the ones marked `disable-model-invocation` in their `SKILL.md` run only when named.
 
-## Cloudflare cutover (not this PR)
+## Deployment
 
-Nameservers are already Cloudflare (`jake` / `lisa`). Records are DNS-only (grey-cloud) to GitHub Pages. Preview this branch first. Go-live later: attach Pages custom domain on the apex, orange-cloud the records, keep nameservers, then retire GitHub Pages / `gh-pages`.
+Cloudflare Pages is the host for previews and for `kylecesmat.pages.dev`. A push to `master` deploys that production branch. Pull requests from this repository get their own preview branch. The zone nameservers are already Cloudflare, which is what lets an apex domain be a proxied CNAME and what makes `_headers` and `_redirects` apply.
 
-Keep the existing www→apex 301. Pages `_redirects` cannot do host-level redirects; after cutover use a Cloudflare Redirect Rule on proxied `www`.
+The Actions API token can deploy Pages and attach `kylecesmat.com` to the project, and it cannot edit DNS. While the apex still points at GitHub Pages, the same master build is published to the `gh-pages` branch, which is what `kylecesmat.com` serves. `www` keeps the existing GitHub Pages 301 to the apex. Mail records are not touched. When the token can edit the zone, `scripts/ensure-cloudflare-domain.mjs` moves the apex to Cloudflare Pages and the GitHub Pages publish is skipped.
 
 ## Removed vs the old Next site
 
-- Travis CI + `gh-pages` deploy
+- Travis CI. Actions publishes `gh-pages` only while the apex DNS still points there.
 - Universal Analytics (`UA-104533559-1`)
 - Next 13 `next export`

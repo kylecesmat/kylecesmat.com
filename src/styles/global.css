@@ -138,6 +138,9 @@
   .figures {
     font-variant-numeric: lining-nums tabular-nums;
   }
+  ::selection {
+    background-color: var(--link-fill);
+  }
   /* The header bar sticks to the top, so an anchor jump or a focus scroll
      leaves this much room above the target instead of hiding it under the bar. */
   html {
@@ -155,12 +158,16 @@
 
 /*
  * Links are marked the way the previous site marked them: a stroke of green
- * under the text, and a highlighter fill that rises behind the line on hover
- * or focus. The text keeps the body colour, so reading a link never depends
- * on coloured text; the stroke is the cue, which is why --mark holds 3:1
- * against the page. Both are placed against the text
- * itself, not the padding that enlarges the link's touch target, and
- * box-decoration-break gives every line of a wrapped link its own.
+ * under the text, and a highlighter that is drawn across it on hover or
+ * focus. The text keeps the body colour, so reading a link never depends on
+ * coloured text; the stroke is the cue, which is why --mark holds 3:1
+ * against the page. Both are placed against the text itself, not the padding
+ * that enlarges the link's touch target, and box-decoration-break gives
+ * every line of a wrapped link its own.
+ *
+ * The highlighter is anchored to the right at rest and to the left while
+ * hovered, and only its width is animated: so it sweeps in from the left and
+ * leaves to the right, the way a pen would.
  */
 @utility link-mark {
   text-decoration-line: none;
@@ -168,18 +175,297 @@
     linear-gradient(var(--mark), var(--mark)), linear-gradient(var(--link-fill), var(--link-fill));
   background-repeat: no-repeat;
   background-origin: content-box;
-  background-position: 0 94%;
+  background-position:
+    0 94%,
+    100% 94%;
   background-size:
     100% max(0.09em, 1.5px),
-    100% 0;
+    0 88%;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  transition: background-size 150ms ease-out;
+  transition: background-size var(--sweep);
   &:hover,
-  &:focus-visible {
+  &:focus-visible,
+  :is(a:hover, a:focus-visible) > & {
+    background-position:
+      0 94%,
+      0 94%;
     background-size:
       100% max(0.09em, 1.5px),
       100% 88%;
+  }
+}
+
+/*
+ * The quiet link: the small ones at the top of the page and in the footer.
+ * A hairline in the text's own colour at rest; on hover or focus a green
+ * stroke is drawn over it with the same left-to-right sweep. Like link-mark
+ * it can sit on a span inside the link, so the link's padding (which makes
+ * neighbouring targets meet, and tall enough for a thumb) stays unmarked.
+ */
+@utility link-quiet {
+  text-decoration-line: none;
+  background-image:
+    linear-gradient(var(--mark), var(--mark)), linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  background-position:
+    100% 96%,
+    0 94%;
+  background-size:
+    0 2px,
+    100% 1px;
+  transition: background-size var(--sweep);
+  &:hover,
+  &:focus-visible,
+  :is(a:hover, a:focus-visible) > & {
+    background-position:
+      0 96%,
+      0 94%;
+    background-size:
+      100% 2px,
+      100% 1px;
+  }
+}
+
+@utility heading-section {
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+/*
+ * Hover, as a set. Each one answers the pointer with a small, quick move and
+ * none of them carries information: touch screens and keyboards lose
+ * nothing, and reduced motion (below) makes them instant.
+ */
+:root {
+  --sweep: 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: 360ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Pointing at one item in a list lets the others fall back. */
+.dim-others > * {
+  transition: opacity 200ms ease-out;
+}
+@media (hover: hover) {
+  .dim-others:has(> :hover) > :not(:hover) {
+    opacity: 0.45;
+  }
+}
+
+/*
+ * An arrow that slides in after a link to say where it leads: up and out for
+ * another site, straight on for a page here. It takes no room in the line,
+ * so the stroke under the link stops where the words do and nothing shifts
+ * when it appears.
+ */
+.link-arrow::after {
+  content: '';
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: -1em;
+  margin-left: 0.3em;
+  background-color: var(--primary);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 18 18 6M8 6h10v10'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  opacity: 0;
+  translate: -0.3em 0.3em;
+  transition:
+    opacity 200ms ease-out,
+    translate var(--sweep);
+}
+.link-arrow[href^='/']::after {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h16M13 5l7 7-7 7'/%3E%3C/svg%3E");
+  translate: -0.4em 0;
+}
+.link-arrow:focus-visible::after {
+  opacity: 1;
+  translate: 0 0;
+}
+@media (hover: hover) {
+  .link-arrow:hover::after,
+  .dim-others > :hover .link-arrow::after {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* The portrait leans in. */
+.portrait {
+  transition:
+    rotate var(--spring),
+    scale var(--spring);
+}
+/* The sun turns and the moon tips. */
+[data-theme-toggle] svg {
+  transition: rotate var(--spring);
+}
+/* A company's row: its dot on the timeline swells, its logo tilts, and its
+   chevron leans the way a click would send the panel. */
+.timeline-dot {
+  transition:
+    scale var(--spring),
+    box-shadow 200ms ease-out;
+}
+[data-slot='accordion-trigger'] img {
+  transition:
+    rotate var(--spring),
+    scale var(--spring);
+}
+.accordion-chevron {
+  transition:
+    rotate 200ms ease-out,
+    translate 200ms ease-out;
+}
+[aria-expanded='true'] > .accordion-chevron {
+  rotate: 180deg;
+}
+@media (hover: hover) {
+  .portrait:hover,
+  a:hover > .portrait {
+    rotate: -6deg;
+    scale: 1.06;
+  }
+  [data-theme-toggle]:hover svg {
+    rotate: 45deg;
+  }
+  .dark [data-theme-toggle]:hover svg {
+    rotate: 90deg;
+  }
+  [data-slot='accordion-trigger']:hover {
+    color: var(--primary);
+  }
+  [data-slot='accordion-trigger']:hover img {
+    rotate: -8deg;
+    scale: 1.1;
+  }
+  [data-slot='accordion-trigger']:hover > .accordion-chevron {
+    translate: 0 3px;
+  }
+  [data-slot='accordion-trigger'][aria-expanded='true']:hover > .accordion-chevron {
+    translate: 0 -3px;
+  }
+  [data-slot='accordion-item']:has([data-slot='accordion-trigger']:hover) .timeline-dot {
+    scale: 1.5;
+    box-shadow:
+      0 0 0 3px var(--link-fill),
+      0 0 0 3px var(--background);
+  }
+}
+
+/*
+ * The footer is a small map of where I am: the contour lines again, a pin,
+ * and the two hairlines that cross at it. The image is dark lines on white,
+ * so it is multiplied into the panel (the white drops out) and, inverted,
+ * screened into the dark one. Pointing at the panel brings the lines up and
+ * sets the pin pulsing.
+ */
+.place {
+  /* Narrow: the map keeps to the top corner, clear of the legend. */
+  --pin-x: 84%;
+  --pin-y: 17%;
+  --map-rx: 44%;
+  --map-ry: 42%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: var(--muted);
+}
+@media (width >= 40rem) {
+  .place {
+    --pin-x: 78%;
+    --pin-y: 44%;
+    --map-rx: 52%;
+    --map-ry: 115%;
+  }
+}
+.place-contours,
+.place-cross {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.place-contours {
+  background-image: var(--topo-image);
+  background-position: right -6rem top -9rem;
+  background-size: 44rem auto;
+  mix-blend-mode: multiply;
+  opacity: 0.22;
+  /* Faded out around the pin, and again before the bottom row of links. */
+  mask-image:
+    radial-gradient(
+      ellipse var(--map-rx) var(--map-ry) at var(--pin-x) var(--pin-y),
+      black 15%,
+      transparent 85%
+    ),
+    linear-gradient(to bottom, black 62%, transparent 86%);
+  mask-composite: intersect;
+  transition: opacity 400ms ease-out;
+}
+.dark .place-contours {
+  filter: invert(1);
+  mix-blend-mode: screen;
+  opacity: 0.2;
+}
+.place-cross {
+  background-image:
+    linear-gradient(var(--mark), var(--mark)), linear-gradient(var(--mark), var(--mark));
+  background-repeat: no-repeat;
+  background-position:
+    0 var(--pin-y),
+    var(--pin-x) 0;
+  background-size:
+    100% 1px,
+    1px 100%;
+  opacity: 0.35;
+  mask-image: radial-gradient(
+    ellipse calc(var(--map-rx) * 0.8) calc(var(--map-ry) * 0.8) at var(--pin-x) var(--pin-y),
+    black,
+    transparent 85%
+  );
+}
+.place-pin {
+  position: absolute;
+  top: var(--pin-y);
+  left: var(--pin-x);
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: var(--mark);
+  box-shadow: 0 0 0 4px var(--link-fill);
+  translate: -50% -50%;
+}
+.place-pin::after {
+  content: '';
+  position: absolute;
+  inset: -0.25rem;
+  border: 1.5px solid var(--mark);
+  border-radius: 50%;
+  opacity: 0;
+}
+@media (hover: hover) {
+  .place:hover .place-contours {
+    opacity: 0.36;
+  }
+  .dark .place:hover .place-contours {
+    opacity: 0.34;
+  }
+  .place:hover .place-pin::after {
+    animation: place-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+@keyframes place-ping {
+  from {
+    scale: 0.6;
+    opacity: 0.9;
+  }
+  to {
+    scale: 3;
+    opacity: 0;
   }
 }
 
@@ -306,11 +592,24 @@ html[data-view='agent'] .human-view {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* A pulse cut to a hundredth of a millisecond is a flicker; drop it. */
+  .place:hover .place-pin::after {
+    animation: none;
+  }
 }
 
 /* On paper: black on white, the timeline simply drawn, external link targets
    written out. */
+/* The page's own margins on paper; the column's padding is dropped there. */
+@page {
+  margin: 14mm 16mm;
+}
 @media print {
+  /* Paper holds more than a screen at arm's length: everything is sized in
+     rem, so this scales the whole page down together. */
+  html {
+    font-size: 13px;
+  }
   :root,
   .dark {
     color-scheme: light;
@@ -327,18 +626,22 @@ html[data-view='agent'] .human-view {
     --border: oklch(0.65 0 0);
   }
   .timeline-line,
-  .timeline-dot,
-  .site-bar {
+  .timeline-dot {
     animation: none;
   }
   .topo {
+    display: none;
+  }
+  .link-arrow::after {
     display: none;
   }
   /* Backgrounds do not print, so the stroke under a link would be lost. */
   a {
     text-decoration: underline;
   }
-  a[href^='http']::after {
+  /* A link's target is written out after it, except where the text already
+     is the address or (the resume) where a saved PDF keeps the link itself. */
+  a[href^='http']:not(.print-as-is, .print-as-is *)::after {
     content: ' (' attr(href) ')';
     font-size: 0.85em;
     font-weight: 400;

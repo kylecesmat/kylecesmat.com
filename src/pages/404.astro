@@ -9,14 +9,14 @@ const button =
      path, so a stale link lands inside the site's own chrome with a way back. -->
 <BaseLayout title="Page not found" noindex>
   <div class="flex flex-col items-center gap-6 py-12 text-center md:py-16">
-    <p class="text-xl leading-snug font-light md:text-2xl md:leading-8">
+    <h1 class="text-xl leading-snug font-normal tracking-normal md:text-2xl md:leading-8">
       <code
         class="rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[0.8em] font-semibold"
       >
         404
       </code>{' '}
       There’s nothing at this address.
-    </p>
+    </h1>
     <div class="flex flex-wrap justify-center gap-3">
       <a href="/" class:list={[button, 'bg-primary text-primary-foreground hover:bg-primary/90']}>
         Back to the Home Page

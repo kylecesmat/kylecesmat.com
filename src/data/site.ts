@@ -4,38 +4,68 @@
  */
 export const SITE_NAME = 'Kyle Cesmat';
 
-/** The monospace mark in the header bar, shown as `<kc>`. */
-export const SITE_MARK = 'kc';
-
-export const SITE_TITLE = 'Kyle Cesmat — AI developer platforms and agent experience';
+export const SITE_TITLE = 'Kyle Cesmat — Agentic systems that make teams faster';
 
 /** Third person, for search results, link previews and /llms.txt. */
 export const SITE_DESCRIPTION =
-  'Kyle Cesmat builds platforms that make engineers faster, lately with AI agents. He is a Senior Engineering Manager at Coinbase, where he founded the Agent Experience org. Denver, CO.';
+  'Kyle Cesmat builds agentic systems that make teams faster. He is building the Agent Platform at Coinbase, and before that led teams in DevX, app infrastructure, and trading systems. Denver, CO.';
 
 /**
- * The introduction, first person, as inline Markdown. It leads with the work
- * rather than the title, so it still reads true after a change of role. The
- * page and /llms.txt both render these three strings.
+ * The introduction, first person, as inline Markdown: the line in large type,
+ * then one paragraph in two halves, the work and the rest of life. The home
+ * page and /llms.txt show all three strings; the resume shows the first two.
+ * A link that starts with `/` stays on this site.
  */
 export const INTRO = {
-  lede: 'I build platforms that make engineers faster, lately with AI agents.',
-  work: 'I’m a Senior Engineering Manager at **Coinbase**, where I founded the Agent Experience org. Before that I worked on trading systems and app infrastructure, and I still care most about the boring layer that makes the flashy stuff work.',
-  life: 'Off the clock: Denver, a 1920s brick house that always needs something, a garden, a pottery wheel, two e-bikes, and a camper van.',
+  lede: 'I build agentic systems that make teams faster.',
+  work: 'I’m currently focused on building the Agent Platform at **Coinbase**. Before this I led teams in DevX, app infrastructure, and trading systems.',
+  life: 'I call Denver, CO home and get to bike, ski, and fish year-round with my family. See what else I’m [currently](/current) into.',
 };
 
 export const CONTACT_EMAIL = 'kylecesmat@gmail.com';
 
 export const SOURCE_URL = 'https://github.com/kylecesmat/kylecesmat.com';
 
-export type ProfileName = 'GitHub' | 'LinkedIn' | 'X';
+/**
+ * Where the "resume" links go. It is a page on this site, built from
+ * src/data/work.ts; to link a PDF instead, put the file in public/ and point
+ * this at it (for example '/kyle-cesmat-resume.pdf').
+ */
+export const RESUME_URL = '/resume';
+
+export type ProfileName = 'Twitter' | 'GitHub' | 'LinkedIn';
 
 /**
- * Profiles elsewhere, in the order the Connect section lists them. The same
+ * Profiles elsewhere, in the order the header and footer list them. The same
  * URLs are the `sameAs` links in the page's structured data.
  */
-export const PROFILES: { name: ProfileName; handle: string; url: string }[] = [
-  { name: 'GitHub', handle: '@kylecesmat', url: 'https://github.com/kylecesmat' },
-  { name: 'LinkedIn', handle: '/kylecesmat', url: 'https://www.linkedin.com/in/kylecesmat' },
-  { name: 'X', handle: '@kylecesmat', url: 'https://x.com/kylecesmat' },
+export const PROFILES: { name: ProfileName; url: string }[] = [
+  { name: 'Twitter', url: 'https://x.com/kylecesmat' },
+  { name: 'GitHub', url: 'https://github.com/kylecesmat' },
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/kylecesmat' },
 ];
+
+export type SiteLink = { label: string; url: string };
+
+/**
+ * The small links at the top left of every page and again in the footer:
+ * the profiles, then the resume, then email.
+ */
+export const LINKS: SiteLink[] = [
+  ...PROFILES.map(({ name, url }) => ({ label: name.toLowerCase(), url })),
+  { label: 'resume', url: RESUME_URL },
+  { label: 'email', url: `mailto:${CONTACT_EMAIL}` },
+];
+
+/**
+ * The footer's map legend. These are the city's published coordinates (the
+ * point the name "Denver" is pinned to on a map), not an address.
+ */
+export const PLACE = {
+  name: 'Denver, Colorado',
+  short: 'Denver, CO',
+  latitude: 39.7392,
+  longitude: -104.9903,
+  elevation: '5,280 ft',
+  timeZone: 'America/Denver',
+};

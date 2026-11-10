@@ -1,7 +1,6 @@
 ---
 import About from '../components/About.astro';
 import AgentView from '../components/AgentView.astro';
-import Connect from '../components/Connect.astro';
 import Education from '../components/Education.astro';
 import PersonJsonLd from '../components/PersonJsonLd.astro';
 import Talks from '../components/Talks.astro';
@@ -9,7 +8,7 @@ import Work from '../components/Work.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout viewToggle>
+<BaseLayout home>
   <PersonJsonLd slot="head" />
   <div class="flex flex-col items-center justify-center gap-16 pt-8 md:gap-20 md:pt-12">
     <!-- The human view; hidden by CSS while the agent view is showing. -->
@@ -18,7 +17,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <Work />
       <Talks />
       <Education />
-      <Connect />
     </div>
     <AgentView />
   </div>

@@ -14,16 +14,23 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
-  /** Show the human | agent switch; only the home page has an agent view. */
-  viewToggle?: boolean;
+  /**
+   * The home page: the name is the page's heading and the human | agent
+   * switch shows. Every other page gets a link home and brings its own
+   * heading.
+   */
+  home?: boolean;
 }
 
-const { title, description = SITE_DESCRIPTION, noindex = false, viewToggle = false } = Astro.props;
+const { title, description = SITE_DESCRIPTION, noindex = false, home = false } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_TITLE;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// Pages are built as files (current.html), and that is the path Astro reports
+// during the build; the address people use has no extension.
+const path = Astro.url.pathname.replace(/(\/index)?\.html$/, '') || '/';
+const canonical = new URL(path, Astro.site).href;
 
-// Shown at under a tenth of full opacity, so it can be small and heavily
-// compressed.
+// Shown faintly, behind the top of the page and again in the footer's map,
+// so it can be small and heavily compressed.
 const topo = await getImage({ src: topoSource, format: 'avif', width: 640, quality: 35 });
 ---
 
@@ -71,10 +78,14 @@ const topo = await getImage({ src: topoSource, format: 'avif', width: 640, quali
     >
       Skip to Content
     </a>
-    <Header viewToggle={viewToggle} />
-    <main id="main" tabindex="-1" class="mx-auto w-full max-w-3xl px-8 outline-hidden">
+    <Header home={home} />
+    <main
+      id="main"
+      tabindex="-1"
+      class="mx-auto w-full max-w-3xl px-5 outline-hidden sm:px-8 print:max-w-none print:px-0"
+    >
       <slot />
     </main>
-    <Footer />
+    <Footer topo={topo.src} />
   </body>
 </html>

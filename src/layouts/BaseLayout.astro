@@ -38,12 +38,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <script>
       // Navigation Timing for this document, from the moment the browser sent
       // the request (requestStart) through the load event. DNS, TCP, and TLS
-      // are outside that window.
-      //   wait      request sent -> first response byte
-      //   download  first byte -> last byte of the document
-      //   render    last byte -> load event finished
-      // Timestamps are rounded before subtracting so the three phases sum to
-      // the total. Kept inline so measuring the page does not add a request.
+      // are outside that window. Kept inline so measuring the page does not
+      // add a request.
       addEventListener(
         'load',
         () => {
@@ -54,21 +50,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               return;
             }
 
-            const request = Math.round(nav.requestStart);
-            const firstByte = Math.round(nav.responseStart);
-            const lastByte = Math.round(nav.responseEnd);
-            const loaded = Math.round(nav.loadEventEnd);
-
-            el.textContent =
-              'Loaded in ' +
-              (loaded - request) +
-              ' ms (wait ' +
-              (firstByte - request) +
-              ', download ' +
-              (lastByte - firstByte) +
-              ', render ' +
-              (loaded - lastByte) +
-              ')';
+            const elapsed = nav.loadEventEnd - nav.requestStart;
+            el.textContent = 'Loaded in ' + elapsed.toFixed(5) + ' ms';
           });
         },
         { once: true },

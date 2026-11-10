@@ -36,20 +36,25 @@ const focusRing =
 
     <p class="text-lg font-semibold tracking-tight">{SITE_NAME}</p>
     <p class="text-sm text-muted-foreground">{PLACE.name}</p>
-    <p class="figures mt-3 flex flex-wrap gap-x-3 font-mono text-xs text-muted-foreground">
+    <!-- Coordinates on their own line: at a phone width they fill it, and the
+         elevation and the time stay paired on the next instead of the clock
+         wrapping underneath the longitude. -->
+    <p class="figures mt-3 flex flex-col font-mono text-xs text-muted-foreground">
       <a
         href={mapUrl}
         target="_blank"
         rel="noopener noreferrer"
         translate="no"
-        class:list={['link-quiet rounded-sm py-2 text-foreground', focusRing]}
+        class:list={['link-quiet self-start rounded-sm py-2 text-foreground', focusRing]}
       >
         {latitude}, {longitude}
         <span class="sr-only"> on a map (opens in new tab)</span>
       </a>
-      <span class="py-2">{PLACE.elevation}</span>
-      <!-- Filled in by the script below; without it there is nothing to show. -->
-      <span class="py-2" hidden data-local-time={PLACE.timeZone}></span>
+      <span class="flex flex-wrap gap-x-3 self-start">
+        <span class="py-2">{PLACE.elevation}</span>
+        <!-- Filled in by the script below; without it there is nothing to show. -->
+        <span class="py-2" hidden data-local-time={PLACE.timeZone}></span>
+      </span>
     </p>
 
     <p class="mt-12 max-w-[17rem] text-pretty sm:mt-16">
@@ -102,10 +107,13 @@ const focusRing =
         </li>
       </ul>
     </div>
+    <!-- In the tree from the start, clipped until the number exists, so the
+         status region can announce the text instead of appearing with it. -->
     <p
       id="load-timing"
-      class="mt-2 flex items-center gap-1.5 font-mono text-xs text-muted-foreground"
-      hidden
+      role="status"
+      aria-live="polite"
+      class="sr-only figures mt-2 flex items-center gap-1.5 font-mono text-xs text-muted-foreground"
     >
       <span aria-hidden="true">🚀</span>
       <span id="load-timing-value"></span>
@@ -140,7 +148,7 @@ const focusRing =
       if (!(nav instanceof PerformanceNavigationTiming) || nav.loadEventEnd <= 0) return;
       loadValue.textContent =
         'Loaded in ' + (nav.loadEventEnd - nav.requestStart).toFixed(1) + ' ms';
-      loadTiming.hidden = false;
+      loadTiming.classList.remove('sr-only');
     };
     if (document.readyState === 'complete') window.setTimeout(report);
     else window.addEventListener('load', () => window.setTimeout(report), { once: true });

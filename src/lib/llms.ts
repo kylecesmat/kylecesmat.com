@@ -1,12 +1,5 @@
 import { CURRENT_UPDATED, current } from '../data/current';
-import {
-  CONTACT_EMAIL,
-  INTRO,
-  PROFILES,
-  RESUME_URL,
-  SITE_DESCRIPTION,
-  SITE_NAME,
-} from '../data/site';
+import { CONTACT_EMAIL, INTRO, PROFILES, SITE_DESCRIPTION, SITE_NAME } from '../data/site';
 import { KIND_LABEL, talks } from '../data/talks';
 import { companies, education, type Period } from '../data/work';
 import { monthLabel, periodLabel } from './dates';
@@ -21,8 +14,7 @@ const dated = (period: Period) => {
  * The site as one Markdown document, for agents: served at /llms.txt and
  * /index.md and shown by the header's "agent" switch. Built from the same
  * data as the pages, so they cannot drift apart. It carries the home page
- * and /current in full and links the resume, which tells the same work
- * history at greater length.
+ * and /current in full.
  */
 export function buildLlmsText(site: URL): string {
   const lines: string[] = [
@@ -30,7 +22,7 @@ export function buildLlmsText(site: URL): string {
     '',
     `> ${SITE_DESCRIPTION}`,
     '',
-    'The home page is a short introduction, a work history in broad strokes, writing and talks, and education. This document is that page and the "currently" page as Markdown, served at `/llms.txt` and `/index.md`. The resume linked below tells the work history in full.',
+    'The home page is a short introduction, a work history in broad strokes, writing and talks, and education. This document is that page and the "currently" page as Markdown, served at `/llms.txt` and `/index.md`.',
     '',
     '## About',
     '',
@@ -41,7 +33,6 @@ export function buildLlmsText(site: URL): string {
     '## Links',
     '',
     `- Site: ${site.href}`,
-    `- Resume: ${new URL(RESUME_URL, site).href}`,
     `- Currently: ${new URL('/current', site).href}`,
     `- Email: ${CONTACT_EMAIL}`,
     ...PROFILES.map((profile) => `- ${profile.name}: ${profile.url}`),

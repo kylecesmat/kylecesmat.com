@@ -1,5 +1,4 @@
 ---
-import { RESUME_URL } from '../data/site';
 import { companies } from '../data/work';
 import { periodLabel } from '../lib/dates';
 import { inlineMarkdown } from '../lib/inline-markdown';
@@ -25,19 +24,14 @@ const logoBase = 'h-8 w-8 shrink-0 rounded-full';
   3 = what the company is, which shows whether or not the row is open,
   4 = the panel.
 
-  A role gets a sentence or two here: what it came to. The longer account is
-  on the resume, which the heading links to.
+  A role gets a sentence or two: what it came to.
 
   Closed panels stay in the DOM and are hidden with `data-closed` rather than
   the `hidden` attribute, which Tailwind's preflight makes impossible to
   override: this way the whole history prints, and shows without JavaScript.
 -->
 <section aria-labelledby="work-heading" class="flex w-full flex-col gap-2">
-  <div class="flex flex-wrap items-baseline justify-between gap-x-4">
-    <h2 id="work-heading" class="heading-section">Work Experience</h2>
-    <a href={RESUME_URL} class="link-quiet link-arrow mr-5 py-2 text-sm print:hidden">Full resume</a
-    >
-  </div>
+  <h2 id="work-heading" class="heading-section">Work Experience</h2>
   <ol data-slot="accordion" class="@container flex w-full flex-col">
     {
       companies.map((company, index) => {

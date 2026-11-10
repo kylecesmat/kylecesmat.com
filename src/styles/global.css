@@ -640,8 +640,8 @@ html[data-view='agent'] .human-view {
     text-decoration: underline;
   }
   /* A link's target is written out after it, except where the text already
-     is the address or (the resume) where a saved PDF keeps the link itself. */
-  a[href^='http']:not(.print-as-is, .print-as-is *)::after {
+     is the address. */
+  a[href^='http']:not(.print-as-is)::after {
     content: ' (' attr(href) ')';
     font-size: 0.85em;
     font-weight: 400;

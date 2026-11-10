@@ -13,7 +13,7 @@ export const SITE_DESCRIPTION =
 /**
  * The introduction, first person, as inline Markdown: the line in large type,
  * then one paragraph in two halves, the work and the rest of life. The home
- * page and /llms.txt show all three strings; the resume shows the first two.
+ * page and /llms.txt show all three strings.
  * A link that starts with `/` stays on this site.
  */
 export const INTRO = {
@@ -25,13 +25,6 @@ export const INTRO = {
 export const CONTACT_EMAIL = 'kylecesmat@gmail.com';
 
 export const SOURCE_URL = 'https://github.com/kylecesmat/kylecesmat.com';
-
-/**
- * Where the "resume" links go. It is a page on this site, built from
- * src/data/work.ts; to link a PDF instead, put the file in public/ and point
- * this at it (for example '/kyle-cesmat-resume.pdf').
- */
-export const RESUME_URL = '/resume';
 
 export type ProfileName = 'Twitter' | 'GitHub' | 'LinkedIn';
 
@@ -49,11 +42,10 @@ export type SiteLink = { label: string; url: string };
 
 /**
  * The small links at the top left of every page and again in the footer:
- * the profiles, then the resume, then email.
+ * the profiles, then email.
  */
 export const LINKS: SiteLink[] = [
   ...PROFILES.map(({ name, url }) => ({ label: name.toLowerCase(), url })),
-  { label: 'resume', url: RESUME_URL },
   { label: 'email', url: `mailto:${CONTACT_EMAIL}` },
 ];
 

@@ -5,8 +5,6 @@
   // Production is the Pages project `kylecesmat`. GitHub Actions deploys
   // `dist/` and attaches kylecesmat.com. Nameservers stay on Cloudflare.
   "pages_build_output_dir": "./dist",
-  // /api/listening. Values are Pages secrets and .dev.vars, not this file.
-  "secrets": {
-    "required": ["SPOTIFY_CLIENT_ID", "SPOTIFY_CLIENT_SECRET", "SPOTIFY_REFRESH_TOKEN"],
-  },
+  // Spotify names are Pages secrets and .dev.vars. `wrangler pages deploy`
+  // rejects a `secrets` key, so the types live in functions/env.d.ts.
 }

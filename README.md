@@ -34,7 +34,7 @@ Dates are `YYYY-MM`; a malformed one fails the build. The text fields take inlin
 
 `/current` asks `/api/listening` for the last Spotify track and, when one comes back, adds a Listening row. Until then the row stays hidden. The track is not in `src/data/current.ts` or `/llms.txt`. The function keeps a response for fifteen minutes.
 
-It needs three Pages secrets: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, and `SPOTIFY_REFRESH_TOKEN`. With any of them unset, the function answers `204`.
+It needs three Pages secrets: `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, and `SPOTIFY_REFRESH_TOKEN`. With any of them unset, the function answers `204`. Those names stay out of `wrangler.jsonc`. `wrangler pages deploy` rejects a `secrets` key, and the types are in `functions/env.d.ts`.
 
 Create a Spotify app in Development mode (the owner needs Premium) and register the redirect `http://127.0.0.1:8788/callback`. From the repo root:
 

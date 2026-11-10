@@ -1,0 +1,30 @@
+---
+import { SITE_NAME } from '../data/site';
+---
+
+<!--
+  The hero: one sentence saying who and what. Light weight and a prose
+  measure keep the blurb from being the heaviest thing on the page; the chip
+  and the accent names carry it. The current employer is highlighted, not
+  linked; the email lives in Connect, so nothing is repeated up here.
+-->
+<div class="flex w-full flex-col gap-6 px-1 xl:px-0">
+  <p class="max-w-prose text-xl leading-snug font-light text-pretty md:leading-relaxed">
+    <code
+      translate="no"
+      class="rounded-md bg-muted px-[0.35rem] py-[0.15rem] font-mono text-[0.85em] font-normal whitespace-nowrap"
+    >
+      Hello, World!
+    </code>{' '}
+    I’m {SITE_NAME}. I work in engineering at{' '}
+    <span translate="no" class="font-semibold text-primary">Coinbase</span>, focusing on JavaScript,
+    performance, and web architecture. Previously at{' '}
+    <a
+      href="https://formidable.com/"
+      translate="no"
+      class="py-2 font-semibold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
+    >
+      Formidable</a
+    >.
+  </p>
+</div>

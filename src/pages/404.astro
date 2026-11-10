@@ -1,8 +1,35 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const button =
+  'inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap ring-offset-background transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-hidden';
 ---
 
-<BaseLayout title="Not found — Kyle Cesmat">
-  <h1>Not found</h1>
-  <p><a href="/">Home</a></p>
+<!-- Cloudflare Pages serves this file, with a 404 status, for every unknown
+     path, so a stale link lands inside the site's own chrome with a way back. -->
+<BaseLayout title="Page not found" noindex>
+  <div class="flex flex-col items-center gap-6 py-12 text-center md:py-16">
+    <p class="text-xl leading-snug font-light md:text-2xl md:leading-8">
+      <code
+        class="rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[0.8em] font-semibold"
+      >
+        404
+      </code>{' '}
+      There’s nothing at this address.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="/" class:list={[button, 'bg-primary text-primary-foreground hover:bg-primary/90']}>
+        Back to the Home Page
+      </a>
+      <a
+        href="/#work-heading"
+        class:list={[
+          button,
+          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+        ]}
+      >
+        Work Experience
+      </a>
+    </div>
+  </div>
 </BaseLayout>

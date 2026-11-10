@@ -1,0 +1,25 @@
+---
+import { SITE_NAME, SOURCE_URL } from '../data/site';
+
+const linkClass =
+  'py-2 underline decoration-border underline-offset-4 transition-colors hover:decoration-primary';
+---
+
+<footer class="mt-auto w-full pt-16 pb-8 text-center">
+  <p class="text-base text-muted-foreground">
+    Built with <span aria-hidden="true">🤍</span> by{' '}
+    <a
+      href={SOURCE_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${SITE_NAME} — source on GitHub (opens in new tab)`}
+      class:list={[linkClass, 'font-semibold text-primary']}
+    >
+      {SITE_NAME}
+    </a>
+  </p>
+  <p class="mt-2 text-sm text-muted-foreground">
+    For agents:{' '}
+    <a href="/llms.txt" class:list={[linkClass, 'font-mono hover:text-foreground']}>/llms.txt</a>
+  </p>
+</footer>

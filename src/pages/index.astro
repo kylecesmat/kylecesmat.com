@@ -1,15 +1,23 @@
 ---
+import About from '../components/About.astro';
+import AgentView from '../components/AgentView.astro';
+import Connect from '../components/Connect.astro';
+import PersonJsonLd from '../components/PersonJsonLd.astro';
+import Talks from '../components/Talks.astro';
+import Work from '../components/Work.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Kyle Cesmat">
-  <h1>Kyle Cesmat</h1>
-  <p>Personal website. Content will land in a follow-up.</p>
-  <p>
-    <a href="mailto:kylecesmat@gmail.com">kylecesmat@gmail.com</a>
-    ·
-    <a href="https://github.com/kylecesmat">GitHub</a>
-    ·
-    <a href="https://www.linkedin.com/in/kylecesmat">LinkedIn</a>
-  </p>
+<BaseLayout viewToggle>
+  <PersonJsonLd slot="head" />
+  <div class="flex flex-col items-center justify-center gap-16 pt-8 md:gap-20 md:pt-12">
+    <!-- The human view; hidden by CSS while the agent view is showing. -->
+    <div class="human-view flex w-full flex-col items-center gap-16 md:gap-20">
+      <About />
+      <Work />
+      <Talks />
+      <Connect />
+    </div>
+    <AgentView />
+  </div>
 </BaseLayout>

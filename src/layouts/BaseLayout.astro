@@ -1,12 +1,23 @@
 ---
+import '@fontsource-variable/raleway/wght.css';
 import '../styles/global.css';
+import ralewayLatin from '@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2?url';
+
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from '../data/site';
 
 interface Props {
-  title: string;
+  /** A page title, shown as "Title · Kyle Cesmat". The home page leaves it out. */
+  title?: string;
   description?: string;
+  noindex?: boolean;
+  /** Show the human | agent switch; only the home page has an agent view. */
+  viewToggle?: boolean;
 }
 
-const { title, description = 'Personal website of Kyle Cesmat.' } = Astro.props;
+const { title, description = SITE_DESCRIPTION, noindex = false, viewToggle = false } = Astro.props;
+const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_TITLE;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -15,22 +26,48 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <!-- Runs before first paint so the stored or system theme never flashes. -->
+    <script is:inline>
+      (() => {
+        let stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch {}
+        const dark =
+          stored === 'dark' ||
+          (stored !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
+    <link rel="preload" href={ralewayLatin} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="text/markdown" href={new URL('/index.md', Astro.site).href} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content="profile" />
+    <slot name="head" />
   </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header>
-      <a href="/">Kyle Cesmat</a>
-    </header>
-    <main id="main">
+  <!-- A column at least one screen tall, so the footer sits at the bottom of
+       short pages (the 404) instead of halfway up. -->
+  <body class="flex min-h-dvh flex-col font-sans">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:font-medium focus:text-foreground focus:ring-2 focus:ring-ring focus:outline-hidden print:hidden"
+    >
+      Skip to Content
+    </a>
+    <Header viewToggle={viewToggle} />
+    <main id="main" tabindex="-1" class="mx-auto w-full max-w-3xl px-8 outline-hidden">
       <slot />
     </main>
+    <Footer />
   </body>
 </html>

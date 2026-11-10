@@ -1,0 +1,117 @@
+---
+const command = `curl ${new URL('/llms.txt', Astro.site).href}`;
+---
+
+<!--
+  The page as an agent gets it: /llms.txt, fetched from this same site the
+  first time the header switch is flipped (it is a file in the build, so
+  nothing is duplicated in the HTML). Hidden, and empty, until then.
+-->
+<section
+  data-agent-view
+  hidden
+  aria-label="The page as an agent receives it"
+  class="flex w-full flex-col gap-4 font-mono text-[13px] leading-relaxed"
+>
+  <div class="flex items-center gap-3">
+    <p translate="no" class="min-w-0 break-all text-muted-foreground">
+      <span class="text-primary select-none">$ </span>{command}
+    </p>
+    <button
+      type="button"
+      data-copy={command}
+      aria-label="Copy the command"
+      title="Copy"
+      class="group/copy flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-hidden transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    >
+      <!-- Screen readers hear the result; the icon shows it. -->
+      <span class="sr-only" role="status" aria-live="polite"></span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        class="size-4"
+      >
+        <g class="group-data-copied/copy:hidden">
+          <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+        </g>
+        <path d="M20 6 9 17l-5-5" class="hidden group-data-copied/copy:block"></path>
+      </svg>
+    </button>
+  </div>
+  <p data-agent-status class="text-muted-foreground">Fetching…</p>
+  <pre
+    data-agent-text
+    hidden
+    translate="no"
+    class="rounded-lg bg-muted p-4 break-words whitespace-pre-wrap">
+  </pre>
+  <p class="text-muted-foreground">
+    The same document is served at{' '}
+    <a href="/llms.txt" class="text-foreground underline underline-offset-4">/llms.txt</a> and{' '}
+    <a href="/index.md" class="text-foreground underline underline-offset-4">/index.md</a>.
+  </p>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>('[data-agent-view]');
+  const status = section?.querySelector<HTMLElement>('[data-agent-status]');
+  const output = section?.querySelector<HTMLElement>('[data-agent-text]');
+  let requested = false;
+
+  async function load() {
+    if (requested || !status || !output) return;
+    requested = true;
+    try {
+      const response = await fetch('/llms.txt');
+      if (!response.ok) throw new Error(String(response.status));
+      output.textContent = await response.text();
+      output.hidden = false;
+      status.hidden = true;
+    } catch {
+      status.textContent = 'Could not load /llms.txt from this host.';
+      status.classList.replace('text-muted-foreground', 'text-foreground');
+      // A later flip of the switch tries again.
+      requested = false;
+    }
+  }
+
+  function sync() {
+    if (!section) return;
+    const agent = document.documentElement.dataset.view === 'agent';
+    section.hidden = !agent;
+    if (agent) void load();
+  }
+
+  document.addEventListener('viewchange', sync);
+  sync();
+
+  const copy = section?.querySelector<HTMLButtonElement>('[data-copy]');
+  const announce = copy?.querySelector('[role="status"]');
+  let timer: number | undefined;
+
+  copy?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(copy.dataset.copy ?? '');
+    } catch {
+      return;
+    }
+    copy.dataset.copied = '';
+    copy.title = 'Copied';
+    copy.setAttribute('aria-label', 'Copied');
+    if (announce) announce.textContent = 'Copied';
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      delete copy.dataset.copied;
+      copy.title = 'Copy';
+      copy.setAttribute('aria-label', 'Copy the command');
+      if (announce) announce.textContent = '';
+    }, 1500);
+  });
+</script>
